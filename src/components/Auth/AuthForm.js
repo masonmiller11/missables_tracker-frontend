@@ -14,9 +14,10 @@ import {
     Classes,
     FormGroup,
 } from '@blueprintjs/core';
-
-import classes from './AuthForm.module.css';
 import { useHistory } from 'react-router-dom';
+
+import { login } from '../../api/index';
+import classes from './AuthForm.module.css';
 
 const AuthForm = () => {
 
@@ -32,10 +33,13 @@ const AuthForm = () => {
         const enteredEmail = emailInputRef.current.value;
         const enteredPassword = passwordInputRef.current.value;
 
-        console.log('in submitHandler')
-        console.log(enteredEmail);
-        console.log(enteredPassword);
-
+        login(enteredEmail, enteredPassword)
+            .then((response) => {
+                console.log(response.data.token);
+            })
+            .catch((err) => {
+                console.log(err.response.data.message);
+            });
     }
 
     return (

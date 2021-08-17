@@ -1,15 +1,11 @@
 import React from 'react';
 
-function AuthPage() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Authpage
-        </p>
-      </header>
-    </div>
-  );
-}
+import AuthForm from '../components/Auth/AuthForm';
+
+const AuthPage = () => {
+    return <div>
+        <AuthForm />
+    </div>;
+};
 
 export default AuthPage;

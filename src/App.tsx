@@ -1,26 +1,32 @@
-import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import React from "react";
+import { Switch, Route } from "react-router-dom";
+import { Classes } from "@blueprintjs/core";
 
-import Layout from './components/Layout/Layout';
-import AuthPage from './pages/AuthPage';
-import HomePage from './pages/HomePage';
-import FavoritesPage from './pages/FavoritesPage';
+import Layout from "./components/Layout/Layout";
+import AuthPage from "./pages/AuthPage";
+import HomePage from "./pages/HomePage";
+import FavoritesPage from "./pages/FavoritesPage";
+import "./App.css";
 
 function App() {
   return (
-    <Layout>
-      <Switch>
-        <Route path='/' exact>
-          <HomePage />
-        </Route>
-        <Route path='/auth'>
-          <AuthPage />
-        </Route>
-        <Route path='/favorites'>
-          <FavoritesPage />
-        </Route>
-      </Switch>
-    </Layout>
+    <div className="dark-content-wrapper">
+      <div className={Classes.DARK}>
+        <Layout>
+          <Switch>
+            <Route path="/" exact>
+              <HomePage />
+            </Route>
+            <Route path="/auth">
+              <AuthPage />
+            </Route>
+            <Route path="/favorites">
+              <FavoritesPage />
+            </Route>
+          </Switch>
+        </Layout>
+      </div>
+    </div>
   );
 }
 

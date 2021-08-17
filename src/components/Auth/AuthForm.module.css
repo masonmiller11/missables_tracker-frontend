@@ -1,13 +1,14 @@
 .authContainer {
     display: flex;
     margin-top: 10em;
-    min-height: 75vh;
+    min-height: 65vh;
     align-items: center;
     flex-direction:column;
 }
 
 .textField{
     width: 25em;
+    margin-bottom: 1em;
 }
 
 .login {

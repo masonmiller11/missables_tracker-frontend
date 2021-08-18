@@ -16,16 +16,25 @@ import {
     FormGroup,
 } from '@blueprintjs/core';
 import { useHistory } from 'react-router-dom';
+import jwt from 'jwt-decode';
+
 
 import { login } from '../../api/index';
 import classes from './AuthForm.module.css';
+import AuthContext from '../../store/auth-context';
 
 const AuthForm: React.FC = () => {
     const history = useHistory();
     const emailInputRef = useRef<HTMLInputElement>(null);
     const passwordInputRef = useRef<HTMLInputElement>(null);
+    const authCtx = useContext(AuthContext);
 
-    const [isLoading, setIsLoading] = useState();
+    const [isLogin, setIsLogIn] = useState<boolean>(true);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+
+    const changeLoginHandler = (): void => {
+        setIsLogIn((prevState) => !prevState);
+    }
 
     const submitHandler = (event: React.FormEvent) => {
         event.preventDefault();
@@ -33,11 +42,20 @@ const AuthForm: React.FC = () => {
         const enteredEmail = emailInputRef.current?.value;
         const enteredPassword = passwordInputRef.current?.value;
 
+        //add validation??
+
+        setIsLoading(true);
+
+        //handle whether this is a sign up or a log in.
+
         login(enteredEmail ?? '', enteredPassword ?? '')
             .then((response) => {
+                setIsLoading(false);
                 console.log(response.data.token);
+                console.log(jwt(response.data.token));
             })
             .catch((err) => {
+                setIsLoading(false);
                 console.log(err.response.data.message);
             });
     };
@@ -64,11 +82,14 @@ const AuthForm: React.FC = () => {
                         inputRef={passwordInputRef}
                     />
                 </Label>
-                <Button
-                    className={classes.login}
-                    text="Sign In"
-                    onClick={submitHandler}
-                />
+                {isLoading ? 
+                    <Spinner/> : 
+                    <Button
+                        className={classes.login}
+                        text="Sign In"
+                        onClick={submitHandler}
+                    />
+                }
             </FormGroup>
         </div>
     );

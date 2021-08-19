@@ -48,7 +48,7 @@ const AuthForm: React.FC = () => {
 
         //handle whether this is a sign up or a log in.
 
-        login(enteredEmail ?? '', enteredPassword ?? '')
+        apiLogin(enteredEmail, enteredPassword)
             .then((response) => {
                 setIsLoading(false);
                 console.log(response.data.token);

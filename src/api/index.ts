@@ -6,7 +6,7 @@ export const client = axios.create({
     baseURL: 'http://localhost:8000/',
 });
 
-export async function login(email: string, password: string) {
+export async function apiLogin(email: string, password: string) {
         const response = await client.post('/login', {
             "username": email,
             "password": password

@@ -9,6 +9,7 @@ import {
     Menu,
     MenuItem,
     Spinner,
+    SpinnerSize,
     Label,
     Switch,
     Tag,
@@ -18,10 +19,10 @@ import {
 import { useHistory } from 'react-router-dom';
 import jwt from 'jwt-decode';
 
-
-import { login } from '../../api/index';
+import { apiLogin } from '../../api/index';
 import classes from './AuthForm.module.css';
 import AuthContext from '../../store/auth-context';
+import decodedToken from '../../models/decodedToken';
 
 const AuthForm: React.FC = () => {
     const history = useHistory();
@@ -31,6 +32,7 @@ const AuthForm: React.FC = () => {
 
     const [isLogin, setIsLogIn] = useState<boolean>(true);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [loginError, setLoginError] = useState<string|null>();
 
     const changeLoginHandler = (): void => {
         setIsLogIn((prevState) => !prevState);
@@ -43,6 +45,7 @@ const AuthForm: React.FC = () => {
         const enteredPassword = passwordInputRef.current?.value;
 
         //add validation??
+        if (!enteredEmail || !enteredPassword) return;
 
         setIsLoading(true);
 
@@ -52,24 +55,27 @@ const AuthForm: React.FC = () => {
             .then((response) => {
                 setIsLoading(false);
                 console.log(response.data.token);
-                console.log(jwt(response.data.token));
+                authCtx.login(response.data.token);
+                console.log(authCtx.token);
+                history.replace('/'); //profile or home screen should go here.
             })
             .catch((err) => {
                 setIsLoading(false);
+                setLoginError(err.response.data.message ?? 'unknown login error');
                 console.log(err.response.data.message);
             });
     };
 
     return (
         <div className={classes.authContainer}>
-            <FormGroup className={classes.textField} intent={Intent.NONE}>
+            <FormGroup className={classes.textField} intent={!loginError ? Intent.NONE : Intent.DANGER} helperText = {loginError}>
                 <Label> Email Address
                     <InputGroup
                         className={classes.textField}
                         placeholder="email"
                         large={true}
-                        intent={Intent.NONE}
                         inputRef={emailInputRef}
+                        intent={!loginError ? Intent.NONE : Intent.DANGER}
                     />
                 </Label>
                 <Label> Password
@@ -77,13 +83,13 @@ const AuthForm: React.FC = () => {
                         className={classes.textField}
                         placeholder="password"
                         large={true}
-                        intent={Intent.NONE}
                         type="password"
+                        intent={!loginError ? Intent.NONE : Intent.DANGER}
                         inputRef={passwordInputRef}
                     />
                 </Label>
                 {isLoading ? 
-                    <Spinner/> : 
+                    <Spinner size = {30}/> : 
                     <Button
                         className={classes.login}
                         text="Sign In"

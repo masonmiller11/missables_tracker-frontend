@@ -8,9 +8,20 @@ import {
   NavbarGroup,
   NavbarHeading,
 } from "@blueprintjs/core";
+import { useContext } from "react";
+
+import AuthContext from '../../store/auth-context';
 
 const MainNavigation = () => {
   let history = useHistory();
+
+  const authCtx = useContext(AuthContext); 
+  const isLoggedIn: boolean = authCtx.isLoggedIn;
+
+  const logoutHandler = () => {
+    authCtx.logout();
+    history.replace('/auth');
+  }
 
   return (
     <Navbar>
@@ -29,12 +40,18 @@ const MainNavigation = () => {
           icon="document"
           text="Favorites"
         />
-        <Button
+        {!isLoggedIn && <Button
           onClick={() => history.push("/auth")}
           className={Classes.MINIMAL}
           icon="document"
           text="Login"
-        />
+        />}
+        {isLoggedIn && <Button
+          onClick={logoutHandler}
+          className={Classes.MINIMAL}
+          icon="document"
+          text="Log Out"
+        />}
       </NavbarGroup>
     </Navbar>
   );

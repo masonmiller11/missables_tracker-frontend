@@ -1,16 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import jwt from 'jwt-decode';
+
+import DecodedToken from '../models/decodedToken';
+import TokenData from '../models/tokenData';
 
 let logoutTimer: ReturnType<typeof setTimeout>;
-
-type TokenData = {
-    token: string;
-    duration: number;
-};
 
 type initialContext = {
     token: string|null;
     isLoggedIn: boolean;
-    login: (token: string, expirationTime: number) => void;
+    login: (encodedToken: string) => void;
     logout: () => void;
 }
 
@@ -48,7 +47,7 @@ const retrieveStoredTokenData = (): TokenData | null => {
     }
 
     return {
-        token: storedToken,
+        encodedToken: storedToken,
         duration: remainingTime
     }
     
@@ -60,7 +59,7 @@ export const AuthContextProvider: React.FC = (props) => {
 
     let initialToken: string|null = null;
 
-    if (tokenData) initialToken = tokenData.token;
+    if (tokenData) initialToken = tokenData.encodedToken;
 
     const [token, setToken] = useState<null|string>(initialToken);
 
@@ -78,11 +77,17 @@ export const AuthContextProvider: React.FC = (props) => {
 
     }, []);
 
-    const loginHandler = (token: string, expirationTime: number): void => {
+    const loginHandler = (encodedToken: string): void => {
 
-        setToken(token);
+        console.log('in loginHandler');
 
-        localStorage.setItem('token', token);
+        setToken(encodedToken);
+
+        const decodedToken: DecodedToken = jwt(encodedToken);
+
+        const expirationTime = new Date(decodedToken.exp * 1000).getTime();
+
+        localStorage.setItem('token', encodedToken);
 
         localStorage.setItem('expirationTime', expirationTime.toString());
 

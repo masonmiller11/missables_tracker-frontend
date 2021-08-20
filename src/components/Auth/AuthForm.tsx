@@ -17,12 +17,10 @@ import {
     FormGroup,
 } from '@blueprintjs/core';
 import { useHistory } from 'react-router-dom';
-import jwt from 'jwt-decode';
 
 import { apiLogin } from '../../api/index';
 import classes from './AuthForm.module.css';
 import AuthContext from '../../store/auth-context';
-import decodedToken from '../../models/decodedToken';
 
 const AuthForm: React.FC = () => {
     const history = useHistory();
@@ -36,7 +34,7 @@ const AuthForm: React.FC = () => {
 
     const changeLoginHandler = (): void => {
         setIsLogIn((prevState) => !prevState);
-    }
+    } //so that it can be log in or sign up on a button click.
 
     const submitHandler = (event: React.FormEvent) => {
         event.preventDefault();

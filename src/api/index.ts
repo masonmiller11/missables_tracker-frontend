@@ -7,11 +7,20 @@ export const client = axios.create({
 });
 
 export async function apiLogin(email: string, password: string) {
-        const response = await client.post(endpoints.authentication, {
-            "username": email,
-            "password": password
-        });
+    const response = await client.post(endpoints.authentication, {
+        username: email,
+        password: password,
+    });
 
-        return response;
+    return response;
+}
 
+export async function apiSignUp(email: string, password: string, username: string) {
+    const response = await client.post(endpoints.signup, {
+        username: username,
+        password: password,
+        email: email
+    });
+
+    return response;
 }

@@ -17,7 +17,7 @@ function App() {
             <Route path="/" exact>
               <HomePage />
             </Route>
-            <Route path="/auth">
+            <Route path="/login">
               <AuthPage />
             </Route>
             <Route path="/favorites">

@@ -7,7 +7,7 @@ export const client = axios.create({
 });
 
 export async function apiLogin(email: string, password: string) {
-        const response = await client.post('/login', {
+        const response = await client.post(endpoints.authentication, {
             "username": email,
             "password": password
         });

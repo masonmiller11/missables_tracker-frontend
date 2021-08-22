@@ -22,75 +22,109 @@ import { apiLogin } from '../../api/index';
 import classes from './AuthForm.module.css';
 import AuthContext from '../../store/auth-context';
 
-const AuthForm: React.FC = () => {
-    const history = useHistory();
-    const emailInputRef = useRef<HTMLInputElement>(null);
-    const passwordInputRef = useRef<HTMLInputElement>(null);
-    const authCtx = useContext(AuthContext);
+type AuthRefs = {
+    emailInputRef: React.RefObject<HTMLInputElement>;
+    passwordInputRef: React.RefObject<HTMLInputElement>;
+    confirmPasswordInputRef: React.RefObject<HTMLInputElement>;
+    usernameInputRef: React.RefObject<HTMLInputElement>;
+};
 
-    const [isLogin, setIsLogIn] = useState<boolean>(true);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [loginError, setLoginError] = useState<string|null>();
+const AuthForm: React.FC<{
+    refs: AuthRefs;
+    isLogin: boolean;
+    isLoading: boolean;
+    loginError: string | null | undefined;
+    loginNotifcation: string | null | undefined;
+    onLoginChange: () => void;
+    onSubmit: (event: React.FormEvent) => void;
+}> = ({
+    refs,
+    isLogin,
+    loginError,
+    loginNotifcation,
+    onLoginChange,
+    onSubmit,
+    isLoading,
+}) => {
+    let intent: Intent = Intent.NONE;
 
-    const changeLoginHandler = (): void => {
-        setIsLogIn((prevState) => !prevState);
-    } //so that it can be log in or sign up on a button click.
+    if (loginNotifcation) intent = Intent.SUCCESS;
 
-    const submitHandler = (event: React.FormEvent) => {
-        event.preventDefault();
-
-        const enteredEmail = emailInputRef.current?.value;
-        const enteredPassword = passwordInputRef.current?.value;
-
-        //add validation??
-        if (!enteredEmail || !enteredPassword) return;
-
-        setIsLoading(true);
-
-        //handle whether this is a sign up or a log in.
-
-        apiLogin(enteredEmail, enteredPassword)
-            .then((response) => {
-                setIsLoading(false);
-                authCtx.login(response.data.token);
-                history.replace('/'); //profile or home screen should go here.
-            })
-            .catch((err) => {
-                setIsLoading(false);
-                setLoginError(err.response.data.message ?? 'unknown login error');
-            });
-    };
+    if (loginError) intent = Intent.DANGER;
 
     return (
         <div className={classes.authContainer}>
-            <FormGroup className={classes.textField} intent={!loginError ? Intent.NONE : Intent.DANGER} helperText = {loginError}>
-                <Label> Email Address
+            <FormGroup
+                className={classes.textField}
+                intent={intent}
+                helperText={loginError ? loginError : loginNotifcation}
+            >
+                <Label>
+                    Email Address
                     <InputGroup
                         className={classes.textField}
                         placeholder="email"
                         large={true}
-                        inputRef={emailInputRef}
-                        intent={!loginError ? Intent.NONE : Intent.DANGER}
+                        inputRef={refs.emailInputRef}
+                        intent={intent}
                     />
                 </Label>
-                <Label> Password
+                {!isLogin ? (
+                    <Label>
+                        Username
+                        <InputGroup
+                            className={classes.textField}
+                            placeholder="username"
+                            large={true}
+                            intent={intent}
+                            inputRef={refs.usernameInputRef}
+                        />
+                    </Label>
+                ) : null}
+                <Label>
+                    Password
                     <InputGroup
                         className={classes.textField}
                         placeholder="password"
                         large={true}
                         type="password"
-                        intent={!loginError ? Intent.NONE : Intent.DANGER}
-                        inputRef={passwordInputRef}
+                        intent={intent}
+                        inputRef={refs.passwordInputRef}
                     />
                 </Label>
-                {isLoading ? 
-                    <Spinner size = {30}/> : 
+                {!isLogin ? (
+                    <Label>
+                        Confirm Password
+                        <InputGroup
+                            className={classes.textField}
+                            placeholder="password"
+                            large={true}
+                            type="password"
+                            intent={intent}
+                            inputRef={refs.confirmPasswordInputRef}
+                        />
+                    </Label>
+                ) : null}
+                {isLoading ? (
+                    <Spinner size={30} />
+                ) : (
                     <Button
                         className={classes.login}
-                        text="Sign In"
-                        onClick={submitHandler}
+                        text={isLogin ? 'Sign In' : 'Sign Up'}
+                        onClick={(event) => onSubmit(event)}
                     />
-                }
+                )}
+                {isLogin ? (
+                    <p className={classes.login}>
+                        Not a member yet? Click{' '}
+                        <a onClick={onLoginChange}>here</a> to sign up!
+                    </p>
+                ) : (
+                    <p className={classes.login}>
+                        Already a member? Click{' '}
+                        <a onClick={onLoginChange}>here</a> to sign in!
+                    </p>
+                )}
             </FormGroup>
         </div>
     );

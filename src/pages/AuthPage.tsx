@@ -2,7 +2,7 @@ import React from 'react';
 
 import AuthForm from '../components/Auth/AuthForm';
 
-const AuthPage = () => {
+const AuthPage: React.FC  = () => {
     return <div>
         <AuthForm />
     </div>;

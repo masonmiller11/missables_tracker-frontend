@@ -1,6 +1,6 @@
 import React from 'react';
 
-function HomePage() {
+const HomePage: React.FC  = () => {
   return (
     <div>
       <header>

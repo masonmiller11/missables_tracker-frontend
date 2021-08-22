@@ -52,15 +52,12 @@ const AuthForm: React.FC = () => {
         apiLogin(enteredEmail, enteredPassword)
             .then((response) => {
                 setIsLoading(false);
-                console.log(response.data.token);
                 authCtx.login(response.data.token);
-                console.log(authCtx.token);
                 history.replace('/'); //profile or home screen should go here.
             })
             .catch((err) => {
                 setIsLoading(false);
                 setLoginError(err.response.data.message ?? 'unknown login error');
-                console.log(err.response.data.message);
             });
     };
 

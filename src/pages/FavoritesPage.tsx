@@ -1,6 +1,6 @@
 import React from "react";
 
-function FavoritesPage() {
+const FavoritesPage: React.FC = () => {
   return (
     <div>
       <header>

@@ -28,11 +28,12 @@ const Auth: React.FC = () => {
     const [loginNotification, setLoginNotification] = useState<string | null>();
 
     const changeLoginHandler = (): void => {
+        setLoginError(null);
+        setLoginNotification(null);
         setIsLogIn((prevState) => !prevState);
     }; //so that it can be log in or sign up on a button click.
 
     const loginSubmitHandler = (event: React.FormEvent) => {
-        console.log('onSubmit clicked');
         event.preventDefault();
 
         setLoginError(null);
@@ -41,8 +42,6 @@ const Auth: React.FC = () => {
         const enteredEmail = emailInputRef.current?.value;
         const enteredPassword = passwordInputRef.current?.value;
 
-        console.log(enteredEmail);
-        console.log(enteredPassword);
         //add validation??
         if (!enteredEmail || !enteredPassword) {
             setLoginError('Cannot login without email and password');
@@ -50,8 +49,6 @@ const Auth: React.FC = () => {
         } 
 
         setIsLoading(true);
-
-        //handle whether this is a sign up or a log in.
 
         apiLogin(enteredEmail, enteredPassword)
             .then((response) => {
@@ -93,17 +90,15 @@ const Auth: React.FC = () => {
 
         setIsLoading(true);
 
-        //handle whether this is a sign up or a log in.
-
         apiSignUp(enteredEmail, enteredPassword, enteredUsername)
             .then((response) => {
-                console.log(response);
                 setIsLoading(false);
                 setLoginNotification('User created! Go ahead and log in!');
                 setIsLogIn(true);
             })
             .catch((err) => {
                 setIsLoading(false);
+                console.log(err.response);
                 setLoginError(
                     err.response.data.message ?? 'unknown signup error'
                 );

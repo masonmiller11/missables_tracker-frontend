@@ -53,7 +53,7 @@ const AuthForm: React.FC<{
     if (loginError) intent = Intent.DANGER;
 
     return (
-        <div className={classes.authContainer}>
+        <div>
             <FormGroup
                 className={classes.textField}
                 intent={intent}

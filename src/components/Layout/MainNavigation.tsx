@@ -52,12 +52,6 @@ const MainNavigation: React.FC = () => {
                     />
                 )}
                 {isLoggedIn && (
-                    // <Button
-                    //     onClick={logoutHandler}
-                    //     className={Classes.MINIMAL}
-                    //     icon="person"
-                    //     text="Profile"
-                    // />
                     <UserPreferencesPopover onLogout={logoutHandler}/>
                 )}
             </NavbarGroup>

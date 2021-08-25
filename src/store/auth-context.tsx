@@ -79,8 +79,6 @@ export const AuthContextProvider: React.FC = (props) => {
 
     const loginHandler = (encodedToken: string): void => {
 
-        console.log('in loginHandler');
-
         setToken(encodedToken);
 
         const decodedToken: DecodedToken = jwt(encodedToken);
@@ -99,7 +97,6 @@ export const AuthContextProvider: React.FC = (props) => {
 
     useEffect(() => {
         if (tokenData) {
-            console.log(tokenData.duration);
             logoutTimer = setTimeout(logoutHandler, tokenData.duration);
         }
     }, [tokenData, logoutHandler]);

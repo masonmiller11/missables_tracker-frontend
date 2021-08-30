@@ -20,6 +20,7 @@ const AuthContext = React.createContext<initialContext>({
     logout: () => {},
 });
 
+//Get remaining duration between now and when the token expires.
 const calculateRemainingTime = (expirationTime: number): number => {
     const currentTime = new Date().getTime();
     const expirationTimeDate = new Date(expirationTime).getTime();
@@ -29,6 +30,9 @@ const calculateRemainingTime = (expirationTime: number): number => {
     return remainingDuration;
 };
 
+//Returns null if it can't get token from local storage.
+//Returns null if it can get token from local storage but remaining time is less than 3600 miliseconds. 
+//Otherwise return encoded token and duration.
 const retrieveStoredTokenData = (): TokenData | null => {
 
     const storedToken = localStorage.getItem('token');

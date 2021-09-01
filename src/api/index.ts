@@ -24,3 +24,17 @@ export async function apiSignUp(email: string, password: string, username: strin
 
     return response;
 }
+
+export async function apiListPopularGames(
+    itemsPerPage: number|null = null,
+    page: number|null = null,
+    token: string|null =null
+) {
+
+    const endpoint = endpoints.listPopularGames();
+
+    const response = await client.get(endpoint);
+
+    return response;
+
+}

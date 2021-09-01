@@ -9,10 +9,11 @@ const Feature: React.FC = () => {
                     <h1>Never Miss Again</h1>
                     <h2>Track your playthroughs. Never miss an item again.</h2>
                     <ul>
-                      <li>one</li>
-                      <li>two</li>
-                      <li>three</li>
-                      <li>four</li>
+                      <li>Keep track of your playthroughs, never skip past a missable item again.</li>
+                      <li>Create your own checklists. Save your progress.</li>
+                      <li>No more missing out on side quests.</li>
+                      <li>Browse user-created checklists.</li>
+                      <li>Quit paging through GameFaqs for the "best" missables walkthrough.</li>
                     </ul>
             </div>
         </div>

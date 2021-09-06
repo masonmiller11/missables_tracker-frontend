@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import jwt from 'jwt-decode';
 
-import DecodedToken from '../models/decodedToken';
-import TokenData from '../models/tokenData';
+import DecodedToken from '../api/models/DecodedToken';
+import TokenData from '../api/models/TokenData';
 
 let logoutTimer: ReturnType<typeof setTimeout>;
 

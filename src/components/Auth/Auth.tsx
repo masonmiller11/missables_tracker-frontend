@@ -6,7 +6,7 @@ import classes from './AuthForm.module.css';
 import AuthContext from '../../store/auth-context';
 import AuthForm from './AuthForm';
 
-const Auth: React.FC = () => {
+const Auth: React.FC<{isLogin: boolean}> = ({isLogin: isLoginProp}) => {
     const history = useHistory();
     const emailInputRef = useRef<HTMLInputElement>(null);
     const usernameInputRef = useRef<HTMLInputElement>(null);
@@ -22,7 +22,7 @@ const Auth: React.FC = () => {
 
     const authCtx = useContext(AuthContext);
 
-    const [isLogin, setIsLogIn] = useState<boolean>(true);
+    const [isLogin, setIsLogIn] = useState<boolean>(isLoginProp);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [loginError, setLoginError] = useState<string | null>();
     const [loginNotification, setLoginNotification] = useState<string | null>();

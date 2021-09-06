@@ -2,9 +2,9 @@ import React from 'react';
 
 import Auth from '../components/Auth/Auth';
 
-const AuthPage: React.FC  = () => {
+const AuthPage: React.FC<{ isLogin: boolean}>  = ({isLogin}) => {
     return <div>
-        <Auth />
+        <Auth isLogin={isLogin}/>
     </div>;
 };
 

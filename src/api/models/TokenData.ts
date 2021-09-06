@@ -1,4 +1,4 @@
-class tokenData {
+class TokenData {
 
     encodedToken: string;
     duration: number;
@@ -10,4 +10,4 @@ class tokenData {
     
   }
   
-  export default tokenData;
+  export default TokenData;

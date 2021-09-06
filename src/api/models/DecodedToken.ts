@@ -1,11 +1,11 @@
-class decodedToken {
+class DecodedToken {
 
     exp: number;
     iat: number;
     roles: string[];
     username: string
   
-    constructor(decodedToken: decodedToken) {
+    constructor(decodedToken: DecodedToken) {
       this.exp = decodedToken.exp;
       this.iat = decodedToken.iat
       this.roles = decodedToken.roles;
@@ -14,4 +14,4 @@ class decodedToken {
 
   }
   
-  export default decodedToken;
+  export default DecodedToken;

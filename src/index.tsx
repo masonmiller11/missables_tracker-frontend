@@ -6,17 +6,14 @@ import App from './App';
 import '@blueprintjs/core/lib/css/blueprint.css';
 
 import { AuthContextProvider } from './store/auth-context';
-import { GameContextProvider } from './store/game-context';
 
 ReactDOM.render(
     <React.StrictMode>
-        <GameContextProvider>
-            <AuthContextProvider>
-                <BrowserRouter>
-                    <App />
-                </BrowserRouter>
-            </AuthContextProvider>
-        </GameContextProvider>
+        <AuthContextProvider>
+            <BrowserRouter>
+                <App />
+            </BrowserRouter>
+        </AuthContextProvider>
     </React.StrictMode>,
     document.getElementById('root')
 );

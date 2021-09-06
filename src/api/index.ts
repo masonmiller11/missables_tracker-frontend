@@ -31,7 +31,7 @@ export async function apiListPopularGames(
     token: string|null =null
 ) {
 
-    const endpoint = endpoints.listPopularGames();
+    const endpoint = endpoints.listPopularGames(itemsPerPage, page);
 
     const response = await client.get(endpoint);
 

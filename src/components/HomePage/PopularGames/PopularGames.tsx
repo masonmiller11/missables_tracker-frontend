@@ -66,7 +66,7 @@ const PopularGames: React.FC = (props: any) => {
                     ))}
                 </div>
             ) : (
-                <Spinner className = {classes.spinner} />
+                <Spinner className={classes.spinner} />
             )}
         </div>
     );

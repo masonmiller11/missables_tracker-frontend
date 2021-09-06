@@ -1,8 +1,12 @@
-import React from 'react';
+import { Button } from '@blueprintjs/core';
+import { useHistory } from 'react-router-dom';
 
 import classes from './Feature.module.css';
 
 const Feature: React.FC = () => {
+
+    const history = useHistory();
+
     return (
         <div className = {classes.featureContainer}>
             <div className={classes.featureTextContainer}>
@@ -15,6 +19,20 @@ const Feature: React.FC = () => {
                       <li>Browse user-created checklists.</li>
                       <li>Quit paging through GameFaqs for the "best" missables walkthrough.</li>
                     </ul>
+                    <div className={classes.buttonContainer}>
+                    <Button
+                        text='Sign Up'
+                        type="submit"
+                        large={true}
+                        onClick={()=>history.push('/signup')}
+                    />
+                    <Button
+                        text='Sign In'
+                        type="submit"
+                        large={true}
+                        onClick={()=>history.push('/login')}
+                    />
+                    </div>
             </div>
         </div>
     );

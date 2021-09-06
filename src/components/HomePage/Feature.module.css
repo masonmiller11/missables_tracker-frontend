@@ -40,3 +40,12 @@
     background-size: cover;
 }
 
+.buttonContainer {
+    display: flex;
+    padding: 1em;
+}
+
+.buttonContainer > Button {
+    margin: 0em .75em;
+    background-color:#4CAF50;
+}

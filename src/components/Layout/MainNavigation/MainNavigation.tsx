@@ -7,11 +7,13 @@ import {
     NavbarDivider,
     NavbarGroup,
     NavbarHeading,
+    InputGroup
 } from '@blueprintjs/core';
 import { useContext } from 'react';
 
-import AuthContext from '../../store/auth-context';
-import UserPreferencesPopover from './UserPreferencesPopover';
+import AuthContext from '../../../store/auth-context';
+import UserPreferencesPopover from '../UserPreferencesPopover';
+import SearchGames from './SearchGames';
 
 const MainNavigation: React.FC = () => {
     let history = useHistory();
@@ -41,6 +43,8 @@ const MainNavigation: React.FC = () => {
                     icon="document"
                     text="Favorites"
                 />
+                <NavbarDivider />
+                <SearchGames />
             </NavbarGroup>
             <NavbarGroup align={Alignment.RIGHT}>
                 {!isLoggedIn && (

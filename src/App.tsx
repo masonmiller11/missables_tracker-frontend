@@ -18,7 +18,10 @@ function App() {
                             <HomePage />
                         </Route>
                         <Route path="/login">
-                            <AuthPage />
+                            <AuthPage isLogin={true}/>
+                        </Route>
+                        <Route path="/signup">
+                            <AuthPage isLogin={false}/>
                         </Route>
                         <Route path="/favorites">
                             <FavoritesPage />

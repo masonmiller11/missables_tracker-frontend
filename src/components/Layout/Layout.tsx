@@ -1,4 +1,5 @@
-import MainNavigation from './MainNavigation';
+import MainNavigation from './MainNavigation//MainNavigation';
+
 
 const Layout: React.FC = (props) => {
     return (

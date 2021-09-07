@@ -1,4 +1,5 @@
 import { useEffect, useContext, useState } from 'react';
+import axios from 'axios';
 import {
     Button,
     Card,
@@ -24,16 +25,25 @@ const PopularGames: React.FC = (props: any) => {
     //todo create Games data model
 
     useEffect(() => {
-        apiListPopularGames(6, 1)
+        
+        let source = axios.CancelToken.source();
+
+        apiListPopularGames(6, 1, source)
             .then((response) => {
                 setGames(response.data.games);
             })
             .catch((err) => {
-                console.log(
-                    err.response?.data.message ?? 'unknown login error'
-                );
+                if (axios.isCancel(err)) {
+                    console.log('api request cancelled');
+                } else {
+                    console.log(err.response?.data.message ?? 'unknown error');
+                }
             });
-    });
+
+        return function () {
+            source.cancel('cancelling in cleanup');
+        };
+    }, []);
 
     return (
         <div className={classes.popularGamesContainer}>
@@ -45,6 +55,7 @@ const PopularGames: React.FC = (props: any) => {
                             className={classes.gamesCard}
                             elevation={Elevation.ONE}
                             interactive={true}
+                            key={game.id}
                         >
                             <img src={game.cover}></img>
                             <div className={classes.gamesCardTextContainer}>

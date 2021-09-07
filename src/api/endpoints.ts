@@ -1,3 +1,5 @@
+import SearchGamePage from '../pages/SearchGamePage';
+
 export const endpoints = {
     authentication: 'login',
     signup: 'signup',
@@ -13,5 +15,11 @@ export const endpoints = {
         if (itemsPerPage) return 'games/popular/1/' + itemsPerPage;
 
         return 'games/popular';
+    },
+    searchIGDB: (searchTerm: string) => {
+        return 'games/search/igdb/' + searchTerm;
+    },
+    searchGames: (searchTerm: string) => {
+        return 'games/search/' + searchTerm;
     },
 };

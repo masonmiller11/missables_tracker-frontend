@@ -61,7 +61,7 @@ const Search: React.FC<{ searchTerm: string | null }> = ({
                         }
                     >
                         <Switch
-                            checked
+                            checked //gotta put some logic behind this, lol
                             className={classes.switch}
                             labelElement={<em>Only Show Games That Have Guides</em>}
                         />

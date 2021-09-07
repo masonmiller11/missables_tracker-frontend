@@ -1,8 +1,8 @@
 .searchContainer {
-    background-color: #333333;
+    /* background-color: #333333; */
     display: flex;
     align-items: center;
-    height: 30vh; 
+    height: 20vh; 
     justify-content: center;
     /* background-image: linear-gradient(rgba(0,0,0,0.9), rgba(0,0,0,0.7)), url("../../assets/images/dark_souls_3_sc.jpg"); */
     background-position:center;
@@ -14,7 +14,7 @@
 
 .search {
     width: 30vw;
-    background-color:  #333333;
+    /* background-color:  #333333; */
     margin: 1em;
     align-self: flex-start;
 }
@@ -51,5 +51,5 @@
 }
 
 .switch {
-    background-color: #333333;
+    /* background-color: #333333; */
 }

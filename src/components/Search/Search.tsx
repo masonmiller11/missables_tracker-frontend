@@ -1,9 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { InputGroup, Button, FormGroup, Switch } from '@blueprintjs/core';
+import {
+    InputGroup,
+    Button,
+    FormGroup,
+    Switch,
+    Elevation,
+} from '@blueprintjs/core';
 import { useLocation } from 'react-router-dom';
 
 import { apiSearchGames, apiSearchIGDB } from '../../api';
 import classes from './Search.module.css';
+import { EALREADY } from 'constants';
 
 const Search: React.FC<{ searchTerm: string | null }> = ({
     searchTerm: searchTermProp,
@@ -57,13 +64,15 @@ const Search: React.FC<{ searchTerm: string | null }> = ({
                     ></InputGroup>
                     <FormGroup
                         label={
-                            "Don't see what you're looking for? The game you\'re looking for may need a guide."
+                            "Don't see what you're looking for? The game you're looking for may need a guide."
                         }
                     >
                         <Switch
                             checked //gotta put some logic behind this, lol
                             className={classes.switch}
-                            labelElement={<em>Only Show Games That Have Guides</em>}
+                            labelElement={
+                                <em>Only Show Games That Have Guides</em>
+                            }
                         />
                     </FormGroup>
                 </div>

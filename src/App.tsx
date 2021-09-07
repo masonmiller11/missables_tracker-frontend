@@ -6,6 +6,7 @@ import Layout from './components/Layout/Layout';
 import AuthPage from './pages/AuthPage';
 import HomePage from './pages/HomePage';
 import FavoritesPage from './pages/FavoritesPage';
+import SearchGamePage from './pages/SearchGamePage';
 import './App.css';
 
 function App() {
@@ -26,9 +27,16 @@ function App() {
                         <Route path="/favorites">
                             <FavoritesPage />
                         </Route>
+                        <Route path="/search/:searchTerm">
+                            <SearchGamePage />
+                        </Route>
+                        <Route path="/search">
+                            <SearchGamePage />
+                        </Route>
                         <Route path="*">
                             <Redirect to="/" />
                         </Route>
+                        
                     </Switch>
                 </Layout>
             </div>

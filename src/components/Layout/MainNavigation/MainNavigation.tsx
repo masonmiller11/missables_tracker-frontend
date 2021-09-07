@@ -7,19 +7,24 @@ import {
     NavbarDivider,
     NavbarGroup,
     NavbarHeading,
-    InputGroup
+    InputGroup,
 } from '@blueprintjs/core';
 import { useContext } from 'react';
 
 import AuthContext from '../../../store/auth-context';
 import UserPreferencesPopover from '../UserPreferencesPopover';
-import SearchGames from './SearchGames';
+import NavSearchGames from './NavSearchGames';
+import Wrapper from '../../Helpers/Wrapper';
 
-const MainNavigation: React.FC = () => {
+const MainNavigation: React.FC<{ showSearch: boolean }> = ({ showSearch }) => {
     let history = useHistory();
 
     const authCtx = useContext(AuthContext);
     const isLoggedIn: boolean = authCtx.isLoggedIn;
+
+    const searchHandler = (term: string | undefined) => {
+        history.replace('/search/' + term);
+    };
 
     const logoutHandler = () => {
         authCtx.logout();
@@ -43,8 +48,13 @@ const MainNavigation: React.FC = () => {
                     icon="document"
                     text="Favorites"
                 />
-                <NavbarDivider />
-                <SearchGames />
+
+                {showSearch ? (
+                    <Wrapper>
+                        <NavbarDivider />{' '}
+                        <NavSearchGames onSearch={searchHandler} />
+                    </Wrapper>
+                ) : null}
             </NavbarGroup>
             <NavbarGroup align={Alignment.RIGHT}>
                 {!isLoggedIn && (
@@ -56,7 +66,7 @@ const MainNavigation: React.FC = () => {
                     />
                 )}
                 {isLoggedIn && (
-                    <UserPreferencesPopover onLogout={logoutHandler}/>
+                    <UserPreferencesPopover onLogout={logoutHandler} />
                 )}
             </NavbarGroup>
         </Navbar>

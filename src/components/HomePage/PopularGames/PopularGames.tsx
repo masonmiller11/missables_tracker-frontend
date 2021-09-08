@@ -16,7 +16,8 @@ import {
 import { apiListPopularGames } from '../../../api';
 import AuthContext from '../../../store/auth-context';
 import classes from './PopularGames.module.css';
-import Game from '../../../api/models/Game';
+import Game from '../../../api/models/Game/Game';
+import GamesList from '../../Layout/GameList/GameList';
 
 const PopularGames: React.FC = (props: any) => {
     const authCtx = useContext(AuthContext);
@@ -25,7 +26,6 @@ const PopularGames: React.FC = (props: any) => {
     //todo create Games data model
 
     useEffect(() => {
-        
         let source = axios.CancelToken.source();
 
         apiListPopularGames(6, 1, source)
@@ -49,33 +49,7 @@ const PopularGames: React.FC = (props: any) => {
         <div className={classes.popularGamesContainer}>
             <h2>Popular Games</h2>
             {games ? (
-                <div className={classes.gamesContainer}>
-                    {games!.map((game) => (
-                        <Card
-                            className={classes.gamesCard}
-                            elevation={Elevation.ONE}
-                            interactive={true}
-                            key={game.id}
-                        >
-                            <img src={game.cover}></img>
-                            <div className={classes.gamesCardTextContainer}>
-                                <H5>
-                                    <a href="#">{game.title}</a>
-                                </H5>
-
-                                <p>
-                                    Total Playthroughs: {game.playthroughCount}
-                                </p>
-                                <p>Total Templates: {game.templateCount}</p>
-
-                                <Button
-                                    text="See Checklists"
-                                    className={Classes.BUTTON}
-                                />
-                            </div>
-                        </Card>
-                    ))}
-                </div>
+                <GamesList games={games} />
             ) : (
                 <Spinner className={classes.spinner} />
             )}

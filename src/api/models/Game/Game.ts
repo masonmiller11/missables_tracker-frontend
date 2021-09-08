@@ -1,7 +1,6 @@
-import internal from 'stream';
-import { isConstructorDeclaration } from 'typescript';
+import GameInterface from './GameInterface';
 
-class Game {
+class Game implements GameInterface {
     title: string;
     cover: string;
     templateCount: number;

@@ -1,5 +1,3 @@
-import SearchGamePage from '../pages/SearchGamePage';
-
 export const endpoints = {
     authentication: 'login',
     signup: 'signup',

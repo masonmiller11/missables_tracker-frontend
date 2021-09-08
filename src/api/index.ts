@@ -1,4 +1,4 @@
-import axios, { CancelToken, CancelTokenSource } from 'axios';
+import axios, { CancelTokenSource } from 'axios';
 
 import { endpoints } from './endpoints';
 

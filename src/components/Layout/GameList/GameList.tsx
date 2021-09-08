@@ -16,8 +16,16 @@ import {
 
 import classes from './GameList.module.css';
 import Game from '../../../api/models/Game/Game';
+import GameIGDB from '../../../api/models/Game/GameIGDB';
 
-const GamesList: React.FC<{games: Game[]}> = ({games}) => {
+const GamesList: React.FC<{games: Game[]|GameIGDB[]}> = ({games}) => {
+
+    function isGameArray (arg: any): arg is Game[] {
+        return arg[0].id !== undefined;
+    }
+    
+    if (isGameArray(games)) {
+
     return (
         <div className={classes.gamesContainer}>
             {games!.map((game) => (
@@ -45,6 +53,36 @@ const GamesList: React.FC<{games: Game[]}> = ({games}) => {
             ))}
         </div>
     );
+            } else {
+                
+    return (
+        <div className={classes.gamesContainer}>
+            {games!.map((game) => (
+                <Card
+                    className={classes.gamesCard}
+                    elevation={Elevation.ONE}
+                    interactive={true}
+                    key={game.internetGameDatabaseId}
+                >
+                    <img src={game.cover}></img>
+                    <div className={classes.gamesCardTextContainer}>
+                        <H5>
+                            <a href="#">{game.title}</a>
+                        </H5>
+
+                        <p>Total Playthroughs: 0</p>
+                        <p>Total Templates: 0</p>
+
+                        <Button
+                            text="See Checklists"
+                            className={Classes.BUTTON}
+                        />
+                    </div>
+                </Card>
+            ))}
+        </div>
+    );
+            }
 };
 
 export default GamesList;

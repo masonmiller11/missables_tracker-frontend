@@ -19,9 +19,10 @@
 .gamesContainer {
     display: flex;
     align-items: stretch;
-    justify-content: space-around;
+    justify-content: flex-start;
     padding-left: 1em;
     margin: 2em;
     flex-wrap: wrap;
+    width: 75vw;
     max-width: 1180px;
 }

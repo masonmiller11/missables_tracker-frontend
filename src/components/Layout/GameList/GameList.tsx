@@ -18,12 +18,18 @@ import classes from './GameList.module.css';
 import Game from '../../../api/models/Game/Game';
 import GameIGDB from '../../../api/models/Game/GameIGDB';
 
-const GamesList: React.FC<{games: Game[]|GameIGDB[]}> = ({games}) => {
+const GamesList: React.FC<{games: Game[]|GameIGDB[]|null}> = ({games}) => {
 
     function isGameArray (arg: any): arg is Game[] {
         return arg[0].id !== undefined;
     }
     
+    if (games === null) {
+        return (
+            <Spinner />
+        )
+    }
+
     if (isGameArray(games)) {
 
     return (

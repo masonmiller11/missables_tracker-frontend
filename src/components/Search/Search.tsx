@@ -14,19 +14,21 @@ import { apiSearchGames, apiSearchIGDB } from '../../api';
 import classes from './Search.module.css';
 import GamesList from '../Layout/GameList/GameList';
 import Game from '../../api/models/Game/Game';
+import GameIGDB from '../../api/models/Game/GameIGDB';
 
 const Search: React.FC<{ searchTerm: string | null }> = ({
     searchTerm: searchTermProp,
 }) => {
-
-
-    const [searchTerm, setSearchTerm] = useState<null | string>(
+    
+    const [searchTerm, setSearchTerm] = useState<null | string | undefined>(
         searchTermProp ?? null
     );
 
     const [searchWithGuides, setSearchWithGuides] = useState<boolean>(true);
 
     const [games, setGames] = useState<Game[]|null>(null);
+
+    const [gamesIGDB, setGamesIGDB]= useState<GameIGDB[]|null>(null);
 
     const searchRef = useRef<HTMLInputElement>(null);
 
@@ -35,6 +37,14 @@ const Search: React.FC<{ searchTerm: string | null }> = ({
     const searchTypeSwitchHandler = () => {
         setSearchWithGuides(!searchWithGuides);
     }
+
+    const searchSubmitHandler = (event: React.FormEvent) => {
+        event.preventDefault();
+        setGames(null);
+        setGamesIGDB(null);
+        const searchTerm = searchRef.current?.value;
+        setSearchTerm(searchTerm);
+    };
 
     useEffect(() => {
         if (searchTerm) {
@@ -53,6 +63,7 @@ const Search: React.FC<{ searchTerm: string | null }> = ({
                 .then((response) => {
                     console.log('IGDB search: ', response);
                     console.log('in second search',games);
+                    setGamesIGDB(response.data);
                 })
                 .catch((err) => {
                     console.log(err.response?.data.message ?? 'unknown error');
@@ -66,7 +77,7 @@ const Search: React.FC<{ searchTerm: string | null }> = ({
     }, []);
 
     const button = (
-        <Button icon="arrow-right" small={true} type="submit" />
+        <Button icon="arrow-right" small={true} onClick={searchSubmitHandler} type="submit"/>
     );
 
     return (
@@ -74,14 +85,16 @@ const Search: React.FC<{ searchTerm: string | null }> = ({
             <div className={classes.searchContainer}>
                 <h1>Search Results</h1>
                 <div className={classes.searchOptionsContainer}>
-                    <InputGroup
-                        className={classes.search}
-                        leftIcon="search"
-                        placeholder="Search Games"
-                        inputRef={searchRef}
-                        large={true}
-                        rightElement={games ? button  : <Spinner size={SpinnerSize.SMALL}/> }
-                    ></InputGroup>
+                    <form>
+                        <InputGroup
+                            className={classes.search}
+                            leftIcon="search"
+                            placeholder="Search Games"
+                            inputRef={searchRef}
+                            large={true}
+                            rightElement={games ? button  : <Spinner size={SpinnerSize.SMALL}/> }
+                        ></InputGroup>
+                    </form>
                     <FormGroup
                         label={
                             "Don't see what you're looking for? The game you're looking for may need a guide."
@@ -98,11 +111,9 @@ const Search: React.FC<{ searchTerm: string | null }> = ({
                 </div>
             </div>
             <div className={classes.searchResultsContainer}>
-                {games ? (
-                    <GamesList games={games} />
-                ) : (
-                    <Spinner className={classes.spinner} />
-                )}
+                
+                    <GamesList games={ searchWithGuides ? games : gamesIGDB} />
+          
             </div>
         </div>
     );

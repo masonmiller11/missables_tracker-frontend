@@ -4,44 +4,38 @@ import {
     Button,
     FormGroup,
     Switch,
-    Elevation,
     Spinner,
-    SpinnerSize
+    SpinnerSize,
 } from '@blueprintjs/core';
 import { useLocation } from 'react-router-dom';
 
-import { apiSearchGames, apiSearchIGDB } from '../../api';
+import { apiSearchGames } from '../../api';
 import classes from './Search.module.css';
 import GamesList from '../Layout/GameList/GameList';
 import Game from '../../api/models/Game/Game';
-import GameIGDB from '../../api/models/Game/GameIGDB';
 
 const Search: React.FC<{ searchTerm: string | null }> = ({
     searchTerm: searchTermProp,
 }) => {
-    
     const [searchTerm, setSearchTerm] = useState<null | string | undefined>(
         searchTermProp ?? null
     );
 
-    const [searchWithGuides, setSearchWithGuides] = useState<boolean>(true);
+    const [showOnlyGuides, setShowOnlyGuides] = useState<boolean>(false);
 
-    const [games, setGames] = useState<Game[]|null>(null);
-
-    const [gamesIGDB, setGamesIGDB]= useState<GameIGDB[]|null>(null);
+    const [games, setGames] = useState<Game[] | null>(null);
 
     const searchRef = useRef<HTMLInputElement>(null);
 
     const location = useLocation();
 
     const searchTypeSwitchHandler = () => {
-        setSearchWithGuides(!searchWithGuides);
-    }
+        setShowOnlyGuides(!showOnlyGuides);
+    };
 
     const searchSubmitHandler = (event: React.FormEvent) => {
         event.preventDefault();
         setGames(null);
-        setGamesIGDB(null);
         const searchTerm = searchRef.current?.value;
         setSearchTerm(searchTerm);
     };
@@ -58,16 +52,6 @@ const Search: React.FC<{ searchTerm: string | null }> = ({
                 .catch((err) => {
                     console.log(err.response?.data.message ?? 'unknown error');
                 });
-
-            apiSearchIGDB(searchTerm)
-                .then((response) => {
-                    console.log('IGDB search: ', response);
-                    console.log('in second search',games);
-                    setGamesIGDB(response.data);
-                })
-                .catch((err) => {
-                    console.log(err.response?.data.message ?? 'unknown error');
-                });
         }
     }, [searchTerm]);
 
@@ -77,11 +61,16 @@ const Search: React.FC<{ searchTerm: string | null }> = ({
     }, []);
 
     const button = (
-        <Button icon="arrow-right" small={true} onClick={searchSubmitHandler} type="submit"/>
+        <Button
+            icon="arrow-right"
+            small={true}
+            onClick={searchSubmitHandler}
+            type="submit"
+        />
     );
 
     return (
-        <div>
+        <React.Fragment>
             <div className={classes.searchContainer}>
                 <h1>Search Results</h1>
                 <div className={classes.searchOptionsContainer}>
@@ -92,17 +81,19 @@ const Search: React.FC<{ searchTerm: string | null }> = ({
                             placeholder="Search Games"
                             inputRef={searchRef}
                             large={true}
-                            rightElement={games ? button  : <Spinner size={SpinnerSize.SMALL}/> }
+                            rightElement={
+                                games ? (
+                                    button
+                                ) : (
+                                    <Spinner size={SpinnerSize.SMALL} />
+                                )
+                            }
                         ></InputGroup>
                     </form>
-                    <FormGroup
-                        label={
-                            "Don't see what you're looking for? The game you're looking for may need a guide."
-                        }
-                    >
+                    <FormGroup>
                         <Switch
-                            checked = {searchWithGuides} //gotta put some logic behind this, lol
-                            onChange = {searchTypeSwitchHandler}
+                            checked={showOnlyGuides} //gotta put some logic behind this, lol
+                            onChange={searchTypeSwitchHandler}
                             labelElement={
                                 <em>Only Show Games That Have Guides</em>
                             }
@@ -111,11 +102,9 @@ const Search: React.FC<{ searchTerm: string | null }> = ({
                 </div>
             </div>
             <div className={classes.searchResultsContainer}>
-                
-                    <GamesList games={ searchWithGuides ? games : gamesIGDB} />
-          
+                <GamesList games={games} />
             </div>
-        </div>
+        </React.Fragment>
     );
 };
 

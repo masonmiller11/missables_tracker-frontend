@@ -74,6 +74,7 @@ const Search: React.FC<{ searchTerm: string | null }> = ({
             <div className={classes.searchContainer}>
                 <h1>Search Results</h1>
                 <div className={classes.searchOptionsContainer}>
+                    {/* We should break this out into its own component SearchField with a property that takes a boolean for showing search or not. */}
                     <form>
                         <InputGroup
                             className={classes.search}
@@ -90,7 +91,8 @@ const Search: React.FC<{ searchTerm: string | null }> = ({
                             }
                         ></InputGroup>
                     </form>
-                    <FormGroup>
+                    {/* We should break this out into its own component SearchOptions */}
+                    {/* <FormGroup> */}
                         <Switch
                             checked={showOnlyGuides} //gotta put some logic behind this, lol
                             onChange={searchTypeSwitchHandler}
@@ -98,7 +100,7 @@ const Search: React.FC<{ searchTerm: string | null }> = ({
                                 <em>Only Show Games That Have Guides</em>
                             }
                         />
-                    </FormGroup>
+                    {/* </FormGroup> */}
                 </div>
             </div>
             <div className={classes.searchResultsContainer}>

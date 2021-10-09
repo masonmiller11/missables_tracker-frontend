@@ -25,6 +25,12 @@
     padding-left: 1em;
     margin: 2em;
     flex-wrap: wrap;
-    width: 80vw;
+    /* width: 80vw; */
     max-width: 1180px;
+}
+
+@media screen and (min-width:1200px) {
+    .gamesContainer {
+        justify-content: flex-start;
+    }
 }

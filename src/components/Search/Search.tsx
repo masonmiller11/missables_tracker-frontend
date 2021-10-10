@@ -21,7 +21,7 @@ const Search: React.FC<{ searchTerm: string | null }> = ({
         searchTermProp ?? null
     );
 
-    const [showOnlyGuides, setShowOnlyGuides] = useState<boolean>(false);
+    const [hideGamesWithoutGuides, setHideGamesWithoutGuides] = useState<boolean>(false);
 
     const [games, setGames] = useState<Game[] | null>(null);
 
@@ -29,8 +29,8 @@ const Search: React.FC<{ searchTerm: string | null }> = ({
 
     const location = useLocation();
 
-    const searchTypeSwitchHandler = () => {
-        setShowOnlyGuides(!showOnlyGuides);
+    const hideGamesWithoutGuidesSwitchHandler = () => {
+        setHideGamesWithoutGuides(!hideGamesWithoutGuides);
     };
 
     const searchSubmitHandler = (event: React.FormEvent) => {
@@ -55,6 +55,7 @@ const Search: React.FC<{ searchTerm: string | null }> = ({
         }
     }, [searchTerm]);
 
+    //So that when we open this page, the initial search term (the one in the URL) will be the default value in the search field.
     useEffect(() => {
         if (searchTermProp && searchRef.current)
             searchRef.current.value = searchTermProp;
@@ -94,17 +95,17 @@ const Search: React.FC<{ searchTerm: string | null }> = ({
                     {/* We should break this out into its own component SearchOptions */}
                     {/* <FormGroup> */}
                         <Switch
-                            checked={showOnlyGuides} //gotta put some logic behind this, lol
-                            onChange={searchTypeSwitchHandler}
+                            checked={hideGamesWithoutGuides} //gotta put some logic behind this, lol
+                            onChange={hideGamesWithoutGuidesSwitchHandler}
                             labelElement={
-                                <em>Only Show Games That Have Guides</em>
+                                <em>Hide Games That Do Not Have Guides</em>
                             }
                         />
                     {/* </FormGroup> */}
                 </div>
             </div>
             <div className={classes.searchResultsContainer}>
-                <GamesList games={games} />
+                <GamesList games={games} hideGamesWithoutGuides={hideGamesWithoutGuides} />
             </div>
         </React.Fragment>
     );

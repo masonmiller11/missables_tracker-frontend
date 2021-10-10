@@ -49,7 +49,7 @@ const PopularGames: React.FC = (props: any) => {
         <div className={classes.popularGamesContainer}>
             <h2>Popular Games</h2>
             {games ? (
-                <GamesList games={games} />
+                <GamesList games={games} hideGamesWithoutGuides={true} />
             ) : (
                 <Spinner className={classes.spinner} />
             )}

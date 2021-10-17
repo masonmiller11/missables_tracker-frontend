@@ -13,6 +13,7 @@ import { apiSearchGames } from '../../api';
 import classes from './Search.module.css';
 import GamesList from '../Layout/GameList/GameList';
 import Game from '../../api/models/Game/Game';
+import ErrorMessage from '../Error/ErrorMessage';
 
 const Search: React.FC<{ searchTerm: string | null }> = ({
     searchTerm: searchTermProp,
@@ -21,9 +22,12 @@ const Search: React.FC<{ searchTerm: string | null }> = ({
         searchTermProp ?? null
     );
 
-    const [hideGamesWithoutGuides, setHideGamesWithoutGuides] = useState<boolean>(false);
+    const [hideGamesWithoutGuides, setHideGamesWithoutGuides] =
+        useState<boolean>(false);
 
     const [games, setGames] = useState<Game[] | null>(null);
+
+    const [error, setError] = useState<string | null>(null);
 
     const searchRef = useRef<HTMLInputElement>(null);
 
@@ -34,8 +38,9 @@ const Search: React.FC<{ searchTerm: string | null }> = ({
     };
 
     const searchSubmitHandler = (event: React.FormEvent) => {
-        event.preventDefault();
+        setError(null);
         setGames(null);
+        event.preventDefault();
         const searchTerm = searchRef.current?.value;
         setSearchTerm(searchTerm);
     };
@@ -50,7 +55,13 @@ const Search: React.FC<{ searchTerm: string | null }> = ({
                     setGames(response.data);
                 })
                 .catch((err) => {
-                    console.log(err.response?.data.message ?? 'unknown error');
+                    let error = err.response?.data.message ?? 'unknown error';
+                    if (error === 'resource not found')
+                        error =
+                            'Search for "' +
+                            searchTerm +
+                            '" did not return any results.';
+                    setError(error);
                 });
         }
     }, [searchTerm]);
@@ -84,7 +95,7 @@ const Search: React.FC<{ searchTerm: string | null }> = ({
                             inputRef={searchRef}
                             large={true}
                             rightElement={
-                                games ? (
+                                games || error ? (
                                     button
                                 ) : (
                                     <Spinner size={SpinnerSize.SMALL} />
@@ -94,18 +105,26 @@ const Search: React.FC<{ searchTerm: string | null }> = ({
                     </form>
                     {/* We should break this out into its own component SearchOptions */}
                     {/* <FormGroup> */}
-                        <Switch
-                            checked={hideGamesWithoutGuides} //gotta put some logic behind this, lol
-                            onChange={hideGamesWithoutGuidesSwitchHandler}
-                            labelElement={
-                                <em>Hide Games That Do Not Have Guides</em>
-                            }
-                        />
+                    <Switch
+                        checked={hideGamesWithoutGuides} //gotta put some logic behind this, lol
+                        onChange={hideGamesWithoutGuidesSwitchHandler}
+                        labelElement={
+                            <em>Hide Games That Do Not Have Guides</em>
+                        }
+                    />
                     {/* </FormGroup> */}
                 </div>
             </div>
+            {/* TODO: create error component */}
             <div className={classes.searchResultsContainer}>
-                <GamesList games={games} hideGamesWithoutGuides={hideGamesWithoutGuides} />
+                {error ? (
+                    <ErrorMessage messageText={error} />
+                ) : (
+                    <GamesList
+                        games={games}
+                        hideGamesWithoutGuides={hideGamesWithoutGuides}
+                    />
+                )}
             </div>
         </React.Fragment>
     );

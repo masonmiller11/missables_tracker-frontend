@@ -10,6 +10,7 @@ import {
 
 import classes from './GameList.module.css';
 import Game from '../../../api/models/Game/Game';
+import GamesCard from './GamesCard/GamesCard';
 
 const GamesList: React.FC<{
     games: Game[] | null;
@@ -29,29 +30,7 @@ const GamesList: React.FC<{
                 {games!
                     .filter((game) => game.templateCount > 0)
                     .map((game) => (
-                        <Card
-                            className={classes.gamesCard}
-                            elevation={Elevation.ONE}
-                            interactive={true}
-                            key={game.id}
-                        >
-                            <img src={game.cover}></img>
-                            <div className={classes.gamesCardTextContainer}>
-                                <H5>
-                                    <a href="#">{game.title}</a>
-                                </H5>
-
-                                <p>
-                                    Total Playthroughs: {game.playthroughCount}
-                                </p>
-                                <p>Total Templates: {game.templateCount}</p>
-
-                                <Button
-                                    text="See Checklists"
-                                    className={Classes.BUTTON}
-                                />
-                            </div>
-                        </Card>
+                        <GamesCard game={game} />
                     ))}
             </div>
         );
@@ -59,32 +38,9 @@ const GamesList: React.FC<{
 
     return (
         <div className={classes.gamesContainer}>
-            {games!
-                .map((game) => (
-                    <Card
-                        className={classes.gamesCard}
-                        elevation={Elevation.ONE}
-                        interactive={true}
-                        key={game.id}
-                    >
-                        <img src={game.cover}></img>
-                        <div className={classes.gamesCardTextContainer}>
-                            <H5>
-                                <a href="#">{game.title}</a>
-                            </H5>
-
-                            <p>
-                                Total Playthroughs: {game.playthroughCount}
-                            </p>
-                            <p>Total Templates: {game.templateCount}</p>
-
-                            <Button
-                                text="See Checklists"
-                                className={Classes.BUTTON}
-                            />
-                        </div>
-                    </Card>
-                ))}
+            {games!.map((game) => (
+                <GamesCard game={game} />
+            ))}
         </div>
     );
 };

@@ -30,7 +30,7 @@ const GamesCard: React.FC<{ game: Game }> = ({ game }) => {
     };
 
     const onCreateTemplate = (gameId: number) => {
-        history.replace('/guides/create' + gameId);
+        history.replace('/guides/create/' + gameId);
     };
 
     return (

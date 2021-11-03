@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 
 
-const GameTemplatePage: React.FC  = () => {
+const GameTemplatesPage: React.FC  = () => {
 
     type Params = {
         gameId: string;
@@ -15,4 +15,4 @@ const GameTemplatePage: React.FC  = () => {
   );
 }
 
-export default GameTemplatePage;
+export default GameTemplatesPage;

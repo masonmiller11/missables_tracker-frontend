@@ -26,7 +26,7 @@ const GamesCard: React.FC<{ game: Game }> = ({ game }) => {
     };
 
     const onSeeChecklists = (gameId: number) => {
-        history.replace('/guides/' + gameId);
+        history.replace('/guides/game/' + gameId);
     };
 
     const onCreateTemplate = (gameId: number) => {

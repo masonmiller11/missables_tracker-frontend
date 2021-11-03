@@ -7,6 +7,10 @@ import AuthPage from './pages/AuthPage';
 import HomePage from './pages/HomePage';
 import FavoritesPage from './pages/FavoritesPage';
 import SearchGamePage from './pages/SearchGamePage';
+import TemplatePage from './pages/TemplatePage';
+import GameTemplatesPage from './pages/GameTemplatesPage';
+import CreateTemplatePage from './pages/CreateTemplatePage';
+
 import './App.css';
 
 function App() {
@@ -26,6 +30,15 @@ function App() {
                         </Route>
                         <Route path="/favorites">
                             <FavoritesPage />
+                        </Route>
+                        <Route path="/guides/:templateId">
+                            <TemplatePage />
+                        </Route>
+                        <Route path="/guides/game/:gameId">
+                            <GameTemplatesPage />
+                        </Route>
+                        <Route path="/guides/create/:gameId">
+                            <CreateTemplatePage />
                         </Route>
                         <Route path="/search/:searchTerm">
                             <SearchGamePage />

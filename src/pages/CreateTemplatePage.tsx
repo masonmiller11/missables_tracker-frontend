@@ -11,7 +11,7 @@ const CreateTemplatePage: React.FC  = () => {
     let {gameId} = useParams<Params>();
 
   return (
-    <p>Game Id: {}</p>
+    <p>Game Id: {gameId}</p>
   );
 }
 

@@ -11,7 +11,7 @@ const GameTemplatesPage: React.FC  = () => {
     let {gameId} = useParams<Params>();
 
   return (
-    <p>Game Id To Pull Templates: {}</p>
+    <p>Game Id To Pull Templates: {gameId}</p>
   );
 }
 

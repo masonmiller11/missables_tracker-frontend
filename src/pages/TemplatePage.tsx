@@ -11,7 +11,7 @@ const TemplatePage: React.FC  = () => {
     let {templateId} = useParams<Params>();
 
   return (
-    <p>Template Page Id: {}</p>
+    <p>Template Page Id: {templateId}</p>
   );
 }
 

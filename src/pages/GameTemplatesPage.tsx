@@ -1,6 +1,8 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
+import Templates from '../components/Templates/Templates';
+
 
 const GameTemplatesPage: React.FC  = () => {
 
@@ -11,7 +13,7 @@ const GameTemplatesPage: React.FC  = () => {
     let {gameId} = useParams<Params>();
 
   return (
-    <p>Game Id To Pull Templates: {gameId}</p>
+    <Templates gameId={gameId}/>
   );
 }
 

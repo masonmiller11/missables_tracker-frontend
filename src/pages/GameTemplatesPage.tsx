@@ -1,7 +1,8 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
-import Templates from '../components/Templates/Templates';
+import Templatelist from '../components/Templates/TemplateList';
+import GameSummary from '../components/Layout/GameSummary/GameSummary';
 
 
 const GameTemplatesPage: React.FC  = () => {
@@ -13,7 +14,10 @@ const GameTemplatesPage: React.FC  = () => {
     let {gameId} = useParams<Params>();
 
   return (
-    <Templates gameId={gameId}/>
+    <React.Fragment>
+      <GameSummary gameId={gameId}/>
+      <Templatelist gameId={gameId}/>
+    </React.Fragment>
   );
 }
 

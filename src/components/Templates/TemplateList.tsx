@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Templates: React.FC<{gameId: string}>  = ({
+const TemplateList: React.FC<{gameId: string}>  = ({
     gameId: gameIdProp
 }) => {
 
@@ -10,4 +10,4 @@ const Templates: React.FC<{gameId: string}>  = ({
   );
 }
 
-export default Templates;
+export default TemplateList;

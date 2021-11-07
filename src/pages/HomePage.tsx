@@ -5,10 +5,10 @@ import PopularGames from '../components/HomePage/PopularGames/PopularGames';
 
 const HomePage: React.FC  = () => {
   return (
-    <div>
+    <React.Fragment>
       <Feature />
       <PopularGames />
-    </div>
+    </React.Fragment>
   );
 }
 

@@ -9,6 +9,7 @@ const GameSummary: React.FC<{gameId: string}>  = ({
     const [game, setGame] = useState<null | Game>(null);
 
     //set fake game, get from PostMan. Do we need other art assets? Like something as a background? Artwork? Screenshots?
+    // let's get some artwork and hard code in here to test with.
     useEffect(() => {
 
         let fakeGame = {

@@ -31,14 +31,14 @@ function App() {
                         <Route path="/favorites">
                             <FavoritesPage />
                         </Route>
-                        <Route path="/guides/:templateId">
-                            <TemplatePage />
-                        </Route>
                         <Route path="/guides/game/:gameId">
                             <GameTemplatesPage />
                         </Route>
                         <Route path="/guides/create/:gameId">
                             <CreateTemplatePage />
+                        </Route>
+                        <Route path="/guides/:templateId">
+                            <TemplatePage />
                         </Route>
                         <Route path="/search/:searchTerm">
                             <SearchGamePage />

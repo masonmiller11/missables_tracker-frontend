@@ -2,3 +2,25 @@
     width: 75%;
     max-width: 1000px;
 }
+
+.cardContentContainer {
+    display: flex;
+}
+
+.cardDescriptionContainer {
+
+}
+
+.cardImageAndStatsContainer {
+
+}
+
+.cardStatsContainer {
+    text-align: center;
+    font-size: 1.25em;
+    padding-top: .5em;
+}
+
+.button {
+    width: 100%;
+}

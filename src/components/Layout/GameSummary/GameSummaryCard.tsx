@@ -48,15 +48,27 @@ const GameSummaryCard: React.FC<{ gameId: string }> = ({
                 interactive={false}
                 key={game.id}
             >
-                <img src={game.cover}></img>
-                <div>
-                {/* <div className={classes.gamesCardTextContainer}> */}
-                    <H5>
-                        <a href="#">{game.title}</a>
-                    </H5>
+                <div className={classes.cardContentContainer}>
+                        <div className={classes.cardImageAndStatsContainer}> 
+                            <img src={game.cover}></img>
+                            <div className={classes.cardStatsContainer}>
+                                {/* <p>Total Playthroughs: {game.playthroughCount}</p>
+                                <p>Total Templates: {game.templateCount}</p> */}
+                                <Button
+                                    text='Create Template'
+                                    type="submit"
+                                    large
+                                    className={classes.button}
+                                />
+                            </div>
+                        </div>                       
+                    
+                    <div className = {classes.cardDescriptionContainer}>
+                        <H5>
+                            <a href="#">{game.title}</a>
+                        </H5>
+                    </div>
 
-                    <p>Total Playthroughs: {game.playthroughCount}</p>
-                    <p>Total Templates: {game.templateCount}</p>
                 </div>
             </Card>
         );

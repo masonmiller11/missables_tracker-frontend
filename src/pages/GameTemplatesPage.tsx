@@ -11,9 +11,7 @@ const GameTemplatesPage: React.FC = () => {
     let { gameId } = useParams<Params>();
 
     return (
-        <React.Fragment>
-            <GameTemplates gameId={gameId} />
-        </React.Fragment>
+        <GameTemplates gameId={gameId} />
     );
 };
 

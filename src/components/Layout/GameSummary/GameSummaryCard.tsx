@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { Button, Card, Classes, Elevation, H5 } from '@blueprintjs/core';
+import { Button, Card, Divider, Classes, ButtonGroup, Elevation, H5 } from '@blueprintjs/core';
 
 import Game from '../../../api/models/Game/Game';
 import classes from './GameSummaryCard.module.css';
@@ -28,7 +28,7 @@ const GameSummaryCard: React.FC<{ gameId: string }> = ({
             screenshots: [1, 2],
             artworks: [1, 2],
             internetGameDatabaseId: 37094,
-            releaseDate: new Date(2 / 6 / 18),
+            releaseDate: new Date('December 17, 2018'),
         };
 
         setGame(fakeGame);
@@ -49,11 +49,9 @@ const GameSummaryCard: React.FC<{ gameId: string }> = ({
                 key={game.id}
             >
                 <div className={classes.cardContentContainer}>
-                        <div className={classes.cardImageAndStatsContainer}> 
+                        <div className={classes.cardImageAndButtonContainer}> 
                             <img src={game.cover}></img>
-                            <div className={classes.cardStatsContainer}>
-                                {/* <p>Total Playthroughs: {game.playthroughCount}</p>
-                                <p>Total Templates: {game.templateCount}</p> */}
+                            <div className={classes.cardButtonContainer}>
                                 <Button
                                     text='Create Template'
                                     type="submit"
@@ -64,9 +62,16 @@ const GameSummaryCard: React.FC<{ gameId: string }> = ({
                         </div>                       
                     
                     <div className = {classes.cardDescriptionContainer}>
-                        <H5>
-                            <a href="#">{game.title}</a>
-                        </H5>
+                        <h2>{game.title} ({game.releaseDate.getFullYear()})</h2>
+                        <hr/>
+                        <div className = {classes.cardStatsContainer}>
+                                <p><strong>Total Playthroughs:</strong> {game.playthroughCount}</p>
+                                <p><strong>Total Templates:</strong> {game.templateCount}</p> 
+                        </div>
+                        <hr/>
+                        <div className = {classes.cardSummaryTextContainer}>
+                            <p><strong>Game Summary:</strong> {game.summary}</p>
+                        </div>
                     </div>
 
                 </div>

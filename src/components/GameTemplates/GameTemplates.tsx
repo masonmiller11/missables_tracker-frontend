@@ -8,6 +8,9 @@ import classes from './GameTemplates.module.css';
 const GameTemplates: React.FC<{ gameId: string }> = ({
     gameId: gameIdProp,
 }) => {
+
+    //TODO grab Game and Templates here and pass into components as props.
+
     return (
         <div className={classes.gameTemplatesBackground}>
             <div className={classes.gameTemplatesContainer}>

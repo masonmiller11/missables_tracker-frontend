@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
-import Templatelist from '../Templates/TemplateList';
+import Templatelist from '../TemplateList/TemplateList';
 import GameSummaryCard from '../Layout/GameSummary/GameSummaryCard';
 import classes from './GameTemplates.module.css';
 

@@ -8,6 +8,7 @@ import classes from './GameSummaryCard.module.css';
 const GameSummaryCard: React.FC<{ gameId: string }> = ({
     gameId: gameIdProp,
 }) => {
+    
     const [game, setGame] = useState<null | Game>(null);
 
     //set fake game

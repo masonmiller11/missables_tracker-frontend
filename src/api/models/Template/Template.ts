@@ -2,7 +2,6 @@ import TemplateSection from './TemplateSection';
 
 class Template {
 
-
     title: string;
     description: string;
     id: number;

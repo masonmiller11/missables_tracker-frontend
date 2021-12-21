@@ -1,0 +1,23 @@
+.templateCard {
+    width: 100%;
+    margin-top: 1em;
+}
+
+.templateTileCardContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.templateCardTitleAndAuthorContainer {
+    flex: 2;
+    justify-content: space-evenly;
+    flex-direction: column;
+    align-items: center;
+}
+
+.templateCardRating  {
+    display: flex;
+    width: 10%;
+}
+

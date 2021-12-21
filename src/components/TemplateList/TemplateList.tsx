@@ -46,7 +46,7 @@ const TemplateList: React.FC<{gameId: string}>  = ({
                   2,
                   3
               ],
-              likes: 0,
+              likes: 1002,
               sections: [
                   {
                       id: 1,
@@ -178,7 +178,7 @@ const TemplateList: React.FC<{gameId: string}>  = ({
                   2,
                   3
               ],
-              likes: 0,
+              likes: 50,
               sections: [
                   {
                       id: 4,
@@ -288,7 +288,7 @@ const TemplateList: React.FC<{gameId: string}>  = ({
 
   if (templateList){
     return (
-        <div>
+        <div className={classes.templateListContainer}>
         {/* <p>Game Id To Pull Templates: {gameIdProp}</p> */}
         {templateList!
             .map((template) => (

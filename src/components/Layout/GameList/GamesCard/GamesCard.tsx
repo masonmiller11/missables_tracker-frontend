@@ -6,7 +6,6 @@ import Game from '../../../../api/models/Game/Game';
 import classes from './GamesCard.module.css';
 
 const GamesCard: React.FC<{ game: Game }> = ({ game }) => {
-    
     let history = useHistory();
 
     const createButton = (
@@ -43,7 +42,7 @@ const GamesCard: React.FC<{ game: Game }> = ({ game }) => {
             <img src={game.cover}></img>
             <div className={classes.gamesCardTextContainer}>
                 <H5>
-                    <a href="#">{game.title}</a>
+                    <a onClick={() => history.push('/guides/game/' + game.id)}>{game.title}</a>
                 </H5>
 
                 <p>Total Playthroughs: {game.playthroughCount}</p>

@@ -63,7 +63,7 @@ const GameSummaryCard: React.FC<{ gameId: string }> = ({
                         </div>                       
                     
                     <div className = {classes.cardDescriptionContainer}>
-                        <h2>{game.title} ({game.releaseDate.getFullYear()})</h2>
+                        <h2>{game.title} (id: {gameIdProp}) ({game.releaseDate.getFullYear()})</h2>
                         <hr/>
                         <div className = {classes.cardStatsContainer}>
                                 <p><strong>Total Playthroughs:</strong> {game.playthroughCount}</p>

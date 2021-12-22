@@ -68,7 +68,7 @@ export async function apiSearchGames(searchTerm: string) {
 }
 
 export async function apiReadGame(
-    gameId: number, 
+    gameId: string, 
     source: CancelTokenSource
 ) {
     const endpoint = endpoints.readGame(gameId);

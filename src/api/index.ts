@@ -67,10 +67,13 @@ export async function apiSearchGames(searchTerm: string) {
     return response;
 }
 
-export async function apiSearchGames(searchTerm: string) {
-    const endpoint = endpoints.searchGames(searchTerm);
+export async function apiReadGame(
+    gameId: number, 
+    source: CancelTokenSource
+) {
+    const endpoint = endpoints.readGame(gameId);
 
-    const response = await client.get(endpoint);
+    const response = await client.get(endpoint,{cancelToken: source.token});
 
     return response;
 }

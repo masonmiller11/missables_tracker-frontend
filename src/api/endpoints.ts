@@ -20,4 +20,7 @@ export const endpoints = {
     searchGames: (searchTerm: string) => {
         return 'games/search/' + searchTerm;
     },
+    readGame: (gameId: number) => {
+        return 'games/read/' + gameId;
+    }
 };

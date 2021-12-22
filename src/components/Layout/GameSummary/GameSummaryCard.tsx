@@ -3,6 +3,7 @@ import { Button, Card, Divider, Classes, ButtonGroup, Elevation, H5 } from '@blu
 
 import Game from '../../../api/models/Game/Game';
 import classes from './GameSummaryCard.module.css';
+import {apiReadGame} from '../../../api';
 
 
 const GameSummaryCard: React.FC<{ gameId: string }> = ({

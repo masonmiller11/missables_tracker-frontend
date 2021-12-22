@@ -51,8 +51,16 @@ export async function apiSearch(searchTerm: string) {
     return response;
 }
 
-export async function apiSearchIGDB(searchTerm: string) {
-    const endpoint = endpoints.searchIGDB(searchTerm);
+// export async function apiSearchIGDB(searchTerm: string) {
+//     const endpoint = endpoints.searchIGDB(searchTerm);
+
+//     const response = await client.get(endpoint);
+
+//     return response;
+// }
+
+export async function apiSearchGames(searchTerm: string) {
+    const endpoint = endpoints.searchGames(searchTerm);
 
     const response = await client.get(endpoint);
 

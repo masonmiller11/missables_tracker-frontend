@@ -40,6 +40,8 @@ const PopularGames: React.FC = (props: any) => {
                 }
             });
 
+            //todo add real error handling
+
         return function () {
             source.cancel('cancelling in cleanup');
         };

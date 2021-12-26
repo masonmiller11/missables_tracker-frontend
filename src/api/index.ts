@@ -1,4 +1,4 @@
-import axios, { CancelTokenSource } from 'axios';
+import axios, { Cancel, CancelTokenSource } from 'axios';
 
 import { endpoints } from './endpoints';
 
@@ -73,7 +73,18 @@ export async function apiReadGame(
 ) {
     const endpoint = endpoints.readGame(gameId);
 
-    const response = await client.get(endpoint,{cancelToken: source.token});
+    const response = await client.get(endpoint, {cancelToken: source.token});
+
+    return response;
+}
+
+export async function apiListTemplates (
+    gameId: string,
+    source: CancelTokenSource
+) {
+    const endpoint = endpoints.listTemplates(gameId);
+
+    const response = await client.get(endpoint, {cancelToken: source.token});
 
     return response;
 }

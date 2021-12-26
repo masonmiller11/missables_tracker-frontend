@@ -1,16 +1,7 @@
 import { useEffect, useContext, useState } from 'react';
 import axios from 'axios';
 import {
-    Button,
-    Card,
-    Classes,
-    Elevation,
-    H5,
-    Label,
-    Slider,
-    Spinner,
-    SpinnerSize,
-    Switch,
+    Spinner
 } from '@blueprintjs/core';
 
 import { apiListPopularGames } from '../../../api';
@@ -20,7 +11,6 @@ import Game from '../../../api/models/Game/Game';
 import GamesList from '../../Layout/GameList/GameList';
 
 const PopularGames: React.FC = (props: any) => {
-    const authCtx = useContext(AuthContext);
 
     const [games, setGames] = useState<null | [Game]>(null);
     //todo create Games data model
@@ -40,7 +30,7 @@ const PopularGames: React.FC = (props: any) => {
                 }
             });
 
-            //todo add real error handling
+        //todo add real error handling
 
         return function () {
             source.cancel('cancelling in cleanup');

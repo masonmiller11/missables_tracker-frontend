@@ -11,7 +11,7 @@ import {
     H5,
 } from '@blueprintjs/core';
 
-import Template from '../../../api/models/Template/Template';
+import Template from '../../../../api/models/Template/Template';
 import classes from './TemplateCard.module.css';
 
 const TemplateCard: React.FC<{ template: Template }> = ({ template }) => {

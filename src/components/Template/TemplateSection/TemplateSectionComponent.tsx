@@ -6,7 +6,8 @@ import {
 	Spinner,
 	Classes,
 	Intent,
-	Icon
+	Icon,
+	Collapse
 } from '@blueprintjs/core';
 
 import TemplateSection from '../../../api/models/Template/TemplateSection';
@@ -19,8 +20,15 @@ const TemplateSectionComponent: React.FC<{ templateSection: TemplateSection }> =
 			<div className={classes.sectionTileCardContainer}>
 				<div className={classes.sectionCardTitleAndAuthorContainer}>
 					<h2 className={classes.sectionCardTitle}>
-						{templateSection.name}
+						Part {templateSection.position}: {templateSection.name}
 					</h2>
+					<hr />
+					{/* <Collapse isOpen> */}
+					<p>
+						<strong>Summary: </strong>{templateSection.description}
+					</p>
+					<hr />
+					{/* </Collapse> */}
 				</div>
 			</div>
 		</Card>

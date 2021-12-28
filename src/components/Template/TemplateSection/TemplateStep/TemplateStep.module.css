@@ -1,0 +1,16 @@
+.tick  {
+	float: left;
+	margin-right: 1em;
+}
+
+.stepContainer {
+    flex: 2;
+    justify-content: space-evenly;
+    flex-direction: column;
+	align-items: center;
+	margin-top: 2em;
+}
+
+.stepDescription {
+	padding-left: 2em;
+}

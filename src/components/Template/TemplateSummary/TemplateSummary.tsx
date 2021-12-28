@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
 	Button,
 	Card,
@@ -14,7 +14,39 @@ import classes from './TemplateSummary.module.css';
 
 //todo add total playthroughts to Template payload
 
-const TemplateSummary: React.FC<{ template: Template }> = ({ template }) => {
+const TemplateSummary: React.FC<{ template: Template, editing: boolean }> = ({
+	template,
+	editing: showEditOption
+}) => {
+
+	const [enableSave, setEnableSave] = useState<Boolean>(false);
+	const [editing, setEditing] = useState<Boolean>(false);
+
+	const editButton = (
+		editing: boolean, showSave: boolean) => {
+
+		if (editing) return <Button
+			icon="edit"
+			intent={Intent.WARNING}
+			text="exit"
+		/>
+
+		if (showSave) return <Button
+			icon="edit"
+			intent={Intent.WARNING}
+			text="save"
+		/>
+
+		return <Button
+			icon="edit"
+			intent={Intent.WARNING}
+			className={classes.editButton}
+			text="edit"
+		/>
+
+	}
+
+
 	return (
 
 		<Card
@@ -46,11 +78,17 @@ const TemplateSummary: React.FC<{ template: Template }> = ({ template }) => {
 					</div>
 
 				</div>
-
 				<div className={classes.cardDescriptionContainer}>
-					<h2>
-						{template.title} (by {template.owner.owner})
-					</h2>
+					<div className={classes.titleAndEditButtonContainer}>
+						<h2>
+							{template.title} (by {template.owner.owner})
+						</h2>
+						{showEditOption ?
+							editButton(false, false) :
+							<div></div>
+						}
+					</div>
+
 					<hr />
 					<div className={classes.cardStatsContainer}>
 						<p>
@@ -68,6 +106,8 @@ const TemplateSummary: React.FC<{ template: Template }> = ({ template }) => {
 					</div>
 				</div>
 			</div>
+
+
 		</Card>
 	);
 };

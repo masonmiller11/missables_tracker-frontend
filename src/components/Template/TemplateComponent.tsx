@@ -7,13 +7,17 @@ import Template from '../../api/models/Template/Template';
 import TemplateSummary from './TemplateSummary/TemplateSummary';
 import TemplateSection from './TemplateSection/TemplateSectionComponent';
 
-const TemplateComponent: React.FC<{ templateId: string }> = ({
-	templateId: templateIdProp
+const TemplateComponent: React.FC<{ templateId: string, editing: boolean }> = ({
+	templateId: templateIdProp,
+	editing
 }) => {
 
 	const [template, setTemplate] = useState<null | Template>(null);
 
+	const [isEditing, setIsEditing] = useState<boolean>(editing);
+
 	useEffect(() => {
+
 
 		let fakeTemplate = {
 			"title": "test update3",
@@ -158,15 +162,16 @@ const TemplateComponent: React.FC<{ templateId: string }> = ({
 		return (
 
 			<div className={classes.templateBackground}>
+
 				<div className={classes.templatesContainer}>
-					<TemplateSummary template={template} />
+					<TemplateSummary template={template} editing={isEditing} />
 
 					<div className={classes.sectionsContainer}>
 						{template.sections.map((section) => (
-							<TemplateSection templateSection={section} />
+							<TemplateSection templateSection={section}
+								editing={isEditing} />
 						))}
 					</div>
-
 				</div>
 			</div>
 

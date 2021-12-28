@@ -13,7 +13,7 @@ const TemplatePage: React.FC  = () => {
     let {templateId} = useParams<Params>();
 
   return (
-    <Template templateId = {templateId} />
+    <Template templateId = {templateId} editing = {true}/>
   );
 }
 

@@ -6,13 +6,14 @@ import classes from './Template.module.css';
 import Template from '../../api/models/Template/Template';
 import TemplateSummary from './TemplateSummary/TemplateSummary';
 import TemplateSection from './TemplateSection/TemplateSectionComponent';
+import TemplateSectionModel from '../../api/models/Template/TemplateSection';
 
 const TemplateComponent: React.FC<{ templateId: string, editingAllowed: boolean }> = ({
 	templateId: templateIdProp,
 	editingAllowed
 }) => {
 
-	const [template, setTemplate] = useState<null | Template>(null);
+	const [template, setTemplate] = useState<Template>();
 
 	const [showEditOption, setShowEditOption] = useState<boolean>(editingAllowed);
 
@@ -122,7 +123,7 @@ const TemplateComponent: React.FC<{ templateId: string, editingAllowed: boolean 
 					"id": 3,
 					"name": "Test Name3",
 					"description": "Test Description3",
-					"position": 3,
+					"position": 1,
 					"steps": [
 						{
 							"id": 9,
@@ -157,6 +158,32 @@ const TemplateComponent: React.FC<{ templateId: string, editingAllowed: boolean 
 
 	}, []);
 
+	useEffect(() => { console.log('template has changed')}, [template])
+
+	const updateSectionHandler = (editedSection: TemplateSectionModel) => {
+
+		if (template) {
+
+			console.log('in updateSectionHandler');
+
+			//find index of section we're updating
+			let indexOfSection = template.sections.findIndex(section => section.id === editedSection.id);
+
+
+			//create newStepsArray, removing the original values of the editedSection
+			let newSectionsArray = template.sections.filter((section) => { return section.id !== editedSection.id; });
+
+
+			//splice in the new editedTemplate
+			newSectionsArray?.splice(indexOfSection, 0, editedSection);
+
+			//reset the state property
+			setTemplate({ ...template, sections: newSectionsArray })
+
+		}
+
+	}
+
 
 	if (template) {
 		return (
@@ -167,11 +194,17 @@ const TemplateComponent: React.FC<{ templateId: string, editingAllowed: boolean 
 					<TemplateSummary template={template} showEditOption={showEditOption} />
 
 					<div className={classes.sectionsContainer}>
-						{template.sections.map((section) => (
-							<TemplateSection templateSection={section}
-							showEditOption={showEditOption} />
-						))}
+						{template.sections.sort((a, b) => (a.position > b.position) ? 1 : -1)
+							.map((section) => (
+								<TemplateSection
+									key={section.id}
+									templateSection={section}
+									showEditOption={showEditOption}
+									onSectionUpdate={updateSectionHandler}
+								/>
+							))}
 					</div>
+
 				</div>
 			</div>
 

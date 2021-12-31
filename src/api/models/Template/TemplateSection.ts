@@ -5,7 +5,7 @@ class TemplateSection {
     id: number;
     name: string;
     description: string;
-    position: number;
+    position: number|string;
     steps: TemplateStep[];
 
     constructor(templateSection: TemplateSection) {

@@ -88,8 +88,8 @@ const TemplatePage: React.FC<{
 					value={step.description}
 					onConfirm={() => saveStepHandler()}
 					multiline = {true}
-					minLines={5}
-					maxLines={5}
+					// minLines={5}
+					// maxLines={5}
 				/></p>
 		</div>
 	);

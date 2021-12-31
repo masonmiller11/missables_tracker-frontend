@@ -24,3 +24,12 @@
 	align-items: center;
 }
 
+.positionAndNameContainer{
+	display: flex;
+	flex-direction: row;
+}
+
+.position {
+	max-width: 2em;
+	margin-right: 1em;
+}

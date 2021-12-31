@@ -2,7 +2,7 @@ class TemplateStep {
 
     id: number;
     name: string;
-    position: number;
+    position: number|string;
     description: string;
 
     constructor(templateStep: TemplateStep) {

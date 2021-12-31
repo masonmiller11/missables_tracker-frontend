@@ -14,3 +14,13 @@
 .stepDescription {
 	padding-left: 2em;
 }
+
+.position {
+	max-width: 1em;
+	margin-right: 1em;
+}
+
+.positionAndNameContainer {
+	display: flex;
+	flex-direction: row;
+}

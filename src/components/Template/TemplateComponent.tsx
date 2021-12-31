@@ -7,14 +7,14 @@ import Template from '../../api/models/Template/Template';
 import TemplateSummary from './TemplateSummary/TemplateSummary';
 import TemplateSection from './TemplateSection/TemplateSectionComponent';
 
-const TemplateComponent: React.FC<{ templateId: string, editing: boolean }> = ({
+const TemplateComponent: React.FC<{ templateId: string, editingAllowed: boolean }> = ({
 	templateId: templateIdProp,
-	editing
+	editingAllowed
 }) => {
 
 	const [template, setTemplate] = useState<null | Template>(null);
 
-	const [isEditing, setIsEditing] = useState<boolean>(editing);
+	const [showEditOption, setShowEditOption] = useState<boolean>(editingAllowed);
 
 	useEffect(() => {
 
@@ -145,7 +145,7 @@ const TemplateComponent: React.FC<{ templateId: string, editing: boolean }> = ({
 						{
 							"id": 12,
 							"name": "Test Name4",
-							"position": 12,
+							"position": 2,
 							"description": "Test Description4"
 						}
 					]
@@ -164,12 +164,12 @@ const TemplateComponent: React.FC<{ templateId: string, editing: boolean }> = ({
 			<div className={classes.templateBackground}>
 
 				<div className={classes.templatesContainer}>
-					<TemplateSummary template={template} editing={isEditing} />
+					<TemplateSummary template={template} showEditOption={showEditOption} />
 
 					<div className={classes.sectionsContainer}>
 						{template.sections.map((section) => (
 							<TemplateSection templateSection={section}
-								editing={isEditing} />
+							showEditOption={showEditOption} />
 						))}
 					</div>
 				</div>

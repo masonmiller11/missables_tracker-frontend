@@ -13,6 +13,14 @@
     flex: 2;
     justify-content: space-evenly;
     flex-direction: column;
-    align-items: center;
+	align-items: center;
+	max-width: 100%;
+}
+
+.sectionCardTitleAndButtonContainer {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	align-items: center;
 }
 

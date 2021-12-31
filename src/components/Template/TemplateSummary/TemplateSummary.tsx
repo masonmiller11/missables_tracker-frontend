@@ -11,40 +11,21 @@ import {
 
 import Template from "../../../api/models/Template/Template";
 import classes from './TemplateSummary.module.css';
+import EditButton from '../../Button/EditButton/EditButton';
 
 //todo add total playthroughts to Template payload
 
-const TemplateSummary: React.FC<{ template: Template, editing: boolean }> = ({
+const TemplateSummary: React.FC<{ template: Template, showEditOption: boolean }> = ({
 	template,
-	editing: showEditOption
+	showEditOption
 }) => {
 
-	const [enableSave, setEnableSave] = useState<Boolean>(false);
-	const [editing, setEditing] = useState<Boolean>(false);
+	const [editing, setEditing] = useState<boolean>(false);
 
-	const editButton = (
-		editing: boolean, showSave: boolean) => {
-
-		if (editing) return <Button
-			icon="edit"
-			intent={Intent.WARNING}
-			text="exit"
-		/>
-
-		if (showSave) return <Button
-			icon="edit"
-			intent={Intent.WARNING}
-			text="save"
-		/>
-
-		return <Button
-			icon="edit"
-			intent={Intent.WARNING}
-			className={classes.editButton}
-			text="edit"
-		/>
-
+	const editingStateHandler = () => {
+		setEditing(!editing);
 	}
+
 
 
 	return (
@@ -84,7 +65,10 @@ const TemplateSummary: React.FC<{ template: Template, editing: boolean }> = ({
 							{template.title} (by {template.owner.owner})
 						</h2>
 						{showEditOption ?
-							editButton(false, false) :
+							<EditButton 
+								isEditing = {editing}
+								onClick = {editingStateHandler}
+							/> :
 							<div></div>
 						}
 					</div>
@@ -101,7 +85,7 @@ const TemplateSummary: React.FC<{ template: Template, editing: boolean }> = ({
 					<hr />
 					<div className={classes.cardSummaryTextContainer}>
 						<p>
-							<strong>Game Summary:</strong> {template.description}
+							<strong>Guide Summary:</strong> {template.description}
 						</p>
 					</div>
 				</div>

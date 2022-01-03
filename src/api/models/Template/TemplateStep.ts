@@ -1,6 +1,6 @@
 class TemplateStep {
 
-    id: number;
+    id: number|null;
     name: string;
     position: number|string;
     description: string;

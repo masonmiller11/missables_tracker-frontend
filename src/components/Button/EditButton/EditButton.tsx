@@ -17,13 +17,7 @@ const EditButton: React.FC<{
 	isEditing, onClick
 }) => {
 
-		const [editing, setEditing] = useState<Boolean>(isEditing);
-
-		useEffect(() => {
-			setEditing(isEditing);
-		}, [isEditing]);
-
-		if (editing) return <Button
+		if (isEditing) return <Button
 			icon="floppy-disk"
 			intent={Intent.SUCCESS}
 			className={classes.editButton}

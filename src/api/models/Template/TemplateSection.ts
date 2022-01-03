@@ -2,7 +2,7 @@ import TemplateStep from './TemplateStep';
 
 class TemplateSection {
 
-    id: number;
+    id: number|null;
     name: string;
     description: string;
     position: number|string;

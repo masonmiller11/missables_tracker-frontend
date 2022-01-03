@@ -24,3 +24,13 @@
 	display: flex;
 	flex-direction: row;
 }
+
+.newStepMessage {
+	max-width: 7em;
+	background-color:#275652
+}
+
+.postionNameDeleteContainer {
+	display: flex;
+	justify-content: space-between;
+}

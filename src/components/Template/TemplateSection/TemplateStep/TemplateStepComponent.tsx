@@ -5,6 +5,7 @@ import {
 	Elevation,
 	Spinner,
 	Classes,
+	Callout,
 	Intent,
 	Icon,
 	Collapse,
@@ -13,12 +14,15 @@ import {
 
 import TemplateStep from '../../../../api/models/Template/TemplateStep';
 import classes from './TemplateStep.module.css';
+import { intentClass } from "@blueprintjs/core/lib/esm/common/classes";
 
 const TemplatePage: React.FC<{
 	templateStep: TemplateStep,
 	onStepUpdate: (step: TemplateStep) => void,
-	editing: boolean
-}> = ({ templateStep, onStepUpdate, editing }) => {
+	onStepDelete:(step: TemplateStep) => void,
+	editing: boolean,
+	isNew: boolean
+}> = ({ templateStep, onStepUpdate, onStepDelete, editing, isNew }) => {
 
 	const [step, setStep] = useState<TemplateStep>(templateStep);
 
@@ -54,30 +58,41 @@ const TemplatePage: React.FC<{
 	//{templateStep.name}
 	return (
 		<div className={classes.stepContainer}>
-			<div>
-				<Icon icon="tick" className={classes.tick} />
-				<div className={classes.positionAndNameContainer}>
-					<p><strong>Step #</strong> </p>
-					<div className={classes.position}>
-						<p><strong><EditableText
+			<div className={classes.postionNameDeleteContainer}>
+				<div>
+					<Icon icon="tick" className={classes.tick} />
+					<div className={classes.positionAndNameContainer}>
+
+						<p><strong>Step #</strong> </p>
+						<div className={classes.position}>
+							<p><strong><EditableText
+								onChange={newValueString => {
+									changeStepPositionHandler(newValueString);
+								}}
+								disabled={editing ? false : true}
+								value={step.position.toString()}
+								maxLength={2}
+								onConfirm={() => saveStepHandler()}
+							/></strong></p>
+						</div>
+						<strong><EditableText
 							onChange={newValueString => {
-								changeStepPositionHandler(newValueString);
+								editStepHandler({ ...step, name: newValueString })
 							}}
 							disabled={editing ? false : true}
-							value={step.position.toString()}
-							maxLength={2}
+							value={step.name}
 							onConfirm={() => saveStepHandler()}
-						/></strong></p>
+						/></strong>
+						{isNew && <p> &nbsp;(New Step)</p>}
 					</div>
-					<strong><EditableText
-						onChange={newValueString => {
-							editStepHandler({ ...step, name: newValueString })
-						}}
-						disabled={editing ? false : true}
-						value={step.name}
-						onConfirm={() => saveStepHandler()}
-					/></strong>
 				</div>
+				{editing && <Button
+					icon="delete"
+					// className={classes.newButton}
+					onClick={() => onStepDelete(templateStep)}
+					text="Delete"
+					// intent={Intent.DANGER}
+				/>}
 			</div>
 			<p className={classes.stepDescription}>
 				<EditableText
@@ -87,9 +102,9 @@ const TemplatePage: React.FC<{
 					disabled={editing ? false : true}
 					value={step.description}
 					onConfirm={() => saveStepHandler()}
-					multiline = {true}
-					// minLines={5}
-					// maxLines={5}
+					multiline={true}
+				// minLines={5}
+				// maxLines={5}
 				/></p>
 		</div>
 	);

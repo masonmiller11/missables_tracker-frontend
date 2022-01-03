@@ -18,11 +18,11 @@ const EditButton: React.FC<{
 }) => {
 
 		if (isEditing) return <Button
-			icon="floppy-disk"
-			intent={Intent.SUCCESS}
+			icon="cross"
+			intent={Intent.NONE}
 			className={classes.editButton}
 			onClick={onClick}
-			text="Save"
+			text="Stop Editing"
 		/>
 
 		return <Button

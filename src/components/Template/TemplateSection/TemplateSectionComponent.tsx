@@ -21,6 +21,7 @@ import TemplateStepModel from "../../../api/models/Template/TemplateStep";
 import AddNewButton from '../../Button/AddNewButton/AddNewButton';
 import DeleteButton from '../../Button/DeleteButton/DeleteButton';
 import SavingMessage from "../../Message/SavingMessage";
+import Defaults from '../../../api/DefaultValues';
 
 const TemplateSectionComponent: React.FC<{
 	templateSection: TemplateSection,
@@ -33,12 +34,9 @@ const TemplateSectionComponent: React.FC<{
 	onSectionUpdate,
 	onSectionDelete }) => {
 
-		let defaultNewStep: TemplateStepModel = {
-			"id": null,
-			"name": "New Step",
-			"position": 100,
-			"description": "New Step Description."
-		}
+		//set the default data used for new Sections
+		const defaults = new Defaults();
+		let defaultNewStep: TemplateStepModel = defaults.newStep;
 
 		const [editing, setEditing] = useState<boolean>(false);
 		const [section, setSection] = useState<TemplateSection>(templateSection);

@@ -32,7 +32,8 @@
 .cardSummaryTextContainer {
     margin: 2em;
     margin-left: 3em;
-    text-align: center;
+	/* text-align: center; */
+	min-width:90%;
 }
 
 .cardButtonContainer {

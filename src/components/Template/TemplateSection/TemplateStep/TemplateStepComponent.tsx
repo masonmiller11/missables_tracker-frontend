@@ -15,11 +15,12 @@ import {
 import TemplateStep from '../../../../api/models/Template/TemplateStep';
 import classes from './TemplateStep.module.css';
 import { intentClass } from "@blueprintjs/core/lib/esm/common/classes";
+import DeleteButton from '../../../Button/DeleteButton/DeleteButton';
 
 const TemplatePage: React.FC<{
 	templateStep: TemplateStep,
 	onStepUpdate: (step: TemplateStep) => void,
-	onStepDelete:(step: TemplateStep) => void,
+	onStepDelete: (step: TemplateStep) => void,
 	editing: boolean,
 	isNew: boolean
 }> = ({ templateStep, onStepUpdate, onStepDelete, editing, isNew }) => {
@@ -86,13 +87,7 @@ const TemplatePage: React.FC<{
 						{isNew && <p> &nbsp;(New Step)</p>}
 					</div>
 				</div>
-				{editing && <Button
-					icon="delete"
-					// className={classes.newButton}
-					onClick={() => onStepDelete(templateStep)}
-					text="Delete"
-					// intent={Intent.DANGER}
-				/>}
+				{editing && <DeleteButton danger = {false} onDelete={() => onStepDelete(templateStep)} />}
 			</div>
 			<p className={classes.stepDescription}>
 				<EditableText

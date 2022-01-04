@@ -3,19 +3,30 @@ import { Spinner } from '@blueprintjs/core';
 import axios from 'axios';
 
 import classes from './Template.module.css';
-import Template from '../../api/models/Template/Template';
+import TemplateModel from '../../api/models/Template/Template';
 import TemplateSummary from './TemplateSummary/TemplateSummary';
 import TemplateSection from './TemplateSection/TemplateSectionComponent';
 import TemplateSectionModel from '../../api/models/Template/TemplateSection';
+import AddNewButton from '../Button/AddNewButton/AddNewButton';
 
 const TemplateComponent: React.FC<{ templateId: string, editingAllowed: boolean }> = ({
 	templateId: templateIdProp,
 	editingAllowed
 }) => {
 
-	const [template, setTemplate] = useState<Template>();
+	let defaultNewSection: TemplateSectionModel = {
+		"id": null,
+		"name": "New Section",
+		"description": "New Section Description",
+		"position": 100,
+		"steps": []
+	}
+
+	const [template, setTemplate] = useState<TemplateModel>();
 
 	const [showEditOption, setShowEditOption] = useState<boolean>(editingAllowed);
+
+	const [addingNewSection, setAddingNewSection] = useState<boolean>(false);
 
 	useEffect(() => {
 
@@ -158,7 +169,7 @@ const TemplateComponent: React.FC<{ templateId: string, editingAllowed: boolean 
 
 	}, []);
 
-	useEffect(() => { console.log('template has changed')}, [template])
+	useEffect(() => { console.log('template has changed') }, [template])
 
 	const updateSectionHandler = (editedSection: TemplateSectionModel) => {
 
@@ -184,6 +195,59 @@ const TemplateComponent: React.FC<{ templateId: string, editingAllowed: boolean 
 
 	}
 
+	const addNewSectionHandler = () => {
+
+		if (template) {
+
+			setAddingNewSection(true);
+
+			//save to api, get id from api back;
+
+			//when we start actually using the API, get rid of the setTimeout but still setAddingNewSection(false)
+			setTimeout(function () {
+				setAddingNewSection(false);
+				let newSectionArray = template.sections;
+
+				let newSection = defaultNewSection;
+				//this will be replaced by the id returned by the api.
+				newSection.id = Math.random() * 100;
+
+				newSectionArray.push(newSection);
+
+				setTemplate({ ...template, sections: newSectionArray });
+
+			}, 2000);
+
+		}
+
+	}
+
+	const deleteSectionHandler = (sectionToDelete: TemplateSectionModel) => {
+
+		if (template) {
+
+			//Send call to api
+			let newSectionArray = template.sections.filter((section) => { return section.id !== sectionToDelete.id });
+
+			setTemplate({ ...template, sections: newSectionArray });
+		}
+
+	}
+
+	const editTemplateHandler = (newTemplate: TemplateModel) => {
+		setTemplate(newTemplate);
+	}
+
+	const updateTemplateHandler = () => {
+		console.log('updating Template...');
+
+		//send to api
+	}
+
+	
+
+
+
 
 	if (template) {
 		return (
@@ -191,7 +255,12 @@ const TemplateComponent: React.FC<{ templateId: string, editingAllowed: boolean 
 			<div className={classes.templateBackground}>
 
 				<div className={classes.templatesContainer}>
-					<TemplateSummary template={template} showEditOption={showEditOption} />
+					<TemplateSummary
+						template={template}
+						showEditOption={showEditOption}
+						onTemplateChange={editTemplateHandler}
+						onTemplateConfirm={updateTemplateHandler}
+					/>
 
 					<div className={classes.sectionsContainer}>
 						{template.sections.sort((a, b) => (a.position > b.position) ? 1 : -1)
@@ -201,11 +270,19 @@ const TemplateComponent: React.FC<{ templateId: string, editingAllowed: boolean 
 									templateSection={section}
 									showEditOption={showEditOption}
 									onSectionUpdate={updateSectionHandler}
+									onSectionDelete={deleteSectionHandler}
 								/>
 							))}
 					</div>
-
+					<div className={classes.addNewSectionButton}>
+						{showEditOption && <AddNewButton
+							objectName="Section"
+							savingNewObject={addingNewSection}
+							onClick={addNewSectionHandler}
+						/>}
+					</div>
 				</div>
+
 			</div>
 
 		)

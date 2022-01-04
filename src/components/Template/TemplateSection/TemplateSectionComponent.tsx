@@ -78,6 +78,7 @@ const TemplateSectionComponent: React.FC<{
 
 		const updateStepHandler = (editedStep: TemplateStepModel) => {
 
+			console.log('in section updateStepHandler');
 			//find index of step we're updating
 			let indexOfStep = section.steps.findIndex(step => step.id === editedStep.id);
 
@@ -204,9 +205,8 @@ const TemplateSectionComponent: React.FC<{
 									key={step.id}
 									editing={editing}
 									templateStep={step}
-									isNew={false}
-									onStepUpdate={updateStepHandler}
-									onStepDelete={deleteStepHandler}
+									onUpdateStep={updateStepHandler}
+									onDeleteStep={deleteStepHandler}
 								/>
 							))}
 						{editing &&

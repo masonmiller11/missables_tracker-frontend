@@ -126,8 +126,8 @@ const TemplateComponent: React.FC<{
 										key={section.id}
 										templateSection={section}
 										showEditOption={showEditOption}
-										onSectionUpdate={updateSectionHandler}
-										onSectionDelete={deleteSectionHandler}
+										onUpdateSection={updateSectionHandler}
+										onDeleteSection={deleteSectionHandler}
 									/>
 								))}
 						</div>

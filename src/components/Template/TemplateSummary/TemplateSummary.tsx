@@ -74,9 +74,9 @@ const TemplateSummary: React.FC<{
 									}}
 									disabled={!editing}
 									value={template.title}
+									maxLength={45}
 									onConfirm={() => onTemplateConfirm()}
 								/>
-								(by {template.owner.owner})
 							</h2>
 							{showEditOption && <EditButton
 								isEditing={editing}
@@ -87,7 +87,7 @@ const TemplateSummary: React.FC<{
 						<hr />
 						<div className={classes.cardStatsContainer}>
 							<p>
-								<strong>Game:</strong> {template.game.gameTitle}
+								<strong>Author:</strong> {template.owner.owner}
 							</p>
 							<p>
 								<strong>Total Playthroughs:</strong> We meet have to add this as to-do
@@ -104,6 +104,8 @@ const TemplateSummary: React.FC<{
 									disabled={!editing}
 									value={template.description}
 									multiline={true}
+									maxLines={14}
+									maxLength={1391}
 									onConfirm={() => onTemplateConfirm()}
 								/>
 							{/* </p> */}

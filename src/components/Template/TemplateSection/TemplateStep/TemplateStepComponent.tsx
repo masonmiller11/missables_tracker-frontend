@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 import TemplateStepModel from '../../../../api/models/Template/TemplateStep';
 import TemplateStepLayout from './TemplateStepLayout/TemplateStepLayout';
 import useTemplateObject from '../../../../hooks/useTemplateObject';
 
-const TemplatePage: React.FC<{
+const TemplateStep: React.FC<{
 	templateStep: TemplateStepModel,
 	onUpdateStep: (step: TemplateStepModel) => void,
 	onDeleteStep: (step: TemplateStepModel) => void,
@@ -58,4 +58,4 @@ const TemplatePage: React.FC<{
 		);
 	}
 
-export default TemplatePage;
+export default TemplateStep;

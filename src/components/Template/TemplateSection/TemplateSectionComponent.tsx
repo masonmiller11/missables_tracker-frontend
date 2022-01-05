@@ -19,13 +19,13 @@ import useTemplateObject from '../../../hooks/useTemplateObject';
 const TemplateSectionComponent: React.FC<{
 	templateSection: TemplateSectionModel,
 	showEditOption: boolean,
-	onSectionUpdate: (section: TemplateSectionModel) => void
-	onSectionDelete: (section: TemplateSectionModel) => void
+	onUpdateSection: (section: TemplateSectionModel) => void
+	onDeleteSection: (section: TemplateSectionModel) => void
 }> = ({
 	templateSection,
 	showEditOption,
-	onSectionUpdate,
-	onSectionDelete }) => {
+	onUpdateSection,
+	onDeleteSection }) => {
 
 		//set the default data used for new Sections
 		const defaults = new Defaults();
@@ -40,18 +40,20 @@ const TemplateSectionComponent: React.FC<{
 			setObjectHandler: setSection
 		} = useTemplateObject<TemplateSectionModel>(templateSection);
 
-
 		useEffect(() => {
 			setSection(templateSection);
 		}, [templateSection]);
 
 		const saveSectionHandler = () => {
-			onSectionUpdate(section);
+			onUpdateSection(section);
 			//set saving(true)
 			//send post request to API
 			//set saving(false)
 		}
 
+		const deleteSectionHandler = () => {
+			onDeleteSection(section);
+		}
 
 		const changeSectionPositionHandler = (event: string) => {
 
@@ -66,11 +68,6 @@ const TemplateSectionComponent: React.FC<{
 				editSectionHandler({ ...section, position: positionNumber });
 
 			}
-
-		}
-
-		const deleteSectionHandler = () => {
-			onSectionDelete(section);
 		}
 
 		const deleteStepHandler = (stepToDelete: TemplateStepModel) => {

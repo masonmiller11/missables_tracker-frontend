@@ -1,19 +1,10 @@
 import React, { useEffect, useState } from "react";
 import {
-	Button,
 	Card,
-	Elevation,
-	Spinner,
-	Classes,
-	Intent,
-	Icon,
-	Collapse,
-	Callout,
-	EditableText,
-	SpinnerSize
+	EditableText
 } from '@blueprintjs/core';
 
-import TemplateSection from '../../../api/models/Template/TemplateSection';
+import TemplateSectionModel from '../../../api/models/Template/TemplateSection';
 import classes from './TemplateSection.module.css';
 import TemplateStep from './TemplateStep/TemplateStepComponent';
 import EditButton from '../../Button/EditButton/EditButton';
@@ -22,12 +13,14 @@ import AddNewButton from '../../Button/AddNewButton/AddNewButton';
 import DeleteButton from '../../Button/DeleteButton/DeleteButton';
 import SavingMessage from "../../Message/SavingMessage";
 import Defaults from '../../../api/DefaultValues';
+import useEditing from '../../../hooks/useEditing';
+import useTemplateObject from '../../../hooks/useTemplateObject';
 
 const TemplateSectionComponent: React.FC<{
-	templateSection: TemplateSection,
+	templateSection: TemplateSectionModel,
 	showEditOption: boolean,
-	onSectionUpdate: (section: TemplateSection) => void
-	onSectionDelete: (section: TemplateSection) => void
+	onSectionUpdate: (section: TemplateSectionModel) => void
+	onSectionDelete: (section: TemplateSectionModel) => void
 }> = ({
 	templateSection,
 	showEditOption,
@@ -38,28 +31,46 @@ const TemplateSectionComponent: React.FC<{
 		const defaults = new Defaults();
 		let defaultNewStep: TemplateStepModel = defaults.newStep;
 
-		const [editing, setEditing] = useState<boolean>(false);
-		const [section, setSection] = useState<TemplateSection>(templateSection);
+		const { editing, editingStateHandler } = useEditing();
 		const [addingNewStep, setAddingNewStep] = useState<boolean>(false);
 		const [saving, setSaving] = useState<boolean>(false);
-		// const [newStep, setNewStep] = useState<TemplateStepModel>(defaultNewStep);
+		const {
+			object: section,
+			editObjectHandler: editSectionHandler,
+			setObjectHandler: setSection
+		} = useTemplateObject<TemplateSectionModel>(templateSection);
+
 
 		useEffect(() => {
 			setSection(templateSection);
 		}, [templateSection]);
 
-		const editingStateHandler = () => {
-			setEditing(!editing);
-		}
-
-		const editSectionHandler = (section: TemplateSection) => {
-			setSection(section);
-		}
-
 		const saveSectionHandler = () => {
 			onSectionUpdate(section);
-			//send post request to API
 			//set saving(true)
+			//send post request to API
+			//set saving(false)
+		}
+
+
+		const changeSectionPositionHandler = (event: string) => {
+
+			if (event === "") {
+
+				editSectionHandler({ ...section, position: "" });
+
+			} else {
+
+				let positionNumber = (parseInt(event)) ?? setSection(section);
+
+				editSectionHandler({ ...section, position: positionNumber });
+
+			}
+
+		}
+
+		const deleteSectionHandler = () => {
+			onSectionDelete(section);
 		}
 
 		const deleteStepHandler = (stepToDelete: TemplateStepModel) => {
@@ -70,10 +81,6 @@ const TemplateSectionComponent: React.FC<{
 
 			setSection({ ...section, steps: newStepArray });
 
-		}
-
-		const deleteSectionHandler = () => {
-			onSectionDelete(section);
 		}
 
 		const updateStepHandler = (editedStep: TemplateStepModel) => {
@@ -92,23 +99,6 @@ const TemplateSectionComponent: React.FC<{
 
 			//reset the state property
 			setSection({ ...section, steps: newStepsArray });
-		}
-
-
-		const changeSectionPositionHandler = (event: string) => {
-
-			if (event === "") {
-
-				editSectionHandler({ ...section, position: "" });
-
-			} else {
-
-				let positionNumber = (parseInt(event)) ?? setSection(section);
-
-				editSectionHandler({ ...section, position: positionNumber });
-
-			}
-
 		}
 
 		const addNewStepHandler = () => {

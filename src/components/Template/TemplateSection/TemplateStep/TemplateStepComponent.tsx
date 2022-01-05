@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 
-import TemplateStep from '../../../../api/models/Template/TemplateStep';
+import TemplateStepModel from '../../../../api/models/Template/TemplateStep';
 import TemplateStepLayout from './TemplateStepLayout/TemplateStepLayout';
+import useTemplateObject from '../../../../hooks/useTemplateObject';
 
 const TemplatePage: React.FC<{
-	templateStep: TemplateStep,
-	onUpdateStep: (step: TemplateStep) => void,
-	onDeleteStep: (step: TemplateStep) => void,
+	templateStep: TemplateStepModel,
+	onUpdateStep: (step: TemplateStepModel) => void,
+	onDeleteStep: (step: TemplateStepModel) => void,
 	editing: boolean,
 }> = ({
 	templateStep,
@@ -15,15 +16,15 @@ const TemplatePage: React.FC<{
 	editing
 }) => {
 
-		const [step, setStep] = useState<TemplateStep>(templateStep);
+		const {
+			object: step,
+			editObjectHandler: editStepHandler,
+			setObjectHandler: setStep
+		} = useTemplateObject<TemplateStepModel>(templateStep);
 
 		useEffect(() => {
 			setStep(templateStep);
 		}, [templateStep]);
-
-		const editStepHandler = (step: TemplateStep) => {
-			setStep(step);
-		}
 
 		const changeStepPositionHandler = (event: string) => {
 
@@ -45,8 +46,6 @@ const TemplatePage: React.FC<{
 			//send post request to API
 		}
 
-
-		//logic here for which version to return. One for edits, another for playthroughs.
 		return (
 			<TemplateStepLayout
 				onChangeStepPosition={changeStepPositionHandler}

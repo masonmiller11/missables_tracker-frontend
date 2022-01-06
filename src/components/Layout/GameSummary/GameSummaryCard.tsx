@@ -42,7 +42,6 @@ const GameSummaryCard: React.FC<{ gameId: string }> = ({
 
     if (game) {
 
-        //todo I do not know why I must do this. 
         game.releaseDate = new Date(game.releaseDate);
 
         return (

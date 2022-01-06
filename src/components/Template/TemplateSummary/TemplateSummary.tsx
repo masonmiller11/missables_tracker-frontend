@@ -45,7 +45,7 @@ const TemplateSummary: React.FC<{
 
 				<div className={classes.cardContentContainer}>
 					<div className={classes.cardImageAndButtonContainer}>
-						<img src={template.image}></img>
+						<img src={template.game.cover}></img>
 
 						<div className={classes.cardButtonContainer}>
 							<Button

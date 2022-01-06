@@ -4,7 +4,7 @@ class Template {
 
     title: string;
     description: string;
-    image: string;
+    
     id: number;
     visibility: boolean;
     owner: {
@@ -12,8 +12,9 @@ class Template {
         owner: string
     };
     game: {
-        gameID: number,
-        gameTitle: string
+        gameID: number|string,
+        gameTitle: string,
+        cover: string;
     };
     stepPositions: number[];
     sectionPositions: number[];
@@ -31,7 +32,6 @@ class Template {
         this.sectionPositions = template.sectionPositions;
         this.likes = template.likes;
         this.sections = template.sections;
-        this.image = template.image;
     }
 }
 

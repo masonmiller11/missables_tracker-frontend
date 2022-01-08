@@ -34,6 +34,7 @@
     margin-left: 3em;
 	/* text-align: center; */
 	min-width:90%;
+	flex-grow: 1;
 }
 
 .cardButtonContainer {

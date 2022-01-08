@@ -94,8 +94,8 @@ const TemplateSummary: React.FC<{
 							</p>
 						</div>
 						<hr />
-						<div className={classes.cardSummaryTextContainer}>
-							{/* <p> */}
+						<p className={classes.cardSummaryTextContainer}>
+							
 								{/* <strong>Guide Summary:</strong>  */}
 								<EditableText
 									onChange={newValueString => {
@@ -104,12 +104,12 @@ const TemplateSummary: React.FC<{
 									disabled={!editing}
 									value={template.description}
 									multiline={true}
-									maxLines={14}
-									maxLength={1391}
+									// maxLines={14}
+									// maxLength={1391}
 									onConfirm={() => onTemplateConfirm()}
 								/>
-							{/* </p> */}
-						</div>
+							
+						</p>
 					</div>
 				</div>
 

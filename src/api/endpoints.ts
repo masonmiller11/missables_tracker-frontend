@@ -25,5 +25,8 @@ export const endpoints = {
     },
     listTemplates: (gameId: string) => {
         return 'templates/bygame/' + gameId;
-    }
+	},
+	readTemplate: (templateId: string) => {
+		return 'templates/read/' + templateId;
+	}
 };

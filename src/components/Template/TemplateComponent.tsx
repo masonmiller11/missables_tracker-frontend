@@ -10,6 +10,7 @@ import TemplateSectionModel from '../../api/models/Template/TemplateSection';
 import AddNewButton from '../Button/AddNewButton/AddNewButton';
 import Defaults from '../../api/DefaultValues'
 import useTemplateObject from '../../hooks/useTemplateObject';
+import { apiReadTemplate } from '../../api';
 
 const TemplateComponent: React.FC<{
 	templateId: string,
@@ -22,20 +23,37 @@ const TemplateComponent: React.FC<{
 		//set the default data used for new Sections
 		const defaults = new Defaults();
 		let defaultNewSection: TemplateSectionModel = defaults.newSection;
-
 		const [showEditOption, setShowEditOption] = useState<boolean>(editingAllowed);
-
 		const [addingNewSection, setAddingNewSection] = useState<boolean>(false);
-
 		const {
 			object: template,
 			editObjectHandler: editTemplateHandler,
 			setObjectHandler: setTemplate
 		} = useTemplateObject<TemplateModel>(defaults.fakeTemplate);
 
+		useEffect(() => {
 
+			let source = axios.CancelToken.source();
 
-		useEffect(() => { console.log('template has changed') }, [template])
+			//todo create custom hook for api calls
+			apiReadTemplate(templateIdProp, source)
+				.then((response) => {
+					setTemplate(response.data);
+				})
+				.catch((err) => {
+					if (axios.isCancel(err)) {
+						console.log('api request cancelled');
+					} else {
+						console.log(err.response?.data.message ?? 'unknown error');
+					}
+				});
+
+			return function () {
+				source.cancel('cancelling in cleanup');
+			};
+
+			//todo add real error handling
+		}, [templateIdProp])
 
 		const updateSectionHandler = (editedSection: TemplateSectionModel) => {
 

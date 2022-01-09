@@ -25,11 +25,11 @@ const GamesCard: React.FC<{ game: Game }> = ({ game }) => {
     };
 
     const onSeeChecklists = (gameId: number) => {
-        history.replace('/guides/game/' + gameId);
+        history.push('/guides/game/' + gameId);
     };
 
     const onCreateTemplate = (gameId: number) => {
-        history.replace('/guides/create/' + gameId);
+        history.push('/guides/create/' + gameId);
     };
 
     return (

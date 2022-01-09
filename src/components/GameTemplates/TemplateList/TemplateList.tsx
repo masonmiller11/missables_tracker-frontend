@@ -43,7 +43,7 @@ const TemplateList: React.FC<{ gameId: string }> = ({ gameId: gameIdProp }) => {
         );
     }
     {
-        return <div></div>;
+        return <p className={classes.spinner}> Loading Templates... </p>;
     }
 };
 

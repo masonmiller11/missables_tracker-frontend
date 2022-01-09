@@ -57,15 +57,14 @@ const MainNavigation: React.FC<{ showSearch: boolean }> = ({ showSearch }) => {
                 ) : null}
             </NavbarGroup>
             <NavbarGroup align={Alignment.RIGHT}>
-                {!isLoggedIn && (
+                {!isLoggedIn ? (
                     <Button
                         onClick={() => history.push('/login')}
                         className={Classes.MINIMAL}
                         icon="log-in"
                         text="Login"
                     />
-                )}
-                {isLoggedIn && (
+                ) : (
                     <UserPreferencesPopover onLogout={logoutHandler} />
                 )}
             </NavbarGroup>

@@ -45,7 +45,7 @@ const MainNavigation: React.FC<{ showSearch: boolean }> = ({ showSearch }) => {
                 <Button
                     onClick={() => history.push('/favorites')}
                     className={Classes.MINIMAL}
-                    icon="document"
+                    icon="star"
                     text="Favorites"
                 />
 

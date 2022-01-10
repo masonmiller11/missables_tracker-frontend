@@ -16,9 +16,11 @@ const TemplateComponent: React.FC<{
     templateId: string;
     editingAllowed: boolean;
 }> = ({ templateId: templateIdProp, editingAllowed }) => {
+
     //set the default data used for new Sections
     const defaults = new Defaults();
-    let defaultNewSection: TemplateSectionModel = defaults.newSection;
+	let defaultNewSection: TemplateSectionModel = defaults.newSection;
+	
     const [showEditOption, setShowEditOption] =
         useState<boolean>(editingAllowed);
     const [addingNewSection, setAddingNewSection] = useState<boolean>(false);

@@ -10,51 +10,58 @@ import SearchGamePage from './pages/SearchGamePage';
 import TemplatePage from './pages/TemplatePage';
 import GameTemplatesPage from './pages/GameTemplatesPage';
 import CreateTemplatePage from './pages/CreateTemplatePage';
+import MyTemplatesPage from './pages/MyTemplatesPage';
 
 import './App.css';
 
 function App() {
-    return (
-        <div className="dark-content-wrapper">
-            <div className={Classes.DARK}>
-                <Layout>
-                    <Switch>
-                        <Route path="/" exact>
-                            <HomePage />
-                        </Route>
-                        <Route path="/login">
-                            <AuthPage isLogin={true}/>
-                        </Route>
-                        <Route path="/signup">
-                            <AuthPage isLogin={false}/>
-                        </Route>
-                        <Route path="/favorites">
-                            <FavoritesPage />
-                        </Route>
-                        <Route path="/guides/game/:gameId">
-                            <GameTemplatesPage />
-                        </Route>
-                        <Route path="/guides/create/:gameId">
-                            <CreateTemplatePage />
-                        </Route>
-                        <Route path="/guides/:templateId">
-                            <TemplatePage />
-                        </Route>
-                        <Route path="/search/:searchTerm">
-                            <SearchGamePage />
-                        </Route>
-                        <Route path="/search">
-                            <SearchGamePage />
-                        </Route>
-                        <Route path="*">
-                            <Redirect to="/" />
-                        </Route>
-                        
-                    </Switch>
-                </Layout>
-            </div>
-        </div>
-    );
+	return (
+		<div className="dark-content-wrapper">
+			<div className={Classes.DARK}>
+				<Layout>
+					<Switch>
+						<Route path="/" exact>
+							<HomePage />
+						</Route>
+						<Route path="/login">
+							<AuthPage isLogin={true} />
+						</Route>
+						<Route path="/signup">
+							<AuthPage isLogin={false} />
+						</Route>
+						<Route path="/favorites">
+							<FavoritesPage />
+						</Route>
+						<Route path="/guides/game/:gameId">
+							<GameTemplatesPage />
+						</Route>
+						<Route path="/guides/create/:gameId">
+							<CreateTemplatePage />
+						</Route>
+						<Route path="/guides/:templateId">
+							<TemplatePage editingAllowed={false} />
+						</Route>
+						<Route path="/myguides/:templateId">
+							<TemplatePage editingAllowed={true} />
+						</Route>
+						<Route path="/myguides">
+							<MyTemplatesPage />
+						</Route>
+						<Route path="/search/:searchTerm">
+							<SearchGamePage />
+						</Route>
+						<Route path="/search">
+							<SearchGamePage />
+						</Route>
+						<Route path="*">
+							<Redirect to="/" />
+						</Route>
+
+					</Switch>
+				</Layout>
+			</div>
+		</div>
+	);
 }
 
 export default App;

@@ -19,6 +19,7 @@ const MyTemplates: React.FC = () => {
 
 	const [templateList, setTemplateList] = useState<null | TemplateModel[]>(null);
 
+	//todo bring in authctx so we can get at the token to send over with the api call.
 	//todo: replace with api call to fetch this user's templates.
 	useEffect(() => {
 
@@ -40,8 +41,7 @@ const MyTemplates: React.FC = () => {
 
 	}, []);
 
-
-
+	//todo if templates is not truthy, then show spinner
 
 	return (
 		<div className={classes.myTemplatesBackground}>

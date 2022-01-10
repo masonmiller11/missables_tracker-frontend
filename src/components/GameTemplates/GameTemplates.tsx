@@ -46,6 +46,7 @@ const GameTemplates: React.FC<{ gameId: string }> = ({
 	}, []);
 
 
+	//get Game and templates in here. If we don't have both, show loading. Remove loading from below children.
 	return (
 		<div className={classes.gameTemplatesBackground}>
 			<div className={classes.gameTemplatesContainer}>

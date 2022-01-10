@@ -7,16 +7,16 @@ import {
 } from '@blueprintjs/core';
 import axios from 'axios';
 
-import Game from '../../../api/models/Game/Game';
+import GameModel from '../../../api/models/Game/Game';
 import classes from './GameSummaryCard.module.css';
 import { apiReadGame } from '../../../api';
 
 const GameSummaryCard: React.FC<{
-	gameId: string
+	game: GameModel
 }> = ({
 	gameId: gameIdProp,
 }) => {
-		const [game, setGame] = useState<null | Game>(null);
+		const [game, setGame] = useState<null | GameModel>(null);
 
 		useEffect(() => {
 			let source = axios.CancelToken.source();

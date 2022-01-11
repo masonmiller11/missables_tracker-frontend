@@ -43,7 +43,6 @@ const TemplateStep: React.FC<{
 
 		const saveStepHandler = () => {
 			onUpdateStep(step);
-			//send post request to API
 		}
 
 		return (

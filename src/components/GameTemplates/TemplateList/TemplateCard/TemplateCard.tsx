@@ -12,11 +12,11 @@ import {
 	H5,
 } from '@blueprintjs/core';
 
-import Template from '../../../../api/models/Template/Template';
+import TemplateModel from '../../../../api/models/Template/Template';
 import classes from './TemplateCard.module.css';
 import TemplateListOptions from '../../../../interfaces/templateListOptions.interface';
 
-const TemplateCard: React.FC<{ template: Template, templateCardOptions: TemplateListOptions }> = ({ template, templateCardOptions }) => {
+const TemplateCard: React.FC<{ template: TemplateModel, templateCardOptions: TemplateListOptions }> = ({ template, templateCardOptions }) => {
 
 	let { showCover, showFavoriteStar, templateGuideUrl } = templateCardOptions;
 
@@ -37,11 +37,15 @@ const TemplateCard: React.FC<{ template: Template, templateCardOptions: Template
 						/>
 					</div>
 				}
+				{showCover &&
+					<img className={classes.cover}  src={template.game.cover}></img>
+				}
 				<div className={classes.templateCardTitleAndAuthorContainer}>
 					<h2 className={classes.templateCardTitle}>
 						<a onClick={() => history.push(templateGuideUrl + template.id)}>{template.title}</a>
 					</h2>
 					<p>Template Created by {template.owner.owner}</p>
+					<p>{template.description}</p>
 				</div>
 			</div>
 		</Card>

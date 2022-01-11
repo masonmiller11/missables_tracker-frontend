@@ -28,5 +28,10 @@ export const endpoints = {
 	},
 	readTemplate: (templateId: string) => {
 		return 'templates/read/' + templateId;
-	}
+	},
+    listMyTemplate: 'templates',
+    patchTemplateStep: (templateStepId: string|number) => {
+		return 'step/template/update/' + templateStepId;
+	},
+    createTemplateStep: 'step/template/create'
 };

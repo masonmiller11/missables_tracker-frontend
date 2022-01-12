@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Spinner } from '@blueprintjs/core';
 import axios from 'axios';
 
@@ -10,155 +10,209 @@ import TemplateSectionModel from '../../api/models/Template/TemplateSection';
 import AddNewButton from '../Button/AddNewButton/AddNewButton';
 import Defaults from '../../api/DefaultValues';
 import useTemplateObject from '../../hooks/useTemplateObject';
-import { apiReadTemplate } from '../../api';
+import {
+	apiReadTemplate,
+	apiCreateTemplateSection,
+	apiDeleteTemplateSection,
+	apiPatchTemplateSection
+} from '../../api';
+import AuthContext from '../../store/auth-context';
 
 const TemplateComponent: React.FC<{
-    templateId: string;
-    editingAllowed: boolean;
+	templateId: string;
+	editingAllowed: boolean;
 }> = ({ templateId: templateIdProp, editingAllowed }) => {
 
-    //set the default data used for new Sections
-    const defaults = new Defaults();
+	const AuthCtx = useContext(AuthContext);
+
+	//set the default data used for new Sections
+	const defaults = new Defaults();
 	let defaultNewSection: TemplateSectionModel = defaults.newSection;
-	
-    const [showEditOption, setShowEditOption] =
-        useState<boolean>(editingAllowed);
-    const [addingNewSection, setAddingNewSection] = useState<boolean>(false);
-    const [template, setTemplate] = useState<TemplateModel>();
 
-    useEffect(() => {
-        let source = axios.CancelToken.source();
+	const [showEditOption, setShowEditOption] = useState<boolean>(editingAllowed);
+	const [addingNewSection, setAddingNewSection] = useState<boolean>(false);
+	const [template, setTemplate] = useState<TemplateModel>();
 
-        //todo create custom hook for api calls
-        apiReadTemplate(templateIdProp, source)
-            .then((response) => {
-                setTemplate(response.data);
-            })
-            .catch((err) => {
-                if (axios.isCancel(err)) {
-                    console.log('api request cancelled');
-                } else {
-                    console.log(err.response?.data.message ?? 'unknown error');
-                }
-            });
+	useEffect(() => {
+		let source = axios.CancelToken.source();
 
-        return function () {
-            source.cancel('cancelling in cleanup');
-        };
+		//todo create custom hook for api calls
+		apiReadTemplate(templateIdProp, source)
+			.then((response) => {
+				setTemplate(response.data);
+			})
+			.catch((err) => {
+				if (axios.isCancel(err)) {
+					console.log('api request cancelled');
+				} else {
+					console.log(err.response?.data.message ?? 'unknown error');
+				}
+			});
 
-        //todo add real error handling
-    }, [templateIdProp]);
+		return function () {
+			source.cancel('cancelling in cleanup');
+		};
 
-    const editTemplateHandler = (templateObject: TemplateModel) => {
-        setTemplate(templateObject);
-    };
+		//todo add real error handling
+	}, [templateIdProp]);
 
-    const updateSectionHandler = (editedSection: TemplateSectionModel) => {
-        if (template) {
-            console.log('in updateSectionHandler');
+	const editTemplateHandler = (templateObject: TemplateModel) => {
+		setTemplate(templateObject);
+	};
 
-            //find index of section we're updating
-            let indexOfSection = template.sections.findIndex(
-                (section) => section.id === editedSection.id
-            );
+	const updateSectionHandler = (editedSection: TemplateSectionModel) => {
+		if (template) {
 
-            //create newStepsArray, removing the original values of the editedSection
-            let newSectionsArray = template.sections.filter((section) => {
-                return section.id !== editedSection.id;
-            });
+			let source = axios.CancelToken.source();
 
-            //splice in the new editedTemplate
-            newSectionsArray?.splice(indexOfSection, 0, editedSection);
+			if (AuthCtx.token) {
+				apiPatchTemplateSection(editedSection, AuthCtx.token, source)
+					.then((response) => {
+						console.log(response);
+						//todo add a way for save successfully message
+					})
+					.catch((err) => {
+						console.log(err);
+						//todo add error handling
+					});
+			}
 
-            //reset the state property
-            setTemplate({ ...template, sections: newSectionsArray });
-        }
-    };
+			//find index of section we're updating
+			let indexOfSection = template.sections.findIndex(
+				(section) => section.id === editedSection.id
+			);
 
-    const addNewSectionHandler = () => {
-        if (template) {
-            setAddingNewSection(true);
+			//create newStepsArray, removing the original values of the editedSection
+			let newSectionsArray = template.sections.filter((section) => {
+				return section.id !== editedSection.id;
+			});
 
-            //save to api, get id from api back;
+			//splice in the new editedTemplate
+			newSectionsArray?.splice(indexOfSection, 0, editedSection);
 
-            //when we start actually using the API, get rid of the setTimeout but still setAddingNewSection(false)
-            setTimeout(function () {
-                setAddingNewSection(false);
-                let newSectionArray = template.sections;
+			//reset the state property
+			setTemplate({ ...template, sections: newSectionsArray });
+		}
+	};
 
-                let newSection = defaultNewSection;
-                //this will be replaced by the id returned by the api.
-                newSection.id = Math.random() * 100;
+	const addNewSectionHandler = () => {
+		if (template) {
 
-                newSectionArray.push(newSection);
+			setAddingNewSection(true);
 
-                setTemplate({ ...template, sections: newSectionArray });
-            }, 2000);
-        }
-    };
+			if (AuthCtx.token) {
 
-    const deleteSectionHandler = (sectionToDelete: TemplateSectionModel) => {
-        if (template) {
-            //Send call to api
-            let newSectionArray = template.sections.filter((section) => {
-                return section.id !== sectionToDelete.id;
-            });
+				let source = axios.CancelToken.source();
 
-            setTemplate({ ...template, sections: newSectionArray });
-        }
-    };
+				apiCreateTemplateSection(
+					defaultNewSection,
+					template.id,
+					AuthCtx.token,
+					source
+				).then((response) => {
 
-    const updateTemplateHandler = () => {
-        console.log('updating Template...');
+					let newSection: TemplateSectionModel = {
+						id: response.data.id,
+						name: defaultNewSection.name,
+						description: defaultNewSection.description,
+						position: defaultNewSection.position,
+						steps: []
+					};
 
-        //send to api
-    };
+					let newSectionArray = template.sections;
+					newSectionArray.push(newSection);
+					setTemplate({ ...template, sections: newSectionArray });
 
-    if (template) {
-        return (
-            <div className={classes.templateBackground}>
-                <div className={classes.templatesContainer}>
-                    <TemplateSummary
-                        template={template}
-                        showEditOption={showEditOption}
-                        onTemplateChange={editTemplateHandler}
-                        onTemplateConfirm={updateTemplateHandler}
-                    />
+					setAddingNewSection(false);
+				})
+					.catch((err) => {
+						console.log(err);
+						//todo add error handling
+					});
 
-                    <div className={classes.sectionsContainer}>
-                        {template.sections
-                            .sort((a, b) => (a.position > b.position ? 1 : -1))
-                            .map((section) => (
-                                <TemplateSection
-                                    key={section.id}
-                                    templateSection={section}
-                                    showEditOption={showEditOption}
-                                    onUpdateSection={updateSectionHandler}
-                                    onDeleteSection={deleteSectionHandler}
-                                />
-                            ))}
-                    </div>
-                    <div className={classes.addNewSectionButton}>
-                        {showEditOption && (
-                            <AddNewButton
-                                objectName="Section"
-                                savingNewObject={addingNewSection}
-                                onClick={addNewSectionHandler}
-                            />
-                        )}
-                    </div>
-                </div>
-            </div>
-        );
-    }
+			}
 
-    {
-        return (
-            <div className={classes.templateBackground}>
-                <Spinner className={classes.spinner} />
-            </div>
-        );
-    }
+		}
+
+	};
+
+	const deleteSectionHandler = (sectionToDelete: TemplateSectionModel) => {
+		if (template) {
+
+			let source = axios.CancelToken.source();
+
+			if (AuthCtx.token) {
+
+				apiDeleteTemplateSection(sectionToDelete.id, AuthCtx.token, source)
+					.then((response) => {
+						console.log(response);
+						//todo add a way for delete successfully message
+					})
+					.catch((err) => {
+						console.log(err);
+						//todo add error handling
+					});
+			}
+
+			let newSectionArray = template.sections.filter((section) => {
+				return section.id !== sectionToDelete.id;
+			});
+
+			setTemplate({ ...template, sections: newSectionArray });
+		}
+	};
+
+	const updateTemplateHandler = () => {
+		console.log('updating Template...');
+
+		//send to api
+	};
+
+	if (template) {
+		return (
+			<div className={classes.templateBackground}>
+				<div className={classes.templatesContainer}>
+					<TemplateSummary
+						template={template}
+						showEditOption={showEditOption}
+						onTemplateChange={editTemplateHandler}
+						onTemplateConfirm={updateTemplateHandler}
+					/>
+
+					<div className={classes.sectionsContainer}>
+						{template.sections
+							.sort((a, b) => (a.position > b.position ? 1 : -1))
+							.map((section) => (
+								<TemplateSection
+									key={section.id}
+									templateSection={section}
+									showEditOption={showEditOption}
+									onUpdateSection={updateSectionHandler}
+									onDeleteSection={deleteSectionHandler}
+								/>
+							))}
+					</div>
+					<div className={classes.addNewSectionButton}>
+						{showEditOption && (
+							<AddNewButton
+								objectName="Section"
+								savingNewObject={addingNewSection}
+								onClick={addNewSectionHandler}
+							/>
+						)}
+					</div>
+				</div>
+			</div>
+		);
+	}
+
+	{
+		return (
+			<div className={classes.templateBackground}>
+				<Spinner className={classes.spinner} />
+			</div>
+		);
+	}
 };
 
 export default TemplateComponent;

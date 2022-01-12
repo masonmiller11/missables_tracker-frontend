@@ -2,7 +2,8 @@ import axios, { CancelTokenSource } from 'axios';
 
 import { endpoints } from './endpoints';
 import GameModel from '../api/models/Game/Game';
-import StepModel from '../api/models/Template/TemplateStep';
+import TemplateStepModel from '../api/models/Template/TemplateStep';
+import TemplateSectionModel from '../api/models/Template/TemplateSection'
 
 export const client = axios.create({
     baseURL: 'http://localhost:8000/',
@@ -136,7 +137,7 @@ export async function apiListThisUsersTemplates(
 }
 
 export async function apiPatchTemplateStep(
-    templateStep: StepModel,
+    templateStep: TemplateStepModel,
     token: string,
     source: CancelTokenSource
 ) {
@@ -160,7 +161,7 @@ export async function apiPatchTemplateStep(
 }
 
 export async function apiCreateTemplateStep(
-	templateStep: StepModel,
+	templateStep: TemplateStepModel,
 	templateSectionId: number|null,
     token: string,
     source: CancelTokenSource,
@@ -188,10 +189,114 @@ export async function apiCreateTemplateStep(
 
 }
 
-// static update(setError, employee) {
-// 	let editedEmployee = {
-// 		"name" : employee.name,
-// 		"email" : employee.email
-// 	}
-// 	Client.patch(setError, endpoints.employee + employee.id, editedEmployee);
+export async function apiDeleteTemplateStep(
+	templateStepId: number|string|null,
+	token: string,
+	source: CancelTokenSource
+) {
+
+	if (templateStepId) {
+
+		const config = getConfig(token, source);
+	
+		const endpoint = endpoints.deleteTemplateStep(templateStepId);
+	
+		const response = await client.delete(endpoint,config);
+	
+		return response;
+	
+		} else {
+			throw new Error('TemplateStep needs a section ID to save.');
+		}
+
+}
+
+export async function apiPatchTemplateSection(
+    templateSection: TemplateSectionModel,
+    token: string,
+    source: CancelTokenSource
+) {
+    const body = {
+        description: templateSection.description,
+        position: templateSection.position,
+        name: templateSection.name,
+    };
+
+    const config = getConfig(token, source);
+
+    if (templateSection.id) {
+
+        const endpoint = endpoints.patchTemplateSection(templateSection.id);
+        const response = await client.patch(endpoint, body, config);
+        return response;
+
+    } else {
+        throw new Error('TemplateStep needs an ID to save.');
+    }
+}
+
+export async function apiCreateTemplateSection(
+	TemplateSection: TemplateSectionModel,
+	templateId: number|null,
+    token: string,
+    source: CancelTokenSource,
+) {
+	const body = {
+        description: TemplateSection.description,
+        position: TemplateSection.position,
+        name: TemplateSection.name,
+		templateId: templateId
+    };
+
+	if (templateId) {
+
+	const config = getConfig(token, source);
+
+	const endpoint = endpoints.createTemplateSection;
+
+	const response = await client.post(endpoint,body,config);
+
+	return response;
+
+	} else {
+		throw new Error('TemplateStep needs a section ID to save.');
+	}
+
+}
+
+export async function apiDeleteTemplateSection(
+	templateSectionId: number|string|null,
+	token: string,
+	source: CancelTokenSource
+) {
+
+	if (templateSectionId) {
+
+		const config = getConfig(token, source);
+	
+		const endpoint = endpoints.deleteTemplateSection(templateSectionId);
+	
+		const response = await client.delete(endpoint,config);
+	
+		return response;
+	
+		} else {
+			throw new Error('TemplateStep needs a section ID to save.');
+		}
+
+}
+
+// static delete (setError, endpoint, config = this.setConfig(localStorage.token)) {
+        
+// 	axios.delete(endpoint, config).then(response => {
+// 		console.log('delete request response:');
+// 		console.log(response);
+// 	})
+// 	.catch(error => {
+// 		if (error.response) {
+// 			setError(error.response.statusText);
+// 		} else {
+// 			setError('unknown error... something strange happened');
+// 		}
+// 	});
 // }

@@ -37,11 +37,18 @@ export const endpoints = {
 	deleteTemplateStep: (templateStepId: string|number) => {
 		return 'step/template/delete/' + templateStepId;
 	},
-	patchTemplateSection: (templateStepId: string|number) => {
-		return 'section/template/update/' + templateStepId;
+	patchTemplateSection: (templateSectionId: string|number) => {
+		return 'section/template/update/' + templateSectionId;
 	},
 	createTemplateSection: 'section/template/create',
-	deleteTemplateSection: (templateStepId: string|number) => {
-		return 'section/template/delete/' + templateStepId;
+	deleteTemplateSection: (templateSectionId: string|number) => {
+		return 'section/template/delete/' + templateSectionId;
+	},
+	patchTemplate: (templateId: string|number) => {
+		return 'playthroughs/update/' + templateId;
+	},
+	createTemplate: 'templates/create',
+	deleteTemplate: (templateId: string|number) => {
+		return 'templates/delete/' + templateId;
 	}
 };

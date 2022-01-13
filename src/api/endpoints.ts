@@ -45,7 +45,7 @@ export const endpoints = {
 		return 'section/template/delete/' + templateSectionId;
 	},
 	patchTemplate: (templateId: string|number) => {
-		return 'playthroughs/update/' + templateId;
+		return 'templates/update/' + templateId;
 	},
 	createTemplate: 'templates/create',
 	deleteTemplate: (templateId: string|number) => {

@@ -85,8 +85,6 @@ const TemplateSectionComponent: React.FC<{
 					
 			}
 
-			//Send call to api
-
 			let newStepArray = section.steps.filter((step) => {
 				return step.id !== stepToDelete.id;
 			});

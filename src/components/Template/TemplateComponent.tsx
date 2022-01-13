@@ -14,7 +14,8 @@ import {
 	apiReadTemplate,
 	apiCreateTemplateSection,
 	apiDeleteTemplateSection,
-	apiPatchTemplateSection
+	apiPatchTemplateSection,
+	apiPatchTemplate
 } from '../../api';
 import AuthContext from '../../store/auth-context';
 
@@ -164,6 +165,20 @@ const TemplateComponent: React.FC<{
 
 	const updateTemplateHandler = () => {
 		console.log('updating Template...');
+
+		let source = axios.CancelToken.source();
+
+			if (AuthCtx.token) {
+				apiPatchTemplate(template!, AuthCtx.token, source)
+					.then((response) => {
+						console.log(response);
+						//todo add a way for save successfully message
+					})
+					.catch((err) => {
+						console.log(err);
+						//todo add error handling
+					});
+			}
 
 		//send to api
 	};

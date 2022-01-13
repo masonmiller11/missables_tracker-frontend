@@ -7,21 +7,45 @@ import TemplateList from '../GameTemplates//TemplateList/TemplateList';
 import classes from './MyTemplates.module.css';
 import AuthContext from '../../store/auth-context';
 
-import { apiListThisUsersTemplates } from '../../api';
+import { apiListThisUsersTemplates, apiDeleteTemplate } from '../../api';
 
 const MyTemplates: React.FC = () => {
+
+	const [templateList, setTemplateList] = useState<null | TemplateModel[]>(
+        null
+    );
+
+	const AuthCtx = useContext(AuthContext);
+
+	const deleteStepHandler = (templateToDelete: TemplateModel) => {
+
+		let source = axios.CancelToken.source();
+
+		if (AuthCtx.token) {
+
+			apiDeleteTemplate(templateToDelete.id, AuthCtx.token, source)
+				.then((response) => {
+					console.log(response);
+					//todo add a way for delete successfully message
+				})
+				
+		}
+
+		let newTemplatesArray = templateList!.filter((template) => {
+			return template.id !== templateToDelete.id;
+		});
+
+		setTemplateList(newTemplatesArray);
+	};
+
 	
     const myTemplatesListOptions = {
         showCover: true,
         showFavoriteStar: false,
-        templateGuideUrl: '/myguides/',
+		templateGuideUrl: '/myguides/',
+		allowDelete: true,
+		onDelete: deleteStepHandler
     };
-
-    const AuthCtx = useContext(AuthContext);
-
-    const [templateList, setTemplateList] = useState<null | TemplateModel[]>(
-        null
-    );
 
     //todo bring in authctx so we can get at the token to send over with the api call.
     //todo: replace with api call to fetch this user's templates.

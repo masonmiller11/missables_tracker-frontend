@@ -19,7 +19,8 @@ const GameTemplates: React.FC<{ gameId: string }> = ({
     const gameTemplatesListOptions = {
         showCover: false,
         showFavoriteStar: true,
-        templateGuideUrl: '/guides/',
+		templateGuideUrl: '/guides/',
+		allowDelete: false,
     };
 
     const [templateList, setTemplateList] = useState<null | TemplateModel[]>(

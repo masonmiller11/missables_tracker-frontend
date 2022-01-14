@@ -1,34 +1,43 @@
 import React, { useEffect, useState, useContext } from 'react';
-import axios from 'axios';
 import { Spinner } from '@blueprintjs/core';
+import axios from 'axios';
 
 import TemplateModel from '../../api/models/Template/Template';
 import TemplateList from '../GameTemplates//TemplateList/TemplateList';
 import classes from './MyTemplates.module.css';
 import AuthContext from '../../store/auth-context';
+import useApi from '../../hooks/useApi';
 
-import { apiListThisUsersTemplates, apiDeleteTemplate } from '../../api';
+import { apiListThisUsersTemplates, apiDeleteTemplate, apiDeleteTemplateSection } from '../../api';
 
 const MyTemplates: React.FC = () => {
 
 	const [templateList, setTemplateList] = useState<null | TemplateModel[]>(
-        null
-    );
-
+		null
+	);
 	const AuthCtx = useContext(AuthContext);
+	const { apiGetRequestWithToken: apiGetRequest, apiDeleteRequest } = useApi();
 
-	const deleteStepHandler = (templateToDelete: TemplateModel) => {
+	useEffect(() => {
 
 		let source = axios.CancelToken.source();
 
 		if (AuthCtx.token) {
+			apiGetRequest<TemplateModel[]|null>(setTemplateList, apiListThisUsersTemplates, AuthCtx.token, source);
+		}
 
-			apiDeleteTemplate(templateToDelete.id, AuthCtx.token, source)
-				.then((response) => {
-					console.log(response);
-					//todo add a way for delete successfully message
-				})
-				
+		return function () {
+			source.cancel('cancelling in cleanup');
+		};
+
+	}, [AuthCtx]);
+
+	const deleteTemplateHandler = (templateToDelete: TemplateModel) => {
+
+		let source = axios.CancelToken.source();
+
+		if (AuthCtx.token) {
+			apiDeleteRequest(templateToDelete.id, apiDeleteTemplate, AuthCtx.token, source);
 		}
 
 		let newTemplatesArray = templateList!.filter((template) => {
@@ -38,59 +47,34 @@ const MyTemplates: React.FC = () => {
 		setTemplateList(newTemplatesArray);
 	};
 
-	
-    const myTemplatesListOptions = {
-        showCover: true,
-        showFavoriteStar: false,
+	const myTemplatesListOptions = {
+		showCover: true,
+		showFavoriteStar: false,
 		templateGuideUrl: '/myguides/',
 		allowDelete: true,
-		onDelete: deleteStepHandler
-    };
+		onDelete: deleteTemplateHandler
+	};
 
-    //todo bring in authctx so we can get at the token to send over with the api call.
-    //todo: replace with api call to fetch this user's templates.
-    useEffect(() => {
-        let source = axios.CancelToken.source();
+	if (templateList) {
+		return (
+			<div className={classes.myTemplatesBackground}>
+				<div className={classes.myTemplatesContainer}>
+					<TemplateList
+						templates={templateList}
+						templateListOptions={myTemplatesListOptions}
+					/>
+				</div>
+			</div>
+		);
+	}
 
-        if (AuthCtx.token) {
-            apiListThisUsersTemplates(AuthCtx.token, source)
-                .then((response) => {
-                    setTemplateList(response.data);
-                })
-                .catch((err) => {
-                    if (axios.isCancel(err)) {
-                        console.log('api request cancelled');
-                    } else {
-                        console.log(
-                            err.response?.data.message ?? 'unknown error'
-                        );
-                    }
-                });
-        }
-
-        //todo add real error handling
-    }, [AuthCtx]);
-
-    if (templateList) {
-        return (
-            <div className={classes.myTemplatesBackground}>
-                <div className={classes.myTemplatesContainer}>
-                    <TemplateList
-                        templates={templateList}
-                        templateListOptions={myTemplatesListOptions}
-                    />
-                </div>
-            </div>
-        );
-    }
-
-    return (
-        <div className={classes.myTemplatesBackground}>
-            <div className={classes.myTemplatesContainer}>
-                <Spinner className={classes.spinner} />
-            </div>
-        </div>
-    );
+	return (
+		<div className={classes.myTemplatesBackground}>
+			<div className={classes.myTemplatesContainer}>
+				<Spinner className={classes.spinner} />
+			</div>
+		</div>
+	);
 };
 
 export default MyTemplates;

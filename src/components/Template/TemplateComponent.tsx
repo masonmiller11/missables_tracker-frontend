@@ -9,7 +9,6 @@ import TemplateSection from './TemplateSection/TemplateSectionComponent';
 import TemplateSectionModel from '../../api/models/Template/TemplateSection';
 import AddNewButton from '../Button/AddNewButton/AddNewButton';
 import Defaults from '../../api/DefaultValues';
-import useTemplateObject from '../../hooks/useTemplateObject';
 import {
 	apiReadTemplate,
 	apiCreateTemplateSection,
@@ -18,6 +17,7 @@ import {
 	apiPatchTemplate
 } from '../../api';
 import AuthContext from '../../store/auth-context';
+import useApi from '../../hooks/useApi';
 
 const TemplateComponent: React.FC<{
 	templateId: string;
@@ -25,6 +25,7 @@ const TemplateComponent: React.FC<{
 }> = ({ templateId: templateIdProp, editingAllowed }) => {
 
 	const AuthCtx = useContext(AuthContext);
+	const { apiGetRequest, apiPatchRequest } = useApi();
 
 	//set the default data used for new Sections
 	const defaults = new Defaults();
@@ -35,26 +36,15 @@ const TemplateComponent: React.FC<{
 	const [template, setTemplate] = useState<TemplateModel>();
 
 	useEffect(() => {
+
 		let source = axios.CancelToken.source();
 
-		//todo create custom hook for api calls
-		apiReadTemplate(templateIdProp, source)
-			.then((response) => {
-				setTemplate(response.data);
-			})
-			.catch((err) => {
-				if (axios.isCancel(err)) {
-					console.log('api request cancelled');
-				} else {
-					console.log(err.response?.data.message ?? 'unknown error');
-				}
-			});
+		apiGetRequest<TemplateModel | undefined>(setTemplate, apiReadTemplate, templateIdProp, source);
 
 		return function () {
 			source.cancel('cancelling in cleanup');
 		};
 
-		//todo add real error handling
 	}, [templateIdProp]);
 
 	const editTemplateHandler = (templateObject: TemplateModel) => {
@@ -67,15 +57,7 @@ const TemplateComponent: React.FC<{
 			let source = axios.CancelToken.source();
 
 			if (AuthCtx.token) {
-				apiPatchTemplateSection(editedSection, AuthCtx.token, source)
-					.then((response) => {
-						console.log(response);
-						//todo add a way for save successfully message
-					})
-					.catch((err) => {
-						console.log(err);
-						//todo add error handling
-					});
+				apiPatchRequest<TemplateSectionModel>(editedSection, AuthCtx.token, source, apiPatchTemplateSection)
 			}
 
 			//find index of section we're updating
@@ -168,17 +150,17 @@ const TemplateComponent: React.FC<{
 
 		let source = axios.CancelToken.source();
 
-			if (AuthCtx.token) {
-				apiPatchTemplate(template!, AuthCtx.token, source)
-					.then((response) => {
-						console.log(response);
-						//todo add a way for save successfully message
-					})
-					.catch((err) => {
-						console.log(err);
-						//todo add error handling
-					});
-			}
+		if (AuthCtx.token) {
+			apiPatchTemplate(template!, AuthCtx.token, source)
+				.then((response) => {
+					console.log(response);
+					//todo add a way for save successfully message
+				})
+				.catch((err) => {
+					console.log(err);
+					//todo add error handling
+				});
+		}
 
 		//send to api
 	};

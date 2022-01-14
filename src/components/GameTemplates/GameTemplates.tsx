@@ -8,7 +8,6 @@ import GameSummaryCard from '../Layout/GameSummary/GameSummaryCard';
 import classes from './GameTemplates.module.css';
 import TemplateModel from '../../api/models/Template/Template';
 import { apiGetGameAndTemplateList } from '../../api';
-import TemplateListOptions from '../../interfaces/templateListOptions.interface';
 import GameModel from '../../api/models/Game/Game';
 
 const GameTemplates: React.FC<{ gameId: string }> = ({

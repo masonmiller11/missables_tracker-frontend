@@ -11,7 +11,7 @@ import TemplatePage from './pages/TemplatePage';
 import GameTemplatesPage from './pages/GameTemplatesPage';
 import CreateTemplatePage from './pages/CreateTemplatePage';
 import MyTemplatesPage from './pages/MyTemplatesPage';
-import MyPlaythroughsPage from './pages/MyPlathroughsPage';
+import MyPlaythroughsPage from './pages/MyPlaythroughsPage';
 
 import './App.css';
 

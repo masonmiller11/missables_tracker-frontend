@@ -1,15 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 import {
 	Button,
 	Card,
-	Divider,
 	Classes,
-	ButtonGroup,
-	Icon,
-	Intent,
-	Elevation,
-	H5,
+	Intent
 } from '@blueprintjs/core';
 
 import TemplateModel from '../../../../api/models/Template/Template';

@@ -25,15 +25,14 @@ const TemplateComponent: React.FC<{
 }> = ({ templateId: templateIdProp, editingAllowed }) => {
 
 	const AuthCtx = useContext(AuthContext);
-	const { apiGetRequest, apiPatchRequest } = useApi();
 
 	//set the default data used for new Sections
 	const defaults = new Defaults();
 	let defaultNewSection: TemplateSectionModel = defaults.newSection;
 
 	const [showEditOption, setShowEditOption] = useState<boolean>(editingAllowed);
-	const [addingNewSection, setAddingNewSection] = useState<boolean>(false);
 	const [template, setTemplate] = useState<TemplateModel>();
+	const { apiGetRequest, apiPatchRequest, apiCreateRequest, apiDeleteRequest, addingNew: addingNewSection } = useApi();
 
 	useEffect(() => {
 
@@ -81,38 +80,24 @@ const TemplateComponent: React.FC<{
 	const addNewSectionHandler = () => {
 		if (template) {
 
-			setAddingNewSection(true);
+			const applyNewTemplateSection = (newSection: TemplateSectionModel) => {
+
+				let newSectionArray = template.sections;
+				newSectionArray.push(newSection);
+				setTemplate({ ...template, sections: newSectionArray });
+			}
 
 			if (AuthCtx.token) {
 
 				let source = axios.CancelToken.source();
 
-				apiCreateTemplateSection(
+				apiCreateRequest<TemplateSectionModel>(
 					defaultNewSection,
 					template.id,
 					AuthCtx.token,
-					source
-				).then((response) => {
-
-					let newSection: TemplateSectionModel = {
-						id: response.data.id,
-						name: defaultNewSection.name,
-						description: defaultNewSection.description,
-						position: defaultNewSection.position,
-						steps: []
-					};
-
-					let newSectionArray = template.sections;
-					newSectionArray.push(newSection);
-					setTemplate({ ...template, sections: newSectionArray });
-
-					setAddingNewSection(false);
-				})
-					.catch((err) => {
-						console.log(err);
-						//todo add error handling
-					});
-
+					source,
+					apiCreateTemplateSection,
+					applyNewTemplateSection);
 			}
 
 		}
@@ -124,18 +109,8 @@ const TemplateComponent: React.FC<{
 
 			let source = axios.CancelToken.source();
 
-			if (AuthCtx.token) {
-
-				apiDeleteTemplateSection(sectionToDelete.id, AuthCtx.token, source)
-					.then((response) => {
-						console.log(response);
-						//todo add a way for delete successfully message
-					})
-					.catch((err) => {
-						console.log(err);
-						//todo add error handling
-					});
-			}
+			if (AuthCtx.token && sectionToDelete.id)
+				apiDeleteRequest(sectionToDelete.id, apiDeleteTemplateSection, AuthCtx.token, source)
 
 			let newSectionArray = template.sections.filter((section) => {
 				return section.id !== sectionToDelete.id;
@@ -146,23 +121,12 @@ const TemplateComponent: React.FC<{
 	};
 
 	const updateTemplateHandler = () => {
-		console.log('updating Template...');
 
 		let source = axios.CancelToken.source();
 
-		if (AuthCtx.token) {
-			apiPatchTemplate(template!, AuthCtx.token, source)
-				.then((response) => {
-					console.log(response);
-					//todo add a way for save successfully message
-				})
-				.catch((err) => {
-					console.log(err);
-					//todo add error handling
-				});
-		}
+		if (AuthCtx.token)
+			apiPatchRequest<TemplateModel>(template!, AuthCtx.token, source, apiPatchTemplate);
 
-		//send to api
 	};
 
 	if (template) {

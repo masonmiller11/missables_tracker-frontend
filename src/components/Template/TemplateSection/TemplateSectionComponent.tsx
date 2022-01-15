@@ -12,6 +12,7 @@ import DeleteButton from '../../Button/DeleteButton/DeleteButton';
 import SavingMessage from '../../Message/SavingMessage';
 import Defaults from '../../../api/DefaultValues';
 import useEditing from '../../../hooks/useEditing';
+import useApi from '../../../hooks/useApi';
 import useTemplateObject from '../../../hooks/useTemplateObject';
 import { apiPatchTemplateStep, apiCreateTemplateStep, apiDeleteTemplateStep } from '../../../api';
 import AuthContext from '../../../store/auth-context';
@@ -31,16 +32,15 @@ const TemplateSectionComponent: React.FC<{
 
 		//set the default data used for new Sections
 		const defaults = new Defaults();
-		let defaultNewStep: TemplateStepModel = defaults.newStep;
+		const defaultNewStep = defaults.newStep;
 
 		const { editing, editingStateHandler } = useEditing();
-		const [addingNewStep, setAddingNewStep] = useState<boolean>(false);
-		const [saving, setSaving] = useState<boolean>(false);
 		const {
 			object: section,
 			editObjectHandler: editSectionHandler,
 			setObjectHandler: setSection,
 		} = useTemplateObject<TemplateSectionModel>(templateSection);
+		const { saving, addingNew: addingNewStep, apiDeleteRequest, apiPatchRequest, apiCreateRequest } = useApi();
 
 		//TODO move all of these handlers to template component, pass them down in a single object prop.
 
@@ -73,17 +73,8 @@ const TemplateSectionComponent: React.FC<{
 
 			let source = axios.CancelToken.source();
 
-			if (AuthCtx.token) {
-				setSaving(true);
-
-				apiDeleteTemplateStep(stepToDelete.id, AuthCtx.token, source)
-					.then((response) => {
-						console.log(response);
-						//todo add a way for delete successfully message
-						setSaving(false);
-					})
-					
-			}
+			if (AuthCtx.token && stepToDelete.id)
+				apiDeleteRequest(stepToDelete.id, apiDeleteTemplateStep, AuthCtx.token, source);
 
 			let newStepArray = section.steps.filter((step) => {
 				return step.id !== stepToDelete.id;
@@ -97,22 +88,10 @@ const TemplateSectionComponent: React.FC<{
 
 			let source = axios.CancelToken.source();
 
-			if (AuthCtx.token) {
-				setSaving(true);
-				apiPatchTemplateStep(editedTemplateStep, AuthCtx.token, source)
-					.then((response) => {
-						console.log(response);
-						//todo add a way for save successfully message
-						setSaving(false);
-					})
-					.catch((err) => {
-						console.log(err);
-						//todo add error handling
-					});
-			}
+			if (AuthCtx.token)
+				apiPatchRequest<TemplateStepModel>(editedTemplateStep, AuthCtx.token, source, apiPatchTemplateStep);
 
 			//find index of step we're updating.
-
 			let indexOfStep = section.steps.findIndex(
 				(step) => step.id === editedTemplateStep.id
 			);
@@ -130,38 +109,25 @@ const TemplateSectionComponent: React.FC<{
 		};
 
 		const addNewStepHandler = () => {
-			setAddingNewStep(true);
 
-			if (AuthCtx.token) {
+			const applyNewTemplateStep = (newStep: TemplateStepModel) => {
+				let newStepsArray = section.steps;
+				newStepsArray.push(newStep);
+				setSection({ ...section, steps: newStepsArray });
+			}
+
+			if (AuthCtx.token && section.id) {
 
 				let source = axios.CancelToken.source();
 
-				apiCreateTemplateStep(
+				apiCreateRequest<TemplateStepModel>(
 					defaultNewStep,
 					section.id,
 					AuthCtx.token,
-					source
-				)
-					.then((response) => {
-
-						let newStep: TemplateStepModel = {
-							id: response.data.id,
-							name: defaultNewStep.name,
-							description: defaultNewStep.description,
-							position: defaultNewStep.position,
-						};
-
-						let newStepsArray = section.steps;
-						newStepsArray.push(newStep);
-						setSection({ ...section, steps: newStepsArray });
-
-						//todo add a way for save successfully message
-						setAddingNewStep(false);
-					})
-					.catch((err) => {
-						console.log(err);
-						//todo add error handling
-					});
+					source,
+					apiCreateTemplateStep,
+					applyNewTemplateStep
+				);
 			}
 		};
 

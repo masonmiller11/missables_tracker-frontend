@@ -163,7 +163,7 @@ export async function apiPatchTemplateStep(
 
 export async function apiCreateTemplateStep(
 	templateStep: TemplateStepModel,
-	templateSectionId: number | null,
+	templateSectionId: number | null | string,
 	token: string,
 	source: CancelTokenSource,
 ) {
@@ -238,7 +238,7 @@ export async function apiPatchTemplateSection(
 
 export async function apiCreateTemplateSection(
 	TemplateSection: TemplateSectionModel,
-	templateId: number | null,
+	templateId: number | string | null,
 	token: string,
 	source: CancelTokenSource,
 ) {
@@ -318,7 +318,6 @@ export async function apiCreateTemplate(
 		visibility: Template.visibility
 	};
 
-
 	const config = getConfig(token, source);
 
 	const endpoint = endpoints.createTemplate;
@@ -326,8 +325,6 @@ export async function apiCreateTemplate(
 	const response = await client.post(endpoint, body, config);
 
 	return response;
-
-
 
 }
 

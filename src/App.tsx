@@ -12,6 +12,7 @@ import GameTemplatesPage from './pages/GameTemplatesPage';
 import CreateTemplatePage from './pages/CreateTemplatePage';
 import MyTemplatesPage from './pages/MyTemplatesPage';
 import MyPlaythroughsPage from './pages/MyPlaythroughsPage';
+import PlaythroughPage from './pages/PlaythroughPage';
 
 import './App.css';
 
@@ -47,6 +48,9 @@ function App() {
 						</Route>
 						<Route path="/myguides">
 							<MyTemplatesPage />
+						</Route>
+						<Route path="/myplaythroughs/:playthroughId">
+							<PlaythroughPage editingAllowed={true} />
 						</Route>
 						<Route path="/myplaythroughs">
 							<MyPlaythroughsPage />

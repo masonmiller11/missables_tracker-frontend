@@ -8,8 +8,6 @@ import TemplateModel from '../api/models/Template/Template';
 import PlaythroughModel from '../api/models/Playthrough/Playthrough';
 import StepModel from '../api/models/Playthrough/Step';
 import SectionModel from '../api/models/Playthrough/Section'
-import Step from '../api/models/Playthrough/Step';
-import { setOriginalNode } from 'typescript';
 
 export const client = axios.create({
 	baseURL: 'http://localhost:8000/',
@@ -64,10 +62,8 @@ export async function apiListPopularGames(
 
 export async function apiSearch(searchTerm: string) {
 	//try disabling searchIGDB call. It should not matter any longer.
-	const searchIGDBRequest = client.get(endpoints.searchIGDB(searchTerm));
-	const searchGamesRequest = client.get(endpoints.searchGames(searchTerm));
-
-	const response = await axios.all([searchIGDBRequest, searchGamesRequest]);
+	
+	const response = client.get(endpoints.searchGames(searchTerm));
 
 	return response;
 }

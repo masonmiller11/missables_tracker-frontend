@@ -26,13 +26,13 @@ const PlaythroughComponent: React.FC<{
 	let defaultNewSection: SectionModel = defaults.newSection;
 
 	const [playthrough, setPlaythrough] = useState<PlaythroughModel>();
-	const { apiGetReq, apiGetRequest, apiPatchRequest, apiCreateRequest, apiDeleteRequest, addingNew: addingNewSection } = useApi();
+	const { apiGetRequest, apiPatchRequest, apiCreateRequest, apiDeleteRequest, addingNew: addingNewSection } = useApi();
 
 	useEffect(() => {
 
 		let source = axios.CancelToken.source();
 
-		apiGetReq<PlaythroughModel | undefined>(setPlaythrough, apiReadPlaythrough, [playthroughIdProp, AuthCtx.token, source]);
+		apiGetRequest<PlaythroughModel | undefined>(setPlaythrough, apiReadPlaythrough, [playthroughIdProp, AuthCtx.token, source]);
 
 		return function () {
 			source.cancel('cancelling in cleanup');

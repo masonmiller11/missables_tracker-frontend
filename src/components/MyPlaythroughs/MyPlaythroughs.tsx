@@ -14,7 +14,7 @@ import classes from './MyPlaythroughs.module.css';
 const MyPlaythroughs: React.FC = () => {
 
 	const [playthroughList, setPlaythroughList] = useState<PlaythroughModel[] | null>(null);
-	const { apiGetRequestWithToken: apiGetRequest, apiDeleteRequest } = useApi();
+	const { apiGetRequest, apiDeleteRequest } = useApi();
 	const AuthCtx = useContext(AuthContext);
 
 	const applyPlaythroughResponseData = (responseData: ResponseDataModel<PlaythroughModel>) => {
@@ -26,7 +26,7 @@ const MyPlaythroughs: React.FC = () => {
 		let source = axios.CancelToken.source();
 
 		if (AuthCtx.token)
-			apiGetRequest<PlaythroughModel[] | null>(applyPlaythroughResponseData, apiListThisUsersPlaythroughs, AuthCtx.token, source);
+			apiGetRequest<ResponseDataModel<PlaythroughModel>>(applyPlaythroughResponseData, apiListThisUsersPlaythroughs, [AuthCtx.token, source]);
 
 		return function () {
 			source.cancel('cancelling in cleanup');

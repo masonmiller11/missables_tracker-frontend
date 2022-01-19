@@ -2,28 +2,18 @@
 import { useState, Dispatch, SetStateAction } from 'react';
 import axios, { CancelTokenSource, AxiosResponse, CancelToken } from 'axios';
 
-type apiGetWithToken = (token: string, source: CancelTokenSource) => Promise<AxiosResponse<any>>;
-type apiGetWithoutToken = (id: string, source: CancelTokenSource) => Promise<AxiosResponse<any>>;
+type apiGet = (...params: any) => Promise<AxiosResponse<any>>;
 type apiDelete = (objectId: string | number, token: string, source: CancelTokenSource) => Promise<AxiosResponse<any>>;
 type apiPatch<T> = (object: T, token: string, source: CancelTokenSource) => Promise<AxiosResponse<any>>;
 type apiCreate<T> = (object: T, id: string | number | null, token: string, source: CancelTokenSource) => Promise<AxiosResponse<any>>;
 
-
 interface ReturnedData {
 	saving: boolean,
 	addingNew: boolean,
-	apiGetRequestWithToken: <T> (
-		applyData: Dispatch<SetStateAction<T>>,
-		apiGet: apiGetWithToken,
-		token: string,
-		source: CancelTokenSource,
-		id?: string,
-	) => void,
 	apiGetRequest: <T> (
-		applyData: Dispatch<SetStateAction<T>>,
-		apiGet: apiGetWithoutToken,
-		id: string,
-		source: CancelTokenSource
+		applyData: (data: T) => void,
+		apiGet: apiGet,
+		params: any[]
 	) => void,
 	apiDeleteRequest: (
 		objectId: string | number,
@@ -55,53 +45,28 @@ const useApi = (): ReturnedData => {
 	const [saving, setSaving] = useState<boolean>(false);
 	const [addingNew, setAddingNew] = useState<boolean>(false);
 
-
-
-	const apiGetRequestWithToken = <T extends {}>(
-		applyData: Dispatch<SetStateAction<T>>,
-		apiGet: apiGetWithToken,
-		token: string,
-		source: CancelTokenSource,
-		id: string | number | null = null
+	const apiGetRequest = <T extends {}> (
+		applyData: (data: T) => void,
+		apiGet: apiGet,
+		params: any[]
 	) => {
 
-		apiGet(token, source)
-			.then((response) => {
-				applyData(response.data);
-			})
-			.catch((err) => {
-				if (axios.isCancel(err)) {
-					console.log('api request cancelled');
-				} else {
-					console.log(
-						err.response?.data.message ?? 'unknown error'
-					);
-				}
-			});
+		console.log(params);
 
-	}
-
-	const apiGetRequest = <T extends {}>(
-		applyData: Dispatch<SetStateAction<T>>,
-		apiGet: apiGetWithoutToken,
-		id: string,
-		source: CancelTokenSource
-	) => {
-
-		apiGet(id, source)
-			.then((response) => {
-				applyData(response.data);
-			})
-			.catch((err) => {
-				if (axios.isCancel(err)) {
-					console.log('api request cancelled');
-				} else {
-					console.log(
-						err.response?.data.message ?? 'unknown error'
-					);
-				}
-			});
-
+		apiGet(...params)
+		.then((response) => {
+			applyData(response.data);
+		})
+		.catch((err) => {
+			if (axios.isCancel(err)) {
+				console.log('api request cancelled');
+			} else {
+				console.log(
+					err.response?.data.message ?? 'unknown error' + err
+				);
+			}
+		});
+		
 	}
 
 	const apiDeleteRequest = (
@@ -194,7 +159,6 @@ const useApi = (): ReturnedData => {
 	}
 
 	return {
-		apiGetRequestWithToken,
 		apiGetRequest,
 		apiDeleteRequest,
 		saving,

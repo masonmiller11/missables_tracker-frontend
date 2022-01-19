@@ -15,7 +15,7 @@ import classes from './MyTemplates.module.css';
 const MyTemplates: React.FC = () => {
 
 	const [templateList, setTemplateList] = useState<null | TemplateModel[]>(null);
-	const { apiGetRequestWithToken: apiGetRequest, apiDeleteRequest } = useApi();
+	const {apiGetRequest, apiDeleteRequest } = useApi();
 	const AuthCtx = useContext(AuthContext);
 
 	useEffect(() => {
@@ -23,7 +23,7 @@ const MyTemplates: React.FC = () => {
 		let source = axios.CancelToken.source();
 
 		if (AuthCtx.token)
-			apiGetRequest<TemplateModel[] | null>(setTemplateList, apiListThisUsersTemplates, AuthCtx.token, source);
+			apiGetRequest<TemplateModel[] | null>(setTemplateList, apiListThisUsersTemplates, [AuthCtx.token, source]);
 
 		return function () {
 			source.cancel('cancelling in cleanup');

@@ -1,21 +1,42 @@
 import TemplateSectionModel from './models/Template/TemplateSection';
 import TemplateStepModel from './models/Template/TemplateStep';
 import TemplateModel from './models/Template/Template';
+import StepModel from './models/Playthrough/Step';
+import SectionModel from './models/Playthrough/Section';
 
 class Defaults {
-    newStep: TemplateStepModel;
-    newSection: TemplateSectionModel;
+	newStep: StepModel;
+    newSection: SectionModel;
+    newTemplateStep: TemplateStepModel;
+    newTemplateSection: TemplateSectionModel;
     fakeTemplate: TemplateModel;
 
     constructor() {
-        this.newStep = {
+
+		this.newStep = {
+            id: null,
+            name: 'New Step',
+            position: 100,
+			description: 'New Step Description.',
+			isCompleted: false
+		};
+		
+		this.newSection = {
+            id: null,
+            name: 'New Section',
+            description: 'New Section Description',
+            position: 100,
+            steps: [],
+        };
+
+        this.newTemplateStep = {
             id: null,
             name: 'New Step',
             position: 100,
             description: 'New Step Description.',
         };
 
-        this.newSection = {
+        this.newTemplateSection = {
             id: null,
             name: 'New Section',
             description: 'New Section Description',

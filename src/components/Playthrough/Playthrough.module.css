@@ -1,0 +1,26 @@
+.spinner {
+    padding: 10em;
+} 
+
+.playthroughBackground {
+    background-color: #333333;
+    height: 100%; 
+    min-height: 100vh;
+} 
+
+.playthroughContainer {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-bottom: 5em;
+    padding-top: 7em;
+}
+
+.sectionsContainer {
+    width: 75%;
+    max-width: 1000px;
+}
+
+.addNewSectionButton {
+	margin-right: 62em;
+}

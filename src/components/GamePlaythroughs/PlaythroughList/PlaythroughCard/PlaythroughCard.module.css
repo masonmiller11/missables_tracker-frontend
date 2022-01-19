@@ -1,0 +1,33 @@
+.playthroughCard {
+    width: 100%;
+    margin-top: 1em;
+}
+
+.playthroughCardContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.playthroughCardTitleAndAuthorContainer {
+    flex: 2;
+    justify-content: space-evenly;
+    flex-direction: column;
+    align-items: center;
+}
+.cover {
+    max-width: 18%;
+    margin-right: 2em;
+}
+
+.playthroughCardTitleContainer {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.playthroughCardTitleAndDeleteContainer {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}

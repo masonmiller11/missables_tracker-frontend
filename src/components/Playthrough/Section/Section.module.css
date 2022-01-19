@@ -1,0 +1,36 @@
+.sectionCard {
+    width: 100%;
+    margin-top: 1em;
+}
+
+.sectionTileCardContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.sectionCardTitleAndAuthorContainer {
+    flex: 2;
+    justify-content: space-evenly;
+    flex-direction: column;
+	align-items: center;
+	max-width: 100%;
+}
+
+.sectionCardTitleAndButtonContainer {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	align-items: center;
+}
+
+.positionAndNameContainer{
+	display: flex;
+	flex-direction: row;
+}
+
+.position {
+	max-width: 2em;
+	margin-right: 1em;
+}
+

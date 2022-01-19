@@ -8,9 +8,10 @@ import {
 } from '@blueprintjs/core';
 
 import TemplateModel from '../../../../api/models/Template/Template';
-import classes from './TemplateCard.module.css';
 import TemplateListOptions from '../../../../interfaces/templateListOptions.interface';
 import DeleteButton from '../../../Button/DeleteButton/DeleteButton';
+
+import classes from './TemplateCard.module.css';
 
 const TemplateCard: React.FC<{ template: TemplateModel, templateCardOptions: TemplateListOptions }> = ({ template, templateCardOptions }) => {
 

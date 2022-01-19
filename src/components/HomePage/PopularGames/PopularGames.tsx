@@ -13,7 +13,6 @@ import GamesList from '../../Layout/GameList/GameList';
 const PopularGames: React.FC = (props: any) => {
 
     const [games, setGames] = useState<null | [Game]>(null);
-    //todo create Games data model
 
     useEffect(() => {
         let source = axios.CancelToken.source();

@@ -11,7 +11,6 @@ const TemplateList: React.FC<{
 }> = ({ templates, templateListOptions }) => {
     return (
         <div className={classes.templateListContainer}>
-            {/* <p>Game Id To Pull Templates: {gameIdProp}</p> */}
             {templates!.map((template) => (
                 <TemplateCard
                     templateCardOptions={templateListOptions}

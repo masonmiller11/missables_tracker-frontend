@@ -22,211 +22,200 @@ const TemplateSectionComponent: React.FC<{
 	showEditOption: boolean;
 	onUpdateSection: (section: TemplateSectionModel) => void;
 	onDeleteSection: (section: TemplateSectionModel) => void;
-}> = ({
-	templateSection,
-	showEditOption,
-	onUpdateSection,
-	onDeleteSection,
-}) => {
-		const AuthCtx = useContext(AuthContext);
+}> = ({ templateSection: templateSectionProp, showEditOption, onUpdateSection, onDeleteSection }) => {
+	const AuthCtx = useContext(AuthContext);
 
-		//set the default data used for new Sections
-		const defaults = new Defaults();
-		const defaultNewStep = defaults.newStep;
+	const defaults = new Defaults();
+	const defaultNewStep = defaults.newTemplateStep;
 
-		const { editing, editingStateHandler } = useEditing();
-		const {
-			object: section,
-			editObjectHandler: editSectionHandler,
-			setObjectHandler: setSection,
-		} = useTemplateObject<TemplateSectionModel>(templateSection);
-		const { saving, addingNew: addingNewStep, apiDeleteRequest, apiPatchRequest, apiCreateRequest } = useApi();
+	const { editing, editingStateHandler } = useEditing();
+	const {
+		object: templateSection,
+		editObjectHandler: editTemplateSectionHandler,
+		setObjectHandler: setSection,
+	} = useTemplateObject<TemplateSectionModel>(templateSectionProp);
+	const { saving, addingNew: addingNewStep, apiDeleteRequest, apiPatchRequest, apiCreateRequest } = useApi();
 
-		//TODO move all of these handlers to template component, pass them down in a single object prop.
+	useEffect(() => {
+		setSection(templateSectionProp);
+	}, [templateSectionProp]);
 
-		useEffect(() => {
-			setSection(templateSection);
-		}, [templateSection]);
+	const saveSectionHandler = () => {
+		onUpdateSection(templateSection);
+	};
 
-		const saveSectionHandler = () => {
-			onUpdateSection(section);
-			//set saving(true)
-			//send post request to API
-			//set saving(false)
-		};
+	const deleteSectionHandler = () => {
+		onDeleteSection(templateSection);
+	};
 
-		const deleteSectionHandler = () => {
-			onDeleteSection(section);
-		};
+	const changeSectionPositionHandler = (event: string) => {
+		if (event === '') {
+			editTemplateSectionHandler({ ...templateSection, position: '' });
+		} else {
+			let positionNumber = parseInt(event) ?? setSection(templateSection);
 
-		const changeSectionPositionHandler = (event: string) => {
-			if (event === '') {
-				editSectionHandler({ ...section, position: '' });
-			} else {
-				let positionNumber = parseInt(event) ?? setSection(section);
+			editTemplateSectionHandler({ ...templateSection, position: positionNumber });
+		}
+	};
 
-				editSectionHandler({ ...section, position: positionNumber });
-			}
-		};
+	const deleteStepHandler = (stepToDelete: TemplateStepModel) => {
 
-		const deleteStepHandler = (stepToDelete: TemplateStepModel) => {
+		let source = axios.CancelToken.source();
+
+		if (AuthCtx.token && stepToDelete.id)
+			apiDeleteRequest(stepToDelete.id, apiDeleteTemplateStep, AuthCtx.token, source);
+
+		let newStepArray = templateSection.steps.filter((step) => {
+			return step.id !== stepToDelete.id;
+		});
+
+		setSection({ ...templateSection, steps: newStepArray });
+	};
+
+	const updateStepHandler = (editedTemplateStep: TemplateStepModel) => {
+		//save new step to database
+
+		let source = axios.CancelToken.source();
+
+		if (AuthCtx.token)
+			apiPatchRequest<TemplateStepModel>(editedTemplateStep, AuthCtx.token, source, apiPatchTemplateStep);
+
+		//find index of step we're updating.
+		let indexOfStep = templateSection.steps.findIndex(
+			(step) => step.id === editedTemplateStep.id
+		);
+
+		//create newStepsArray, removing the original values of the editedStep
+		let newStepsArray = templateSection.steps.filter((step) => {
+			return step.id !== editedTemplateStep.id;
+		});
+
+		//splice in the new editedStep
+		newStepsArray.splice(indexOfStep, 0, editedTemplateStep);
+
+		//reset the state property
+		setSection({ ...templateSection, steps: newStepsArray });
+	};
+
+	const addNewStepHandler = () => {
+
+		const applyNewTemplateStep = (newStep: TemplateStepModel) => {
+			let newStepsArray = templateSection.steps;
+			newStepsArray.push(newStep);
+			setSection({ ...templateSection, steps: newStepsArray });
+		}
+
+		if (AuthCtx.token && templateSection.id) {
 
 			let source = axios.CancelToken.source();
 
-			if (AuthCtx.token && stepToDelete.id)
-				apiDeleteRequest(stepToDelete.id, apiDeleteTemplateStep, AuthCtx.token, source);
-
-			let newStepArray = section.steps.filter((step) => {
-				return step.id !== stepToDelete.id;
-			});
-
-			setSection({ ...section, steps: newStepArray });
-		};
-
-		const updateStepHandler = (editedTemplateStep: TemplateStepModel) => {
-			//save new step to database
-
-			let source = axios.CancelToken.source();
-
-			if (AuthCtx.token)
-				apiPatchRequest<TemplateStepModel>(editedTemplateStep, AuthCtx.token, source, apiPatchTemplateStep);
-
-			//find index of step we're updating.
-			let indexOfStep = section.steps.findIndex(
-				(step) => step.id === editedTemplateStep.id
+			apiCreateRequest<TemplateStepModel>(
+				defaultNewStep,
+				templateSection.id,
+				AuthCtx.token,
+				source,
+				apiCreateTemplateStep,
+				applyNewTemplateStep
 			);
+		}
+	};
 
-			//create newStepsArray, removing the original values of the editedStep
-			let newStepsArray = section.steps.filter((step) => {
-				return step.id !== editedTemplateStep.id;
-			});
-
-			//splice in the new editedStep
-			newStepsArray.splice(indexOfStep, 0, editedTemplateStep);
-
-			//reset the state property
-			setSection({ ...section, steps: newStepsArray });
-		};
-
-		const addNewStepHandler = () => {
-
-			const applyNewTemplateStep = (newStep: TemplateStepModel) => {
-				let newStepsArray = section.steps;
-				newStepsArray.push(newStep);
-				setSection({ ...section, steps: newStepsArray });
-			}
-
-			if (AuthCtx.token && section.id) {
-
-				let source = axios.CancelToken.source();
-
-				apiCreateRequest<TemplateStepModel>(
-					defaultNewStep,
-					section.id,
-					AuthCtx.token,
-					source,
-					apiCreateTemplateStep,
-					applyNewTemplateStep
-				);
-			}
-		};
-
-		return (
-			<Card className={classes.sectionCard}>
-				<div className={classes.sectionTileCardContainer}>
-					<div className={classes.sectionCardTitleAndAuthorContainer}>
-						<div className={classes.sectionCardTitleAndButtonContainer}>
-							<div className={classes.positionAndNameContainer}>
-								<h2 className={classes.sectionCardTitle}>Part #</h2>
-								<div className={classes.position}>
-									<h2>
-										<EditableText
-											onChange={(newValueString) => {
-												changeSectionPositionHandler(
-													newValueString
-												);
-											}}
-											disabled={editing ? false : true}
-											value={section.position.toString()}
-											maxLength={2}
-											onConfirm={() => saveSectionHandler()}
-										/>
-									</h2>
-								</div>
-
+	return (
+		<Card className={classes.sectionCard}>
+			<div className={classes.sectionTileCardContainer}>
+				<div className={classes.sectionCardTitleAndAuthorContainer}>
+					<div className={classes.sectionCardTitleAndButtonContainer}>
+						<div className={classes.positionAndNameContainer}>
+							<h2 className={classes.sectionCardTitle}>Part #</h2>
+							<div className={classes.position}>
 								<h2>
 									<EditableText
 										onChange={(newValueString) => {
-											editSectionHandler({
-												...section,
-												name: newValueString,
-											});
+											changeSectionPositionHandler(
+												newValueString
+											);
 										}}
-										disabled={!editing}
-										value={section.name}
+										disabled={editing ? false : true}
+										value={templateSection.position.toString()}
+										maxLength={2}
 										onConfirm={() => saveSectionHandler()}
 									/>
 								</h2>
 							</div>
-							<div>
-								{showEditOption && editing && (
-									<DeleteButton
-										danger={true}
-										onDelete={deleteSectionHandler}
-									/>
-								)}
-								{showEditOption && !saving && (
-									<EditButton
-										isEditing={editing}
-										onClick={editingStateHandler}
-									/>
-								)}
-							</div>
-						</div>
-						{/* <Collapse isOpen> */}
 
-						<p>
-							<strong>Section Summary: </strong>
-						</p>
-						<p>
-							<EditableText
-								onChange={(newValueString) => {
-									editSectionHandler({
-										...section,
-										description: newValueString,
-									});
-								}}
-								disabled={editing ? false : true}
-								value={section.description}
-								onConfirm={() => saveSectionHandler()}
-								multiline={true}
-							/>
-						</p>
-						<hr />
-						{section.steps
-							.sort((a, b) => (a.position > b.position ? 1 : -1))
-							.map((step) => (
-								<TemplateStep
-									key={step.id}
-									editing={editing}
-									templateStep={step}
-									onUpdateStep={updateStepHandler}
-									onDeleteStep={deleteStepHandler}
+							<h2>
+								<EditableText
+									onChange={(newValueString) => {
+										editTemplateSectionHandler({
+											...templateSection,
+											name: newValueString,
+										});
+									}}
+									disabled={!editing}
+									value={templateSection.name}
+									onConfirm={() => saveSectionHandler()}
 								/>
-							))}
-						{editing && (
-							<AddNewButton
-								onClick={addNewStepHandler}
-								savingNewObject={addingNewStep}
-								objectName="Step"
-							/>
-						)}
-						{/* </Collapse> */}
-						{saving && <SavingMessage />}
+							</h2>
+						</div>
+						<div>
+							{showEditOption && editing && (
+								<DeleteButton
+									danger={true}
+									onDelete={deleteSectionHandler}
+								/>
+							)}
+							{showEditOption && !saving && (
+								<EditButton
+									isEditing={editing}
+									onClick={editingStateHandler}
+								/>
+							)}
+						</div>
 					</div>
+					{/* <Collapse isOpen> */}
+
+					<p>
+						<strong>Section Summary: </strong>
+					</p>
+					<p>
+						<EditableText
+							onChange={(newValueString) => {
+								editTemplateSectionHandler({
+									...templateSection,
+									description: newValueString,
+								});
+							}}
+							disabled={editing ? false : true}
+							value={templateSection.description}
+							onConfirm={() => saveSectionHandler()}
+							multiline={true}
+						/>
+					</p>
+					<hr />
+					{templateSection.steps
+						.sort((a, b) => (a.position > b.position ? 1 : -1))
+						.map((step) => (
+							<TemplateStep
+								key={step.id}
+								editing={editing}
+								templateStep={step}
+								onUpdateStep={updateStepHandler}
+								onDeleteStep={deleteStepHandler}
+							/>
+						))}
+					{editing && (
+						<AddNewButton
+							onClick={addNewStepHandler}
+							savingNewObject={addingNewStep}
+							objectName="Step"
+						/>
+					)}
+					{/* </Collapse> */}
+					{saving && <SavingMessage />}
 				</div>
-			</Card>
-		);
-	};
+			</div>
+		</Card>
+	);
+};
 
 export default TemplateSectionComponent;

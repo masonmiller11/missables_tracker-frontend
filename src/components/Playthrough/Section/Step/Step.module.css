@@ -27,10 +27,14 @@
 
 .newStepMessage {
 	max-width: 7em;
-	background-color:#275652
+	background-color:#275652;
 }
 
 .postionNameDeleteContainer {
 	display: flex;
 	justify-content: space-between;
+}
+
+.completed {
+	color: rgba(160, 160, 160, 0.425);
 }

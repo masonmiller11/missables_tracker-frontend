@@ -4,27 +4,26 @@ import axios from 'axios';
 
 import TemplateModel from '../../api/models/Template/Template';
 import TemplateList from '../GameTemplates//TemplateList/TemplateList';
-import classes from './MyTemplates.module.css';
 import AuthContext from '../../store/auth-context';
 import useApi from '../../hooks/useApi';
-
 import { apiListThisUsersTemplates, apiDeleteTemplate, apiDeleteTemplateSection } from '../../api';
+
+
+import classes from './MyTemplates.module.css';
+
 
 const MyTemplates: React.FC = () => {
 
-	const [templateList, setTemplateList] = useState<null | TemplateModel[]>(
-		null
-	);
-	const AuthCtx = useContext(AuthContext);
+	const [templateList, setTemplateList] = useState<null | TemplateModel[]>(null);
 	const { apiGetRequestWithToken: apiGetRequest, apiDeleteRequest } = useApi();
+	const AuthCtx = useContext(AuthContext);
 
 	useEffect(() => {
 
 		let source = axios.CancelToken.source();
 
-		if (AuthCtx.token) {
-			apiGetRequest<TemplateModel[]|null>(setTemplateList, apiListThisUsersTemplates, AuthCtx.token, source);
-		}
+		if (AuthCtx.token)
+			apiGetRequest<TemplateModel[] | null>(setTemplateList, apiListThisUsersTemplates, AuthCtx.token, source);
 
 		return function () {
 			source.cancel('cancelling in cleanup');
@@ -36,9 +35,9 @@ const MyTemplates: React.FC = () => {
 
 		let source = axios.CancelToken.source();
 
-		if (AuthCtx.token) {
+		if (AuthCtx.token)
 			apiDeleteRequest(templateToDelete.id, apiDeleteTemplate, AuthCtx.token, source);
-		}
+
 
 		let newTemplatesArray = templateList!.filter((template) => {
 			return template.id !== templateToDelete.id;

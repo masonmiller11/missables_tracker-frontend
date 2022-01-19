@@ -9,13 +9,7 @@ import TemplateSection from './TemplateSection/TemplateSectionComponent';
 import TemplateSectionModel from '../../api/models/Template/TemplateSection';
 import AddNewButton from '../Button/AddNewButton/AddNewButton';
 import Defaults from '../../api/DefaultValues';
-import {
-	apiReadTemplate,
-	apiCreateTemplateSection,
-	apiDeleteTemplateSection,
-	apiPatchTemplateSection,
-	apiPatchTemplate
-} from '../../api';
+import { apiReadTemplate, apiCreateTemplateSection, apiDeleteTemplateSection, apiPatchTemplateSection, apiPatchTemplate } from '../../api';
 import AuthContext from '../../store/auth-context';
 import useApi from '../../hooks/useApi';
 
@@ -28,7 +22,7 @@ const TemplateComponent: React.FC<{
 
 	//set the default data used for new Sections
 	const defaults = new Defaults();
-	let defaultNewSection: TemplateSectionModel = defaults.newSection;
+	let defaultNewSection: TemplateSectionModel = defaults.newTemplateSection;
 
 	const [showEditOption, setShowEditOption] = useState<boolean>(editingAllowed);
 	const [template, setTemplate] = useState<TemplateModel>();

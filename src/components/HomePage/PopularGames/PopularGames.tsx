@@ -20,7 +20,7 @@ const PopularGames: React.FC = (props: any) => {
 
         apiListPopularGames(6, 1, source)
             .then((response) => {
-                setGames(response.data.games);
+                setGames(response.data.items);
             })
             .catch((err) => {
                 if (axios.isCancel(err)) {

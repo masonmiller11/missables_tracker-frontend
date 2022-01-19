@@ -32,7 +32,7 @@ const GameTemplates: React.FC<{ gameId: string }> = ({
 
         apiGetGameAndTemplateList(gameIdProp, source)
             .then((responses) => {
-                setTemplateList(responses[0].data.templates);
+                setTemplateList(responses[0].data.items);
                 setGame(responses[1].data);
             })
             .catch((err) => {

@@ -4,7 +4,6 @@ class Template {
 
     title: string;
     description: string;
-    
     id: number;
     visibility: boolean;
     owner: {

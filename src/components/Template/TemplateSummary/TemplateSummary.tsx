@@ -33,7 +33,7 @@ const TemplateSummary: React.FC<{
 	let history = useHistory();
 
     let newPlaythrough: PlaythroughSubmissionModel = {
-        name: 'New Playthrough',
+        name: 'My New Playthrough',
         description: 'New Description',
         gameId: template.game.gameID,
         templateId: template.id,

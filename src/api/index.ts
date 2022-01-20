@@ -8,7 +8,7 @@ import TemplateModel from '../api/models/Template/Template';
 import PlaythroughModel from '../api/models/Playthrough/Playthrough';
 import StepModel from '../api/models/Playthrough/Step';
 import SectionModel from '../api/models/Playthrough/Section';
-import {PlaythroughSubmissionModel} from '../api/models/Playthrough/PlaythroughModel';
+import { PlaythroughSubmissionModel } from '../api/models/Playthrough/PlaythroughModel';
 
 export const client = axios.create({
 	baseURL: 'http://localhost:8000/',
@@ -63,7 +63,7 @@ export async function apiListPopularGames(
 
 export async function apiSearch(searchTerm: string) {
 	//try disabling searchIGDB call. It should not matter any longer.
-	
+
 	const response = client.get(endpoints.searchGames(searchTerm));
 
 	return response;
@@ -391,18 +391,22 @@ export async function apiPatchPlaythrough(
 }
 
 export async function apiCreatePlaythrough(
-	playthrough: PlaythroughSubmissionModel,
-	gameId: string | number|null,
+	newPlaythrough: PlaythroughSubmissionModel,
+	gameId: string | number | null,
 	token: string,
 	source: CancelTokenSource,
 ) {
+
 	const body = {
-		description: playthrough.description,
+		description: newPlaythrough.description,
 		gameId: gameId,
-		name: playthrough.name,
-		visibility: playthrough.visibility,
-		templateId: playthrough.templateId
+		name: newPlaythrough.name,
+		visibility: newPlaythrough.visibility,
+		templateId: newPlaythrough.templateId
 	};
+
+	if (typeof gameId === 'string')
+		body.gameId = parseInt(gameId);
 
 	const config = getConfig(token, source);
 
@@ -464,20 +468,18 @@ export async function apiCreateStep(
 	source: CancelTokenSource,
 ) {
 	if (sectionId) {
-		
-	const body = {
-		description: step.description,
-		position: step.position,
-		name: step.name,
-		sectionId: sectionId,
-		isCompleted: step.isCompleted
-	};
 
-		if (typeof sectionId === 'string') {
+		const body = {
+			description: step.description,
+			position: step.position,
+			name: step.name,
+			sectionId: sectionId,
+			isCompleted: step.isCompleted
+		};
 
+		if (typeof sectionId === 'string')
 			body.sectionId = parseInt(sectionId);
 
-		}
 
 		const config = getConfig(token, source);
 		const endpoint = endpoints.createStep;

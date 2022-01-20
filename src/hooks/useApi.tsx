@@ -27,13 +27,13 @@ interface ReturnedData {
 		source: CancelTokenSource,
 		apiPatch: apiPatch<T>
 	) => void,
-	apiCreateRequest: <T extends { id: null | string | number }>(
+	apiCreateRequest: <T extends { }>(
 		data: T,
 		parentId: string | number,
 		token: string,
 		source: CancelTokenSource,
 		apiCreate: apiCreate<T>,
-		applyData: (data: T) => void
+		applyData: (data: any) => void
 	) => void
 }
 
@@ -123,13 +123,13 @@ const useApi = (): ReturnedData => {
 
 	}
 
-	const apiCreateRequest = <T extends { id: null | string | number }>(
+	const apiCreateRequest = <T extends { }>(
 		data: T,
 		parentId: string | number,
 		token: string,
 		source: CancelTokenSource,
 		apiCreate: apiCreate<T>,
-		applyData: (data: T) => void
+		applyData: (data: any) => void
 	) => {
 
 		setSaving(true);
@@ -138,8 +138,7 @@ const useApi = (): ReturnedData => {
 		let returnData = apiCreate(data, parentId, token, source)
 			.then((response) => {
 				setSaving(false)
-				data.id = response.data.id;
-				applyData(data);
+				applyData(response.data);
 				setAddingNew(false);
 			})
 			.catch((err) => {

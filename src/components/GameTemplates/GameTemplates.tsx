@@ -1,73 +1,78 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Spinner } from '@blueprintjs/core';
 
+import GameModel, { Game } from '../../api/models/Game/Game';
+import TemplateModel, { Template } from '../../api/models/Template/Template';
+import ResponseDataModel from '../../api/models/ResponseData/ReadResponseData';
+
 import TemplateList from './TemplateList/TemplateList';
 import GameSummaryCard from '../Layout/GameSummary/GameSummaryCard';
+
+import useApi from '../../hooks/useApi';
+
 import classes from './GameTemplates.module.css';
-import TemplateModel from '../../api/models/Template/Template';
-import { apiGetGameAndTemplateList } from '../../api';
-import GameModel from '../../api/models/Game/Game';
 
 const GameTemplates: React.FC<{ gameId: string }> = ({
-    gameId: gameIdProp,
+	gameId: gameIdProp,
 }) => {
-    //TODO grab Game here and pass into component as props like what we're doing with templates.
 
-    const gameTemplatesListOptions = {
-        showCover: false,
-        showFavoriteStar: true,
+	const gameTemplatesListOptions = {
+		showCover: false,
+		showFavoriteStar: true,
 		templateGuideUrl: '/guides/',
 		allowDelete: false,
-    };
+	};
 
-    const [templateList, setTemplateList] = useState<null | TemplateModel[]>(
-        null
-    );
-    const [game, setGame] = useState<null | GameModel>(null);
+	const [templateList, setTemplateList] = useState<null | Template[]>(null);
+	const [game, setGame] = useState<Game>();
+	const [loading, setLoading] = useState<boolean>(false);
+	const { apiGetRequest } = useApi();
 
-    useEffect(() => {
-        let source = axios.CancelToken.source();
+	const applyTemplateResponseData = (responseData: ResponseDataModel<Template>) => {
+		setTemplateList(responseData.items);
+	} 
 
-        apiGetGameAndTemplateList(gameIdProp, source)
-            .then((responses) => {
-                setTemplateList(responses[0].data.items);
-                setGame(responses[1].data);
-            })
-            .catch((err) => {
-                if (axios.isCancel(err)) {
-                    console.log('api request cancelled');
-                } else {
-                    console.log(err.response?.data.message ?? 'unknown error');
-                }
-            });
+	useEffect(() => {
 
-        //todo add real error handling
-    }, [gameIdProp]);
+		setLoading(true);
 
-    if (game && templateList) {
-        //get Game and templates in here. If we don't have both, show loading. Remove loading from below children.
-        return (
-            <div className={classes.gameTemplatesBackground}>
-                <div className={classes.gameTemplatesContainer}>
-                    <GameSummaryCard game={game} />
-                    <TemplateList
-                        templates={templateList}
-                        templateListOptions={gameTemplatesListOptions}
-                    />
-                </div>
-            </div>
-        );
-    }
+		let source = axios.CancelToken.source();
 
-    return (
-        <div className={classes.gameTemplatesBackground}>
-            <div className={classes.gameTemplatesContainer}>
-                <Spinner className={classes.spinner} />
-            </div>
-        </div>
-    );
+		(async function () {
+
+			apiGetRequest([gameIdProp, source], TemplateModel.list, applyTemplateResponseData)
+
+			apiGetRequest([gameIdProp, source], GameModel.read, setGame);
+
+		})().then(() => setLoading(false));
+
+
+		//todo add real error handling
+	}, [gameIdProp]);
+
+	if (!loading && game) {
+		//get Game and templates in here. If we don't have both, show loading. Remove loading from below children.
+		return (
+			<div className={classes.gameTemplatesBackground}>
+				<div className={classes.gameTemplatesContainer}>
+					<GameSummaryCard game={game} />
+					<TemplateList
+						templates={templateList}
+						templateListOptions={gameTemplatesListOptions}
+					/>
+				</div>
+			</div>
+		);
+	}
+
+	return (
+		<div className={classes.gameTemplatesBackground}>
+			<div className={classes.gameTemplatesContainer}>
+				<Spinner className={classes.spinner} />
+			</div>
+		</div>
+	);
 };
 
 export default GameTemplates;

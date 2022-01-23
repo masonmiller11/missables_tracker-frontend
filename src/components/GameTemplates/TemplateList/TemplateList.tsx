@@ -1,12 +1,15 @@
 import React from 'react';
 
-import TemplateModel from '../../../api/models/Template/Template';
-import classes from './TemplateList.module.css';
-import TemplateCard from './TemplateCard/TemplateCard';
+import {Template} from '../../../api/models/Template/Template';
 import TemplateListOptions from '../../../interfaces/templateListOptions.interface';
 
+import TemplateCard from './TemplateCard/TemplateCard';
+
+import classes from './TemplateList.module.css';
+
+
 const TemplateList: React.FC<{
-    templates: TemplateModel[] | null;
+    templates: Template[] | null;
     templateListOptions: TemplateListOptions;
 }> = ({ templates, templateListOptions }) => {
     return (

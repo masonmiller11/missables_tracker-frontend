@@ -2,10 +2,11 @@ import React, { useEffect, useContext } from 'react';
 import { Card, EditableText } from '@blueprintjs/core';
 import axios from 'axios';
 
-import SectionModel from '../../../api/models/Playthrough/Section';
-import StepModel from '../../../api/models/Playthrough/Step';
-import classes from './Section.module.css';
-import Step from './Step/StepComponent';
+import { Section } from '../../../api/models/Playthrough/Section';
+import StepModel, { Step, StepSubmission } from '../../../api/models/Playthrough/Step';
+import CreateResponseData from '../../../api/models/ResponseData/CreateResponseData';
+
+import StepComponent from './Step/StepComponent';
 import EditButton from '../../Button/EditButton/EditButton';
 import AddNewButton from '../../Button/AddNewButton/AddNewButton';
 import DeleteButton from '../../Button/DeleteButton/DeleteButton';
@@ -14,28 +15,23 @@ import Defaults from '../../../api/DefaultValues';
 import useEditing from '../../../hooks/useEditing';
 import useApi from '../../../hooks/useApi';
 import useTemplateObject from '../../../hooks/useTemplateObject';
-import { apiPatchStep, apiCreateStep, apiDeleteStep } from '../../../api';
 import AuthContext from '../../../store/auth-context';
-import Section from '../../../api/models/Playthrough/Section';
+import classes from './Section.module.css';
 
 const SectionComponent: React.FC<{
 	section: Section;
 	showEditOption: boolean;
-	onUpdateSection: (section: SectionModel) => void;
-	onDeleteSection: (section: SectionModel) => void;
+	onUpdateSection: (section: Section) => void;
+	onDeleteSection: (section: Section) => void;
 }> = ({ section: sectionProp, showEditOption, onUpdateSection, onDeleteSection }) => {
 
 	const AuthCtx = useContext(AuthContext);
 
 	const defaults = new Defaults();
-	const defaultNewStep = defaults.newStep;
+	const defaultNewStep: StepSubmission = { ...defaults.newStep, sectionId: parseInt(sectionProp.id as string) };
 
 	const { editing, editingStateHandler } = useEditing();
-	const {
-		object: section,
-		editObjectHandler: editSectionHandler,
-		setObjectHandler: setSection,
-	} = useTemplateObject<SectionModel>(sectionProp);
+	const { object: section, editObjectHandler: editSectionHandler, setObjectHandler: setSection } = useTemplateObject<Section>(sectionProp);
 	const { saving, addingNew: addingNewStep, apiDeleteRequest, apiPatchRequest, apiCreateRequest } = useApi();
 
 	useEffect(() => {
@@ -60,12 +56,12 @@ const SectionComponent: React.FC<{
 		}
 	};
 
-	const deleteStepHandler = (stepToDelete: StepModel) => {
+	const deleteStepHandler = (stepToDelete: Step) => {
 
 		let source = axios.CancelToken.source();
 
 		if (AuthCtx.token && stepToDelete.id)
-			apiDeleteRequest(stepToDelete.id, apiDeleteStep, AuthCtx.token, source);
+			apiDeleteRequest<Step>(stepToDelete, AuthCtx.token, source, StepModel.delete);
 
 		let newStepArray = section.steps.filter((step) => {
 			return step.id !== stepToDelete.id;
@@ -74,13 +70,13 @@ const SectionComponent: React.FC<{
 		setSection({ ...section, steps: newStepArray });
 	};
 
-	const updateStepHandler = (editedTemplateStep: StepModel) => {
+	const updateStepHandler = (editedTemplateStep: Step) => {
 		//save new step to database
 
 		let source = axios.CancelToken.source();
 
 		if (AuthCtx.token)
-			apiPatchRequest<StepModel>(editedTemplateStep, AuthCtx.token, source, apiPatchStep);
+			apiPatchRequest<Step>(editedTemplateStep, AuthCtx.token, source, StepModel.patch);
 
 		//find index of step we're updating.
 		let indexOfStep = section.steps.findIndex(
@@ -101,9 +97,9 @@ const SectionComponent: React.FC<{
 
 	const addNewStepHandler = () => {
 
-		const applyNewTemplateStep = (newStep: StepModel) => {
+		const applyNewTemplateStep = (responseData: CreateResponseData) => {
 			let newStepsArray = section.steps;
-			newStepsArray.push(newStep);
+			newStepsArray.push({...defaultNewStep, id: responseData.id });
 			setSection({ ...section, steps: newStepsArray });
 		}
 
@@ -111,12 +107,11 @@ const SectionComponent: React.FC<{
 
 			let source = axios.CancelToken.source();
 
-			apiCreateRequest<StepModel>(
+			apiCreateRequest<StepSubmission>(
 				defaultNewStep,
-				section.id,
 				AuthCtx.token,
 				source,
-				apiCreateStep,
+				StepModel.create,
 				applyNewTemplateStep
 			);
 		}
@@ -197,7 +192,7 @@ const SectionComponent: React.FC<{
 					{section.steps
 						.sort((a, b) => (a.position > b.position ? 1 : -1))
 						.map((step) => (
-							<Step
+							<StepComponent
 								key={step.id}
 								editing={editing}
 								step={step}

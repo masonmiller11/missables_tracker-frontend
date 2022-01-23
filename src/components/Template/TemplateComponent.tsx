@@ -2,37 +2,36 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Spinner } from '@blueprintjs/core';
 import axios from 'axios';
 
-import classes from './Template.module.css';
-import TemplateModel from '../../api/models/Template/Template';
+import TemplateModel, { Template } from '../../api/models/Template/Template';
+import TemplateSectionModel, { TemplateSection, TemplateSectionSubmission } from '../../api/models/Template/TemplateSection';
+import CreateResponseData from '../../api/models/ResponseData/CreateResponseData';
+
 import TemplateSummary from './TemplateSummary/TemplateSummary';
-import TemplateSection from './TemplateSection/TemplateSectionComponent';
-import TemplateSectionModel from '../../api/models/Template/TemplateSection';
+import TemplateSectionComponent from './TemplateSection/TemplateSectionComponent';
 import AddNewButton from '../Button/AddNewButton/AddNewButton';
 import Defaults from '../../api/DefaultValues';
-import { apiReadTemplate, apiCreateTemplateSection, apiDeleteTemplateSection, apiPatchTemplateSection, apiPatchTemplate } from '../../api';
 import AuthContext from '../../store/auth-context';
 import useApi from '../../hooks/useApi';
+import classes from './Template.module.css';
 
-const TemplateComponent: React.FC<{
-	templateId: string;
-	editingAllowed: boolean;
-}> = ({ templateId: templateIdProp, editingAllowed }) => {
+
+const TemplateComponent: React.FC<{ templateId: string; editingAllowed: boolean }> = ({ templateId: templateIdProp, editingAllowed }) => {
 
 	const AuthCtx = useContext(AuthContext);
 
 	//set the default data used for new Sections
 	const defaults = new Defaults();
-	let defaultNewSection: TemplateSectionModel = defaults.newTemplateSection;
+	let defaultNewSection: TemplateSectionSubmission = { ...defaults.newTemplateSection, templateId: parseInt(templateIdProp) };
 
 	const [showEditOption, setShowEditOption] = useState<boolean>(editingAllowed);
-	const [template, setTemplate] = useState<TemplateModel>();
+	const [template, setTemplate] = useState<Template>();
 	const { apiGetRequest, apiPatchRequest, apiCreateRequest, apiDeleteRequest, addingNew: addingNewSection } = useApi();
 
 	useEffect(() => {
 
 		let source = axios.CancelToken.source();
 
-		apiGetRequest<TemplateModel | undefined>(setTemplate, apiReadTemplate, [templateIdProp, source]);
+		apiGetRequest<Template | undefined>([templateIdProp, source], TemplateModel.read, setTemplate);
 
 		return function () {
 			source.cancel('cancelling in cleanup');
@@ -40,17 +39,17 @@ const TemplateComponent: React.FC<{
 
 	}, [templateIdProp]);
 
-	const editTemplateHandler = (templateObject: TemplateModel) => {
+	const editTemplateHandler = (templateObject: Template) => {
 		setTemplate(templateObject);
 	};
 
-	const updateSectionHandler = (editedSection: TemplateSectionModel) => {
+	const updateSectionHandler = (editedSection: TemplateSection) => {
 		if (template) {
 
 			let source = axios.CancelToken.source();
 
 			if (AuthCtx.token) {
-				apiPatchRequest<TemplateSectionModel>(editedSection, AuthCtx.token, source, apiPatchTemplateSection)
+				apiPatchRequest<TemplateSection>(editedSection, AuthCtx.token, source, TemplateSectionModel.patch)
 			}
 
 			//find index of section we're updating
@@ -74,10 +73,10 @@ const TemplateComponent: React.FC<{
 	const addNewSectionHandler = () => {
 		if (template) {
 
-			const applyNewTemplateSection = (newSection: TemplateSectionModel) => {
+			const applyNewTemplateSectionId = (responseData: CreateResponseData) => {
 
 				let newSectionArray = template.sections;
-				newSectionArray.push(newSection);
+				newSectionArray.push({...defaultNewSection, steps: [], id: responseData.id});
 				setTemplate({ ...template, sections: newSectionArray });
 			}
 
@@ -85,26 +84,28 @@ const TemplateComponent: React.FC<{
 
 				let source = axios.CancelToken.source();
 
-				apiCreateRequest<TemplateSectionModel>(
+				apiCreateRequest<TemplateSectionSubmission>(
 					defaultNewSection,
-					template.id,
 					AuthCtx.token,
 					source,
-					apiCreateTemplateSection,
-					applyNewTemplateSection);
+					TemplateSectionModel.create,
+					applyNewTemplateSectionId);
 			}
 
 		}
 
 	};
 
-	const deleteSectionHandler = (sectionToDelete: TemplateSectionModel) => {
+	const deleteSectionHandler = (sectionToDelete: TemplateSection) => {
 		if (template) {
 
 			let source = axios.CancelToken.source();
 
 			if (AuthCtx.token && sectionToDelete.id)
-				apiDeleteRequest(sectionToDelete.id, apiDeleteTemplateSection, AuthCtx.token, source)
+				apiDeleteRequest<TemplateSection>(sectionToDelete,
+					AuthCtx.token,
+					source,
+					TemplateSectionModel.delete);
 
 			let newSectionArray = template.sections.filter((section) => {
 				return section.id !== sectionToDelete.id;
@@ -119,7 +120,7 @@ const TemplateComponent: React.FC<{
 		let source = axios.CancelToken.source();
 
 		if (AuthCtx.token)
-			apiPatchRequest<TemplateModel>(template!, AuthCtx.token, source, apiPatchTemplate);
+			apiPatchRequest<Template>(template!, AuthCtx.token, source, TemplateModel.patch);
 
 	};
 
@@ -138,7 +139,7 @@ const TemplateComponent: React.FC<{
 						{template.sections
 							.sort((a, b) => (a.position > b.position ? 1 : -1))
 							.map((section) => (
-								<TemplateSection
+								<TemplateSectionComponent
 									key={section.id}
 									templateSection={section}
 									showEditOption={showEditOption}

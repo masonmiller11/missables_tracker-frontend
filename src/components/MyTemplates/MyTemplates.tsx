@@ -2,11 +2,10 @@ import React, { useEffect, useState, useContext } from 'react';
 import { Spinner } from '@blueprintjs/core';
 import axios from 'axios';
 
-import TemplateModel from '../../api/models/Template/Template';
+import TemplateModel, { Template } from '../../api/models/Template/Template';
 import TemplateList from '../GameTemplates//TemplateList/TemplateList';
 import AuthContext from '../../store/auth-context';
 import useApi from '../../hooks/useApi';
-import { apiListThisUsersTemplates, apiDeleteTemplate, apiDeleteTemplateSection } from '../../api';
 
 
 import classes from './MyTemplates.module.css';
@@ -14,8 +13,8 @@ import classes from './MyTemplates.module.css';
 
 const MyTemplates: React.FC = () => {
 
-	const [templateList, setTemplateList] = useState<null | TemplateModel[]>(null);
-	const {apiGetRequest, apiDeleteRequest } = useApi();
+	const [templateList, setTemplateList] = useState<null | Template[]>(null);
+	const { apiGetRequest, apiDeleteRequest } = useApi();
 	const AuthCtx = useContext(AuthContext);
 
 	useEffect(() => {
@@ -23,7 +22,7 @@ const MyTemplates: React.FC = () => {
 		let source = axios.CancelToken.source();
 
 		if (AuthCtx.token)
-			apiGetRequest<TemplateModel[] | null>(setTemplateList, apiListThisUsersTemplates, [AuthCtx.token, source]);
+			apiGetRequest<Template[] | null>([AuthCtx.token, source], TemplateModel.listThisUsers, setTemplateList);
 
 		return function () {
 			source.cancel('cancelling in cleanup');
@@ -31,12 +30,12 @@ const MyTemplates: React.FC = () => {
 
 	}, [AuthCtx]);
 
-	const deleteTemplateHandler = (templateToDelete: TemplateModel) => {
+	const deleteTemplateHandler = (templateToDelete: Template) => {
 
 		let source = axios.CancelToken.source();
 
 		if (AuthCtx.token)
-			apiDeleteRequest(templateToDelete.id, apiDeleteTemplate, AuthCtx.token, source);
+			apiDeleteRequest<Template>(templateToDelete, AuthCtx.token, source, TemplateModel.delete);
 
 
 		let newTemplatesArray = templateList!.filter((template) => {

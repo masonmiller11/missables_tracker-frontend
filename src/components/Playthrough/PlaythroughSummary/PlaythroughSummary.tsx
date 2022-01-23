@@ -7,15 +7,15 @@ import {
 	EditableText
 } from '@blueprintjs/core';
 
-import PlaythroughModel from '../../../api/models/Playthrough/Playthrough';
-import classes from './PlaythroughSummary.module.css';
+import { Playthrough } from '../../../api/models/Playthrough/Playthrough';
 import EditButton from '../../Button/EditButton/EditButton';
 import useEditing from '../../../hooks/useEditing';
+import classes from './PlaythroughSummary.module.css';
 
 const PlaythroughSummary: React.FC<{
-	onPlaythroughChange: (template: PlaythroughModel) => void,
+	onPlaythroughChange: (template: Playthrough) => void,
 	showEditOption: boolean,
-	playthrough: PlaythroughModel,
+	playthrough: Playthrough,
 	onPlaythroughConfirm: () => void
 }> = ({ showEditOption, playthrough, onPlaythroughChange, onPlaythroughConfirm }) => {
 

@@ -2,23 +2,22 @@ import React, { useEffect, useState, useContext } from 'react';
 import { Spinner } from '@blueprintjs/core';
 import axios from 'axios';
 
-import PlaythroughModel from '../../api/models/Playthrough/Playthrough';
-import ResponseDataModel from '../../api/models/ResponseData';
+import PlaythroughModel, { Playthrough } from '../../api/models/Playthrough/Playthrough';
+import ResponseDataModel from '../../api/models/ResponseData/ReadResponseData';
 import PlaythroughList from '../GamePlaythroughs/PlaythroughList/PlaythroughList';
 import useApi from '../../hooks/useApi';
-import { apiDeletePlaythrough, apiListThisUsersPlaythroughs } from '../../api';
 import AuthContext from '../../store/auth-context';
 
 import classes from './MyPlaythroughs.module.css';
 
 const MyPlaythroughs: React.FC = () => {
 
-	const [playthroughList, setPlaythroughList] = useState<PlaythroughModel[] | null>(null);
+	const [playthroughList, setPlaythroughList] = useState<Playthrough[] | null>(null);
 	const { apiGetRequest, apiDeleteRequest } = useApi();
 	const AuthCtx = useContext(AuthContext);
 
-	const applyPlaythroughResponseData = (responseData: ResponseDataModel<PlaythroughModel>) => {
-		setPlaythroughList(responseData.items)
+	const applyPlaythroughResponseData = (responseData: ResponseDataModel<Playthrough>) => {
+		setPlaythroughList(responseData.items);
 	}
 
 	useEffect(() => {
@@ -26,7 +25,7 @@ const MyPlaythroughs: React.FC = () => {
 		let source = axios.CancelToken.source();
 
 		if (AuthCtx.token)
-			apiGetRequest<ResponseDataModel<PlaythroughModel>>(applyPlaythroughResponseData, apiListThisUsersPlaythroughs, [AuthCtx.token, source]);
+			apiGetRequest<ResponseDataModel<Playthrough>>([AuthCtx.token, source], PlaythroughModel.listThisUsers, applyPlaythroughResponseData);
 
 		return function () {
 			source.cancel('cancelling in cleanup');
@@ -34,12 +33,12 @@ const MyPlaythroughs: React.FC = () => {
 
 	}, [AuthCtx]);
 
-	const deletePlaythroughHandler = (playthroughToDelete: PlaythroughModel) => {
+	const deletePlaythroughHandler = (playthroughToDelete: Playthrough) => {
 
 		let source = axios.CancelToken.source();
 
 		if (AuthCtx.token)
-			apiDeleteRequest(playthroughToDelete.id, apiDeletePlaythrough, AuthCtx.token, source);
+			apiDeleteRequest<Playthrough>(playthroughToDelete, AuthCtx.token, source, PlaythroughModel.delete);
 
 		let newPlaythroughArray = playthroughList!.filter((playthrough) => {
 			return playthrough.id != playthroughToDelete.id

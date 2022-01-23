@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Icon, EditableText, Checkbox } from '@blueprintjs/core';
+import { EditableText, Checkbox } from '@blueprintjs/core';
 
-import StepModel from '../../../../api/models/Playthrough/Step';
+import { Step } from '../../../../api/models/Playthrough/Step';
 import useTemplateObject from '../../../../hooks/useTemplateObject';
 import DeleteButton from '../../../Button/DeleteButton/DeleteButton';
 
 import classes from './Step.module.css';
 
 const StepComponent: React.FC<{
-	step: StepModel,
-	onUpdateStep: (step: StepModel) => void,
-	onDeleteStep: (step: StepModel) => void,
+	step: Step,
+	onUpdateStep: (step: Step) => void,
+	onDeleteStep: (step: Step) => void,
 	editing: boolean,
 }> = ({ step: propStep, onUpdateStep, onDeleteStep, editing }) => {
 
@@ -20,7 +20,7 @@ const StepComponent: React.FC<{
 		object: step,
 		editObjectHandler: editStepHandler,
 		setObjectHandler: setStep
-	} = useTemplateObject<StepModel>(propStep);
+	} = useTemplateObject<Step>(propStep);
 
 	useEffect(() => {
 		setStep(propStep);
@@ -51,13 +51,13 @@ const StepComponent: React.FC<{
 	}
 
 	return (
-		<div className={isCompleted? `${classes.stepContainer} ${classes.completed}` : classes.stepContainer}>
+		<div className={isCompleted ? `${classes.stepContainer} ${classes.completed}` : classes.stepContainer}>
 			<div className={classes.postionNameDeleteContainer}>
 				<div>
 					<Checkbox
 						className={classes.tick}
 						onChange={(e) => changeStepCompletion(e.currentTarget.checked)}
-						defaultChecked = {propStep.isCompleted}
+						defaultChecked={propStep.isCompleted}
 					/>
 					<div className={classes.positionAndNameContainer}>
 						<p><strong>Step #</strong> </p>

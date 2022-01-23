@@ -3,23 +3,24 @@ import { useState, Dispatch, SetStateAction } from 'react';
 import axios, { CancelTokenSource, AxiosResponse, CancelToken } from 'axios';
 
 type apiGet = (...params: any) => Promise<AxiosResponse<any>>;
-type apiDelete = (objectId: string | number, token: string, source: CancelTokenSource) => Promise<AxiosResponse<any>>;
+type apiDelete<T> = (object: T, token: string, source: CancelTokenSource) => Promise<AxiosResponse<any>>;
 type apiPatch<T> = (object: T, token: string, source: CancelTokenSource) => Promise<AxiosResponse<any>>;
-type apiCreate<T> = (object: T, id: string | number | null, token: string, source: CancelTokenSource) => Promise<AxiosResponse<any>>;
+type apiCreate<T> = (object: T, token: string, source: CancelTokenSource) => Promise<AxiosResponse<any>>;
 
 interface ReturnedData {
 	saving: boolean,
 	addingNew: boolean,
+	loading: boolean,
 	apiGetRequest: <T> (
-		applyData: (data: T) => void,
+		params: any[],
 		apiGet: apiGet,
-		params: any[]
+		applyData: (data: T) => void,
 	) => void,
-	apiDeleteRequest: (
-		objectId: string | number,
-		apiDelete: apiDelete,
+	apiDeleteRequest: <T>(
+		object: T,
 		token: string,
-		source: CancelTokenSource
+		source: CancelTokenSource,
+		apiDelete: apiDelete<T>,
 	) => void,
 	apiPatchRequest: <T>(
 		data: T,
@@ -27,9 +28,8 @@ interface ReturnedData {
 		source: CancelTokenSource,
 		apiPatch: apiPatch<T>
 	) => void,
-	apiCreateRequest: <T extends { }>(
+	apiCreateRequest: <T>(
 		data: T,
-		parentId: string | number,
 		token: string,
 		source: CancelTokenSource,
 		apiCreate: apiCreate<T>,
@@ -44,41 +44,42 @@ const useApi = (): ReturnedData => {
 
 	const [saving, setSaving] = useState<boolean>(false);
 	const [addingNew, setAddingNew] = useState<boolean>(false);
+	const [loading, setLoading] = useState<boolean>(false);
 
-	const apiGetRequest = <T extends {}> (
-		applyData: (data: T) => void,
+	const apiGetRequest = <T extends {}>(
+		params: any[],
 		apiGet: apiGet,
-		params: any[]
+		applyData: (data: T) => void
 	) => {
 
-		console.log(params);
+		setLoading(true);
 
 		apiGet(...params)
-		.then((response) => {
-			applyData(response.data);
-		})
-		.catch((err) => {
-			if (axios.isCancel(err)) {
-				console.log('api request cancelled');
-			} else {
-				console.log(
-					err.response?.data.message ?? 'unknown error' + err
-				);
-			}
-		});
-		
+			.then((response) => {
+				applyData(response.data);
+				setLoading(false);
+			})
+			.catch((err) => {
+				setLoading(false);
+				if (axios.isCancel(err)) {
+					console.log('api request cancelled');
+				} else {
+					console.log(err.response?.data.message ?? 'unknown error' + err);
+				}
+			});
+
 	}
 
-	const apiDeleteRequest = (
-		objectId: string | number,
-		apiDelete: apiDelete,
+	const apiDeleteRequest = <T extends {}>(
+		object: T,
 		token: string,
-		source: CancelTokenSource
+		source: CancelTokenSource,
+		apiDelete: apiDelete<T>,
 	) => {
 
 		setSaving(true);
 
-		apiDelete(objectId, token, source)
+		apiDelete(object, token, source)
 			.then((response) => {
 				console.log(response);
 				setSaving(false);
@@ -123,9 +124,8 @@ const useApi = (): ReturnedData => {
 
 	}
 
-	const apiCreateRequest = <T extends { }>(
+	const apiCreateRequest = <T extends {}>(
 		data: T,
-		parentId: string | number,
 		token: string,
 		source: CancelTokenSource,
 		apiCreate: apiCreate<T>,
@@ -135,11 +135,11 @@ const useApi = (): ReturnedData => {
 		setSaving(true);
 		setAddingNew(true);
 
-		let returnData = apiCreate(data, parentId, token, source)
+		let returnData = apiCreate(data, token, source)
 			.then((response) => {
-				setSaving(false)
-				applyData(response.data);
+				setSaving(false);
 				setAddingNew(false);
+				applyData(response.data);
 			})
 			.catch((err) => {
 				setSaving(false);
@@ -158,10 +158,11 @@ const useApi = (): ReturnedData => {
 	}
 
 	return {
-		apiGetRequest,
-		apiDeleteRequest,
+		loading,
 		saving,
 		addingNew,
+		apiGetRequest,
+		apiDeleteRequest,
 		apiPatchRequest,
 		apiCreateRequest
 	};

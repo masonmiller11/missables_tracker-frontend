@@ -2,13 +2,14 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Spinner } from '@blueprintjs/core';
 import axios from 'axios';
 
-import PlaythroughModel from '../../api/models/Playthrough/Playthrough';
+import PlaythroughModel, { Playthrough } from '../../api/models/Playthrough/Playthrough';
+import SectionModel, { Section, SectionSubmission } from '../../api/models/Playthrough/Section';
+import CreateResponseData from '../../api/models/ResponseData/CreateResponseData';
+
 import PlaythroughSummary from './PlaythroughSummary/PlaythroughSummary';
-import Section from './Section/SectionComponent';
-import SectionModel from '../../api/models/Playthrough/Section';
+import SectionComponent from './Section/SectionComponent';
 import AddNewButton from '../Button/AddNewButton/AddNewButton';
 import Defaults from '../../api/DefaultValues';
-import { apiReadPlaythrough, apiCreateSection, apiDeleteSection, apiPatchSection, apiPatchPlaythrough } from '../../api';
 import AuthContext from '../../store/auth-context';
 import useApi from '../../hooks/useApi';
 
@@ -23,16 +24,16 @@ const PlaythroughComponent: React.FC<{
 
 	//set the default data used for new Sections
 	const defaults = new Defaults();
-	let defaultNewSection: SectionModel = defaults.newSection;
+	let defaultNewSection: SectionSubmission = {...defaults.newSection, playthroughId: parseInt(playthroughIdProp)};
 
-	const [playthrough, setPlaythrough] = useState<PlaythroughModel>();
+	const [playthrough, setPlaythrough] = useState<Playthrough>();
 	const { apiGetRequest, apiPatchRequest, apiCreateRequest, apiDeleteRequest, addingNew: addingNewSection } = useApi();
 
 	useEffect(() => {
 
 		let source = axios.CancelToken.source();
 
-		apiGetRequest<PlaythroughModel | undefined>(setPlaythrough, apiReadPlaythrough, [playthroughIdProp, AuthCtx.token, source]);
+		apiGetRequest<Playthrough | undefined>([playthroughIdProp, AuthCtx.token, source], PlaythroughModel.read, setPlaythrough);
 
 		return function () {
 			source.cancel('cancelling in cleanup');
@@ -40,17 +41,17 @@ const PlaythroughComponent: React.FC<{
 
 	}, [playthroughIdProp]);
 
-	const editPlaythroughHandler = (playthroughObject: PlaythroughModel) => {
+	const editPlaythroughHandler = (playthroughObject: Playthrough) => {
 		setPlaythrough(playthroughObject);
 	};
 
-	const updateSectionHandler = (editedSection: SectionModel) => {
+	const updateSectionHandler = (editedSection: Section) => {
 		if (playthrough) {
 
 			let source = axios.CancelToken.source();
 
 			if (AuthCtx.token) {
-				apiPatchRequest<SectionModel>(editedSection, AuthCtx.token, source, apiPatchSection)
+				apiPatchRequest<Section>(editedSection, AuthCtx.token, source, SectionModel.patch)
 			}
 
 			//find index of section we're updating
@@ -74,10 +75,10 @@ const PlaythroughComponent: React.FC<{
 	const addNewSectionHandler = () => {
 		if (playthrough) {
 
-			const applyNewSection = (newSection: SectionModel) => {
+			const applyNewSectionId = (responseData: CreateResponseData) => {
 
 				let newSectionArray = playthrough.sections;
-				newSectionArray.push(newSection);
+				newSectionArray.push({...defaultNewSection, id: responseData.id, steps: []});
 				setPlaythrough({ ...playthrough, sections: newSectionArray });
 			}
 
@@ -85,26 +86,25 @@ const PlaythroughComponent: React.FC<{
 
 				let source = axios.CancelToken.source();
 
-				apiCreateRequest<SectionModel>(
+				apiCreateRequest<SectionSubmission>(
 					defaultNewSection,
-					playthrough.id,
 					AuthCtx.token,
 					source,
-					apiCreateSection,
-					applyNewSection);
+					SectionModel.create,
+					applyNewSectionId);
 			}
 
 		}
 
 	};
 
-	const deleteSectionHandler = (sectionToDelete: SectionModel) => {
+	const deleteSectionHandler = (sectionToDelete: Section) => {
 		if (playthrough) {
 
 			let source = axios.CancelToken.source();
 
 			if (AuthCtx.token && sectionToDelete.id)
-				apiDeleteRequest(sectionToDelete.id, apiDeleteSection, AuthCtx.token, source)
+				apiDeleteRequest(sectionToDelete, AuthCtx.token, source, SectionModel.delete)
 
 			let newSectionArray = playthrough.sections.filter((section) => {
 				return section.id !== sectionToDelete.id;
@@ -119,7 +119,7 @@ const PlaythroughComponent: React.FC<{
 		let source = axios.CancelToken.source();
 
 		if (AuthCtx.token)
-			apiPatchRequest<PlaythroughModel>(playthrough!, AuthCtx.token, source, apiPatchPlaythrough);
+			apiPatchRequest<Playthrough>(playthrough!, AuthCtx.token, source, PlaythroughModel.patch);
 
 	};
 
@@ -138,7 +138,7 @@ const PlaythroughComponent: React.FC<{
 						{playthrough.sections
 							.sort((a, b) => (a.position > b.position ? 1 : -1))
 							.map((section) => (
-								<Section
+								<SectionComponent
 									key={section.id}
 									section={section}
 									showEditOption={editingAllowed}

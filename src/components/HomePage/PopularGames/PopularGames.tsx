@@ -1,51 +1,42 @@
-import { useEffect, useContext, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
-import {
-    Spinner
-} from '@blueprintjs/core';
+import { Spinner } from '@blueprintjs/core';
 
-import { apiListPopularGames } from '../../../api';
-import AuthContext from '../../../store/auth-context';
-import classes from './PopularGames.module.css';
-import Game from '../../../api/models/Game/Game';
+import GameModel, { Game } from '../../../api/models/Game/Game';
+import ResponseDataModel from '../../../api/models/ResponseData/ReadResponseData';
+
+import useApi from '../../../hooks/useApi';
 import GamesList from '../../Layout/GameList/GameList';
+
+import classes from './PopularGames.module.css';
+
 
 const PopularGames: React.FC = (props: any) => {
 
-    const [games, setGames] = useState<null | [Game]>(null);
+	const [games, setGames] = useState<null | Game[]>(null);
+	const { apiGetRequest, loading } = useApi();
 
-    useEffect(() => {
-        let source = axios.CancelToken.source();
+	const applyGamesResponseData = (responseData: ResponseDataModel<Game>) => {
+		setGames(responseData.items);
+	}
 
-        apiListPopularGames(6, 1, source)
-            .then((response) => {
-                setGames(response.data.items);
-            })
-            .catch((err) => {
-                if (axios.isCancel(err)) {
-                    console.log('api request cancelled');
-                } else {
-                    console.log(err.response?.data.message ?? 'unknown error');
-                }
-            });
+	useEffect(() => {
+		let source = axios.CancelToken.source();
 
-        //todo add real error handling
+		apiGetRequest([source], GameModel.listPopular, applyGamesResponseData);
 
-        return function () {
-            source.cancel('cancelling in cleanup');
-        };
-    }, []);
+	}, []);
 
-    return (
-        <div className={classes.popularGamesContainer}>
-            <h2>Popular Games</h2>
-            {games ? (
-                <GamesList games={games} hideGamesWithoutGuides={true} />
-            ) : (
-                <Spinner className={classes.spinner} />
-            )}
-        </div>
-    );
+	return (
+		<div className={classes.popularGamesContainer}>
+			<h2>Popular Games</h2>
+			{loading ? (
+				<Spinner className={classes.spinner} />
+			) : (
+				<GamesList games={games} hideGamesWithoutGuides={true} />
+			)}
+		</div>
+	);
 };
 
 export default PopularGames;

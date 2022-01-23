@@ -1,4 +1,8 @@
-class Game {
+import { CancelTokenSource } from 'axios';
+
+import { client } from '../..';
+
+export type Game = {
 	title: string;
 	cover: string;
 	templateCount: number;
@@ -12,22 +16,38 @@ class Game {
 	artworks: number[];
 	internetGameDatabaseId: number;
 	releaseDate: Date;
-
-	constructor(game: Game) {
-		this.title = game.title;
-		this.cover = game.cover;
-		this.templateCount = game.templateCount;
-		this.playthroughCount = game.playthroughCount;
-		this.id = game.id;
-		this.summary = game.summary;
-		this.storyline = game.storyline;
-		this.rating = game.rating;
-		this.slug = game.slug;
-		this.screenshots = game.screenshots;
-		this.artworks = game.artworks;
-		this.internetGameDatabaseId = game.internetGameDatabaseId;
-		this.releaseDate = game.releaseDate;
-	}
 }
 
-export default Game;
+export class GameModel {
+
+	public static async listPopular(
+		source: CancelTokenSource,
+		itemsPerPage: number = 6,
+		page: number = 1,
+	) {
+		const endpoint = 'games/popular/' + page + '/' + itemsPerPage;
+		const response = await client.get(endpoint, { cancelToken: source.token });
+		return response;
+	}
+
+	public static async search(
+		searchTerm: string,
+		source: CancelTokenSource
+	) {
+		const endpoint = 'games/search/' + searchTerm;
+		const response = await client.get(endpoint, { cancelToken: source.token });
+		return response;
+	}
+
+	public static async read(
+		id: string | number,
+		source: CancelTokenSource
+	) {
+		const endpoint = 'games/read/' + id;
+		const response = await client.get(endpoint, { cancelToken: source.token });
+		return response;
+	}
+
+}
+
+export default GameModel;

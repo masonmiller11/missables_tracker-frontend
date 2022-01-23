@@ -1,17 +1,17 @@
 import React, { useEffect } from "react";
 import { Icon, EditableText } from '@blueprintjs/core';
 
-import TemplateStepModel from '../../../../api/models/Template/TemplateStep';
+import {TemplateStep} from '../../../../api/models/Template/TemplateStep';
 import useTemplateObject from '../../../../hooks/useTemplateObject';
 import DeleteButton from '../../../Button/DeleteButton/DeleteButton';
 
 import classes from './TemplateStep.module.css';
 
 
-const TemplateStep: React.FC<{
-	templateStep: TemplateStepModel,
-	onUpdateStep: (step: TemplateStepModel) => void,
-	onDeleteStep: (step: TemplateStepModel) => void,
+const TemplateStepComponent: React.FC<{
+	templateStep: TemplateStep,
+	onUpdateStep: (step: TemplateStep) => void,
+	onDeleteStep: (step: TemplateStep) => void,
 	editing: boolean,
 }> = ({ templateStep, onUpdateStep, onDeleteStep, editing }) => {
 
@@ -19,7 +19,7 @@ const TemplateStep: React.FC<{
 		object: step,
 		editObjectHandler: editStepHandler,
 		setObjectHandler: setStep
-	} = useTemplateObject<TemplateStepModel>(templateStep);
+	} = useTemplateObject<TemplateStep>(templateStep);
 
 	useEffect(() => {
 		setStep(templateStep);
@@ -95,4 +95,4 @@ const TemplateStep: React.FC<{
 	);
 }
 
-export default TemplateStep;
+export default TemplateStepComponent;

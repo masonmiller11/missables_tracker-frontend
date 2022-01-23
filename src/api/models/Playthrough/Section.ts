@@ -1,20 +1,64 @@
-import Step from './Step';
+import { CancelTokenSource } from 'axios';
 
-class Section {
+import { client, getConfig } from '../..';
+import { Step } from './Step';
 
-    id: number|null;
-    name: string;
-    description: string;
-    position: number|string;
-    steps: Step[];
-
-    constructor(section: Section) {
-        this.id = section.id;
-        this.name = section.name;
-        this.description = section.description;
-        this.position = section.position;
-        this.steps = section.steps;
-    }
+export type Section = {
+	id?: number | string;
+	name: string;
+	description: string;
+	position: number | string;
+	steps: Step[];
 }
 
-export default Section;
+export type SectionSubmission = {
+	description: string,
+	position: number | string,
+	name: string,
+	playthroughId: number
+}
+
+export class SectionModel {
+
+	public static async patch(
+		section: Section,
+		token: string,
+		source: CancelTokenSource
+	) {
+		const body = {
+			description: section.description,
+			position: section.position,
+			name: section.name
+		};
+		const config = getConfig(token, source);
+		const endpoint = 'section/update/' + section.id;
+		const response = await client.patch(endpoint, body, config);
+		return response;
+	}
+
+	public static async create(
+		newSection: SectionSubmission,
+		token: string,
+		source: CancelTokenSource
+	) {
+		const config = getConfig(token, source);
+		const endpoint = 'section/create';
+		const response = await client.post(endpoint, newSection, config);
+
+		return response;
+	}
+
+	public static async delete(
+		section: Section,
+		token: string,
+		source: CancelTokenSource
+	) {
+		const config = getConfig(token, source);
+		const endpoint = 'section/delete/' + section.id;
+		const response = await client.delete(endpoint, config);
+		return response;
+	}
+
+}
+
+export default SectionModel;

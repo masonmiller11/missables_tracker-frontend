@@ -1,8 +1,8 @@
-import PlaythroughModel from "../api/models/Playthrough/Playthrough";
+import {Playthrough} from "../api/models/Playthrough/Playthrough";
 
 export interface TemplateListOptions {
 	playthroughUrl: string,
-	onDelete: (playthrough: PlaythroughModel)=> void
+	onDelete: (playthrough: Playthrough)=> void
 }
 
 

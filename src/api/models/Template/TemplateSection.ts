@@ -1,20 +1,62 @@
-import TemplateStep from './TemplateStep';
+import { CancelTokenSource } from 'axios';
 
-class TemplateSection {
+import { client, getConfig } from '../../../api'
+import { TemplateStep } from './TemplateStep';
 
-    id: number|null;
-    name: string;
-    description: string;
-    position: number|string;
-    steps: TemplateStep[];
-
-    constructor(templateSection: TemplateSection) {
-        this.id = templateSection.id;
-        this.name = templateSection.name;
-        this.description = templateSection.description;
-        this.position = templateSection.position;
-        this.steps = templateSection.steps;
-    }
+export type TemplateSection = {
+	id?: number | string;
+	name: string;
+	description: string;
+	position: number | string;
+	steps: TemplateStep[];
 }
 
-export default TemplateSection;
+export type TemplateSectionSubmission = {
+	description: string,
+	position: string | number,
+	name: string,
+	templateId: number
+}
+
+export class TemplateStepModel {
+
+	public static async patch(
+		templateSection: TemplateSection,
+		token: string,
+		source: CancelTokenSource
+	) {
+		const body = {
+			description: templateSection.description,
+			position: templateSection.position,
+			name: templateSection.name,
+		};
+		const config = getConfig(token, source);
+		const endpoint = 'section/template/update/' + templateSection.id;
+		const response = await client.patch(endpoint, body, config);
+		return response;
+	}
+
+	public static async create(
+		newTemplateSection: TemplateSectionSubmission,
+		token: string,
+		source: CancelTokenSource
+	) {
+		const config = getConfig(token, source);
+		const response = await client.post('section/template/create', newTemplateSection, config);
+		return response;
+	}
+
+	public static async delete(
+		templateSection: TemplateSection,
+		token: string,
+		source: CancelTokenSource
+	) {
+		const config = getConfig(token, source);
+		const endpoint = 'section/template/delete/' + templateSection.id;
+		const response = await client.delete(endpoint, config);
+		return response;
+	}
+
+}
+
+export default TemplateStepModel;

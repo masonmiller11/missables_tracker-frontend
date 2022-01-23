@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button, Menu, MenuDivider, MenuItem } from '@blueprintjs/core';
-import { Popover2 } from '@blueprintjs/popover2'; //gave visual error 8/20/21
 import { Popover } from '@blueprintjs/core';
 import { useHistory } from 'react-router-dom';
 

@@ -7,13 +7,13 @@ import {
 	Intent
 } from '@blueprintjs/core';
 
-import TemplateModel from '../../../../api/models/Template/Template';
+import { Template } from '../../../../api/models/Template/Template';
 import TemplateListOptions from '../../../../interfaces/templateListOptions.interface';
 import DeleteButton from '../../../Button/DeleteButton/DeleteButton';
 
 import classes from './TemplateCard.module.css';
 
-const TemplateCard: React.FC<{ template: TemplateModel, templateCardOptions: TemplateListOptions }> = ({ template, templateCardOptions }) => {
+const TemplateCard: React.FC<{ template: Template, templateCardOptions: TemplateListOptions }> = ({ template, templateCardOptions }) => {
 
 	let { showCover, showFavoriteStar, templateGuideUrl } = templateCardOptions;
 

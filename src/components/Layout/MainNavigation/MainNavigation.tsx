@@ -7,7 +7,6 @@ import {
 	NavbarDivider,
 	NavbarGroup,
 	NavbarHeading,
-	InputGroup,
 } from '@blueprintjs/core';
 import React, { useContext } from 'react';
 

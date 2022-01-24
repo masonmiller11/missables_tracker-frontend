@@ -3,7 +3,7 @@ import { Spinner } from '@blueprintjs/core';
 import axios from 'axios';
 
 import PlaythroughModel, { Playthrough } from '../../api/models/Playthrough/Playthrough';
-import ResponseDataModel from '../../api/models/ResponseData/ReadResponseData';
+import ResponseDataModel from '../../api/models/ResponseData/ListResponseData';
 import PlaythroughList from '../GamePlaythroughs/PlaythroughList/PlaythroughList';
 import useApi from '../../hooks/useApi';
 import AuthContext from '../../store/auth-context';

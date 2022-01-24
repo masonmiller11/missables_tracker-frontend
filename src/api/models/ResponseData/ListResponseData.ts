@@ -1,10 +1,10 @@
-class ReadResponseData<T> {
+class ListResponseData<T> {
 
     items: T[];
     totalItems: number;
     pageCount: number
   
-    constructor(responseData: ReadResponseData<T>) {
+    constructor(responseData: ListResponseData<T>) {
       this.items = responseData.items;
       this.totalItems = responseData.totalItems
       this.pageCount = responseData.pageCount;
@@ -12,4 +12,4 @@ class ReadResponseData<T> {
 
   }
   
-  export default ReadResponseData;
+  export default ListResponseData;

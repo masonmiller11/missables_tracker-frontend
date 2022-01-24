@@ -7,9 +7,9 @@ import {
 	Intent
 } from '@blueprintjs/core';
 
-import { Template } from '../../../../api/models/Template/Template';
-import TemplateListOptions from '../../../../interfaces/templateListOptions.interface';
-import DeleteButton from '../../../Button/DeleteButton/DeleteButton';
+import { Template } from '../../../api/models/Template/Template';
+import TemplateListOptions from '../../../interfaces/templateListOptions.interface';
+import DeleteButton from '../../Button/DeleteButton/DeleteButton';
 
 import classes from './TemplateCard.module.css';
 

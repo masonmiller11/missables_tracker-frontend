@@ -3,7 +3,7 @@ import { Spinner } from '@blueprintjs/core';
 import axios from 'axios';
 
 import TemplateModel, { Template } from '../../api/models/Template/Template';
-import TemplateList from '../GameTemplates//TemplateList/TemplateList';
+import TemplateList from '../TemplateList/TemplateList';
 import AuthContext from '../../store/auth-context';
 import useApi from '../../hooks/useApi';
 

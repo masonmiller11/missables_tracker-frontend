@@ -1,7 +1,7 @@
 import React from 'react';
 
-import {Template} from '../../../api/models/Template/Template';
-import TemplateListOptions from '../../../interfaces/templateListOptions.interface';
+import {Template} from '../../api/models/Template/Template';
+import TemplateListOptions from '../../interfaces/templateListOptions.interface';
 
 import TemplateCard from './TemplateCard/TemplateCard';
 

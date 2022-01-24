@@ -6,7 +6,7 @@ import GameModel, { Game } from '../../api/models/Game/Game';
 import TemplateModel, { Template } from '../../api/models/Template/Template';
 import ResponseDataModel from '../../api/models/ResponseData/ListResponseData';
 
-import TemplateList from './TemplateList/TemplateList';
+import TemplateList from '../TemplateList/TemplateList';
 import GameSummaryCard from '../Layout/GameSummary/GameSummaryCard';
 
 import useApi from '../../hooks/useApi';

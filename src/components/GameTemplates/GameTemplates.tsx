@@ -51,7 +51,7 @@ const GameTemplates: React.FC<{ gameId: string }> = ({
 		//todo add real error handling
 	}, [gameIdProp]);
 
-	if (!loading && game) {
+	if (templateList && game) {
 		//get Game and templates in here. If we don't have both, show loading. Remove loading from below children.
 		return (
 			<div className={classes.gameTemplatesBackground}>

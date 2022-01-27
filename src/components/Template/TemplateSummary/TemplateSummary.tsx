@@ -40,7 +40,7 @@ const TemplateSummary: React.FC<{
 
 		};
 
-		let newPlaythrough: PlaythroughSubmission = {
+		const newPlaythrough: PlaythroughSubmission = {
 			name: 'My New Playthrough',
 			description: 'New Description',
 			gameId: parseInt(template.game.gameID as string),

@@ -11,6 +11,7 @@ import axios from 'axios';
 
 import { Template } from '../../../api/models/Template/Template';
 import PlaythroughModel, { PlaythroughSubmission } from '../../../api/models/Playthrough/Playthrough';
+import CreateResponseData from '../../../api/models/ResponseData/CreateResponseData';
 import AuthContext from '../../../store/auth-context';
 import EditButton from '../../Button/EditButton/EditButton';
 import useEditing from '../../../hooks/useEditing';
@@ -33,7 +34,7 @@ const TemplateSummary: React.FC<{
 
 	const createPlaythroughHandler = () => {
 
-		const redirectToNewPlaythrough = (data: { status: string, id: string | number }) => {
+		const redirectToNewPlaythrough = (data: CreateResponseData) => {
 
 			history.push('/myplaythroughs/' + data.id);
 

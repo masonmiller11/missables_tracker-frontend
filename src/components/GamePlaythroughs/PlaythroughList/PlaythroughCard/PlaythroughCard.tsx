@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { Card } from '@blueprintjs/core';
 
 import { Playthrough } from '../../../../api/models/Playthrough/Playthrough';
-import PlaythroughListOptions from '../../../../interfaces/playthroughListOptions.interface';
+import PlaythroughListOptions from '../../../../interfaces/PlaythroughListOptions.interface';
 import DeleteButton from '../../../Button/DeleteButton/DeleteButton';
 import classes from './PlaythroughCard.module.css';
 

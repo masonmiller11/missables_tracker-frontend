@@ -1,21 +1,47 @@
-import React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import axios from 'axios';
 import { useHistory } from 'react-router-dom';
-import {
-	Button,
-	Card,
-	Classes,
-	Intent
-} from '@blueprintjs/core';
+import { Card, Spinner, SpinnerSize } from '@blueprintjs/core';
 
 import { Template } from '../../../api/models/Template/Template';
-import TemplateListOptions from '../../../interfaces/templateListOptions.interface';
+import LikeModel, { Like, LikeSubmission } from '../../../api/models/Like/Like';
+import LikeHandlers from '../../../interfaces/LikeHandlers.interface';
+import TemplateListOptions from '../../../interfaces/TemplateListOptions.interface';
 import DeleteButton from '../../Button/DeleteButton/DeleteButton';
+import LikeTemplate from './LikeTemplate/FavoriteTemplate';
+import AuthContext from '../../../store/auth-context';
+import useApi from '../../../hooks/useApi';
+
 
 import classes from './TemplateCard.module.css';
+import CreateResponseData from '../../../api/models/ResponseData/CreateResponseData';
+import { SMALL } from '@blueprintjs/core/lib/esm/common/classes';
 
-const TemplateCard: React.FC<{ template: Template, templateCardOptions: TemplateListOptions }> = ({ template, templateCardOptions }) => {
+const TemplateCard: React.FC<{ likes: Like[], template: Template, templateCardOptions: TemplateListOptions }> = ({
+	template,
+	templateCardOptions,
+	likes,
+}) => {
 
 	let { showCover, showFavoriteStar, templateGuideUrl } = templateCardOptions;
+	let [like, setLike] = useState<Like | null>(null);
+	const { apiDeleteRequest, apiGetRequest, apiCreateRequest, saving } = useApi();
+	const AuthCtx = useContext(AuthContext);
+
+	useEffect(() => {
+		console.log(likes)
+		console.log(template.id)
+		let likeIfExists = likes.filter((like) => like.template.id == template.id);
+		console.log(likeIfExists);
+		if (!!likeIfExists) {
+			setLike(likeIfExists[0]);
+			console.log('it exists!')
+			console.log(likeIfExists);
+		} else {
+			setLike(null);
+		}
+
+	}, [likes, template]);
 
 	let history = useHistory();
 
@@ -23,20 +49,51 @@ const TemplateCard: React.FC<{ template: Template, templateCardOptions: Template
 		templateCardOptions.onDelete && templateCardOptions.onDelete(template);
 	}
 
+	const createLikeHandler = () => {
+
+		const likeCreateResponseHandler = (responseData: CreateResponseData) => {
+			setLike({ id: responseData.id, template: { id: template.id } });
+		}
+
+		template.likes++;
+
+		let source = axios.CancelToken.source();
+
+		if (likes && AuthCtx.token) {
+			apiCreateRequest<LikeSubmission>({ templateId: template.id }, AuthCtx.token, source, LikeModel.create, likeCreateResponseHandler);
+		}
+	}
+
+	const deleteLikeHandler = () => {
+
+		let source = axios.CancelToken.source();
+
+		if (like && AuthCtx.token) {
+			apiDeleteRequest<Like>(like, AuthCtx.token, source, LikeModel.delete);
+			setLike(null);
+			template.likes--;
+		}
+
+	}
+
+	let FavoriteStar = () => {
+
+		if (saving) {
+			return <Spinner className={classes.spinner} size = {SpinnerSize.SMALL} />
+		} else {
+			return <LikeTemplate
+				likeCount={template.likes}
+				liked={!!like}
+				onCreate={createLikeHandler}
+				onDelete={deleteLikeHandler} />
+		}
+	}
+
 	return (
 		<Card className={classes.templateCard}>
 			<div className={classes.templateTileCardContainer}>
 				{showFavoriteStar &&
-					<div className={classes.templateCardRating}>
-						<Button
-							onClick={() => console.log('clicked')}
-							className={Classes.MINIMAL}
-							large
-							icon="star"
-							text={template.likes}
-							intent={Intent.NONE}
-						/>
-					</div>
+					<FavoriteStar />
 				}
 				{showCover &&
 					<img className={classes.cover} src={template.game.cover}></img>

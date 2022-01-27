@@ -16,11 +16,6 @@
     align-items: center;
 }
 
-.templateCardRating  {
-    display: flex;
-    width: 10%;
-}
-
 .cover {
     max-width: 18%;
     margin-right: 2em;
@@ -30,4 +25,9 @@
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+}
+
+.spinner {
+	width: 10%;
+	padding-right: 1.5em;
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Playthrough } from '../../../api/models/Playthrough/Playthrough';
-import PlaythroughListOptions from '../../../interfaces/playthroughListOptions.interface';
+import PlaythroughListOptions from '../../../interfaces/PlaythroughListOptions.interface';
 import PlaythroughCard from './PlaythroughCard/PlaythroughCard';
 
 import classes from './PlaythroughList.module.css';

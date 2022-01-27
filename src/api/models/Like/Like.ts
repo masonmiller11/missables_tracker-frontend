@@ -5,12 +5,7 @@ import { client, getConfig } from '../..';
 export type Like = {
 	id: number|string,
 	template : {
-		id: number|string,
-		name: string,
-		game: {
-			title: string,
-			id: number|string
-		}
+		id: number|string
 	}
 }
 
@@ -51,3 +46,5 @@ class LikeModel {
 		return response;
 	}
 }
+
+export default LikeModel;

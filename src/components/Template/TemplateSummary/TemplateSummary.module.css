@@ -3,7 +3,6 @@
     max-width: 1000px;
 }
 
-
 .cardContentContainer {
     display: flex;
 }
@@ -15,7 +14,6 @@
     flex-direction: column;
     align-items: center;
 }
-
 
 .cardDescriptionContainer > hr {
     width: 90%;
@@ -40,7 +38,8 @@
 .cardButtonContainer {
     text-align: center;
     font-size: 1.25em;
-    padding-top: .5em; 
+	padding-top: .5em; 
+	min-height: 7em;
 }
 
 .button {

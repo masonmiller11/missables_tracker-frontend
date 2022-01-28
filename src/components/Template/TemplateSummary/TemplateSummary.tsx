@@ -1,4 +1,4 @@
-import React, { useContext, } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
 	Button,
@@ -11,7 +11,9 @@ import axios from 'axios';
 
 import { Template } from '../../../api/models/Template/Template';
 import PlaythroughModel, { PlaythroughSubmission } from '../../../api/models/Playthrough/Playthrough';
+import LikeModel, { Like, LikeSubmission } from '../../../api/models/Like/Like';
 import CreateResponseData from '../../../api/models/ResponseData/CreateResponseData';
+import ResponseDataModel from '../../../api/models/ResponseData/ListResponseData'
 import AuthContext from '../../../store/auth-context';
 import EditButton from '../../Button/EditButton/EditButton';
 import useEditing from '../../../hooks/useEditing';
@@ -26,11 +28,60 @@ const TemplateSummary: React.FC<{
 	template: Template;
 	onTemplateConfirm: () => void;
 }> = ({ showEditOption, template, onTemplateChange, onTemplateConfirm }) => {
-	
+
 	const AuthCtx = useContext(AuthContext);
 	const { editing, editingStateHandler } = useEditing();
-	const { apiCreateRequest, saving } = useApi();
+	const { apiGetRequest, apiCreateRequest, apiDeleteRequest, saving } = useApi();
+	let [like, setLike] = useState<Like | null>(null);
+	let [creatingNewPlaythrough, setCreatingNewPlaythrough] = useState(false);
 	let history = useHistory();
+
+	const applyLikeResponseData = (responseData: ResponseDataModel<Like>) => {
+		let likeIfExists = responseData.items.filter((like) => like.template.id == template.id);
+		!!likeIfExists ? setLike(likeIfExists[0]) : setLike(null);
+	}
+
+	useEffect(() => {
+
+		let source = axios.CancelToken.source();
+
+		if (AuthCtx.isLoggedIn) {
+			apiGetRequest<ResponseDataModel<Like>>([AuthCtx.token, source], LikeModel.listThisUsers, applyLikeResponseData);
+		}
+
+
+	}, [AuthCtx.isLoggedIn])
+
+	const createLikeHandler = () => {
+
+		if (AuthCtx.isLoggedIn) {
+			setLike({ id: 'temp_id', template: { id: template.id } });
+
+			const likeCreateResponseHandler = (responseData: CreateResponseData) => {
+				setLike({ id: responseData.id, template: { id: template.id } });
+			}
+
+			let source = axios.CancelToken.source();
+
+			if (AuthCtx.token) {
+				apiCreateRequest<LikeSubmission>({ templateId: template.id }, AuthCtx.token, source, LikeModel.create, likeCreateResponseHandler);
+			}
+		} else {
+			console.log('you must be logged in for that');
+		}
+	}
+
+	const deleteLikeHandler = () => {
+
+		let source = axios.CancelToken.source();
+
+		if (like && AuthCtx.token) {
+			apiDeleteRequest<Like>(like, AuthCtx.token, source, LikeModel.delete);
+			setLike(null);
+		}
+
+	}
+
 
 	const createPlaythroughHandler = () => {
 
@@ -49,7 +100,10 @@ const TemplateSummary: React.FC<{
 		};
 
 
-		if (AuthCtx.token) {
+		if (AuthCtx.token && AuthCtx.isLoggedIn) {
+			
+			setCreatingNewPlaythrough(true);
+
 			let source = axios.CancelToken.source();
 
 			apiCreateRequest<PlaythroughSubmission>(
@@ -59,6 +113,8 @@ const TemplateSummary: React.FC<{
 				PlaythroughModel.create,
 				redirectToNewPlaythrough
 			);
+		} else {
+			console.log('You must be logged in for that');
 		}
 
 	};
@@ -76,18 +132,19 @@ const TemplateSummary: React.FC<{
 
 					<div className={classes.cardButtonContainer}>
 						<Button
-							text={saving ? "Saving" : "Start Playthrough"}
+							text={creatingNewPlaythrough ? "Starting Playthrough" : "Start Playthrough"}
 							type="submit"
 							onClick={() => createPlaythroughHandler()}
 							large
+							disabled={creatingNewPlaythrough}
 							className={classes.button}
 						/>
 						<Button
-							onClick={() => console.log('clicked')}
+							onClick={!!like ? () => deleteLikeHandler() : () => createLikeHandler()}
 							large
 							icon="star"
-							text="Add To Favorites"
-							intent={Intent.NONE}
+							text={!!like ? "Added To Favorites" : "Add To Favorites"}
+							intent={!!like ? Intent.WARNING : Intent.NONE}
 							className={classes.button}
 						/>
 					</div>

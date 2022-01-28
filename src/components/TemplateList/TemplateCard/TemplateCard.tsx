@@ -29,14 +29,9 @@ const TemplateCard: React.FC<{ likes: Like[], template: Template, templateCardOp
 	const AuthCtx = useContext(AuthContext);
 
 	useEffect(() => {
-		console.log(likes)
-		console.log(template.id)
 		let likeIfExists = likes.filter((like) => like.template.id == template.id);
-		console.log(likeIfExists);
 		if (!!likeIfExists) {
 			setLike(likeIfExists[0]);
-			console.log('it exists!')
-			console.log(likeIfExists);
 		} else {
 			setLike(null);
 		}

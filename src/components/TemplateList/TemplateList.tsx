@@ -39,20 +39,6 @@ const TemplateList: React.FC<{
 
 	}, [AuthCtx])
 
-	// const deleteLikeHandler = (templateId: number | string) => {
-	// 	if (likes) {
-	// 		let newLikesArray = likes.filter((like) => like.template.id != templateId);
-	// 		setLikes(newLikesArray);
-
-
-	// 	}
-
-	// }
-
-	// const createLikeHandler = (templateId: number | string) => {
-
-
-
 		return (
 			<div className={classes.templateListContainer}>
 				{likes && templates!.map((template) => (
@@ -61,7 +47,6 @@ const TemplateList: React.FC<{
 						likes={likes!}
 						templateCardOptions={templateListOptions}
 						template={template}
-						// likeHandlers={{ onDelete: deleteLikeHandler, onCreate: createLikeHandler }}
 					/>
 				))}
 			</div>

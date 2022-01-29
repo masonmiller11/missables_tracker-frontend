@@ -4,8 +4,10 @@ import axios from 'axios';
 
 import PlaythroughModel, { Playthrough } from '../../api/models/Playthrough/Playthrough';
 import ResponseDataModel from '../../api/models/ResponseData/ListResponseData';
+import PageInfo from '../../interfaces/PageInfo.interface';
 import PlaythroughList from '../GamePlaythroughs/PlaythroughList/PlaythroughList';
 import useApi from '../../hooks/useApi';
+import usePagination from '../../hooks/usePagination';
 import AuthContext from '../../store/auth-context';
 
 import classes from './MyPlaythroughs.module.css';
@@ -15,23 +17,37 @@ const MyPlaythroughs: React.FC = () => {
 	const [playthroughList, setPlaythroughList] = useState<Playthrough[] | null>(null);
 	const { apiGetRequest, apiDeleteRequest } = useApi();
 	const AuthCtx = useContext(AuthContext);
+	let { countOfTotalItems,
+		pageNumber,
+		pageSize,
+		setCountOfTotalItems,
+		setPageSize,
+		pageChangeHandler
+	} = usePagination(1, 5);
 
 	const applyPlaythroughResponseData = (responseData: ResponseDataModel<Playthrough>) => {
 		setPlaythroughList(responseData.items);
+		setCountOfTotalItems(responseData.totalItems);
 	}
 
 	useEffect(() => {
 
 		let source = axios.CancelToken.source();
+		let PageInfo: PageInfo = {
+			itemsPerPage: pageSize,
+			page: pageNumber
+		}
+
+		console.log('in useEffect' + PageInfo.itemsPerPage);
 
 		if (AuthCtx.token)
-			apiGetRequest<ResponseDataModel<Playthrough>>([AuthCtx.token, source], PlaythroughModel.listThisUsers, applyPlaythroughResponseData);
+			apiGetRequest<ResponseDataModel<Playthrough>>([AuthCtx.token, source, PageInfo], PlaythroughModel.listThisUsers, applyPlaythroughResponseData);
 
 		return function () {
 			source.cancel('cancelling in cleanup');
 		}
 
-	}, [AuthCtx]);
+	}, [AuthCtx, pageNumber]);
 
 	const deletePlaythroughHandler = (playthroughToDelete: Playthrough) => {
 

@@ -2,6 +2,7 @@ import { Cancel, CancelTokenSource } from 'axios';
 
 import { client, getConfig } from '../..';
 import { Section } from './Section';
+import PageInfo from '../../../interfaces/PageInfo.interface';
 
 export type PlaythroughSubmission = {
 	visibility: boolean,
@@ -33,10 +34,11 @@ class PlaythroughModel {
 
 	public static async listThisUsers(
 		token: string,
-		source: CancelTokenSource
+		source: CancelTokenSource,
+		PageInfo: PageInfo
 	) {
 		const config = getConfig(token, source);
-		const response = await client.get('playthroughs/', config);
+		const response = await client.get('playthroughs/' + PageInfo.page + '/' + PageInfo.itemsPerPage, config);
 
 		return response;
 	}

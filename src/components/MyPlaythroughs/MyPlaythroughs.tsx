@@ -5,19 +5,22 @@ import axios from 'axios';
 import PlaythroughModel, { Playthrough } from '../../api/models/Playthrough/Playthrough';
 import ResponseDataModel from '../../api/models/ResponseData/ListResponseData';
 import PageInfo from '../../interfaces/PageInfo.interface';
-import PlaythroughList from '../GamePlaythroughs/PlaythroughList/PlaythroughList';
 import useApi from '../../hooks/useApi';
 import usePagination from '../../hooks/usePagination';
 import AuthContext from '../../store/auth-context';
+
+import PlaythroughList from '../GamePlaythroughs/PlaythroughList/PlaythroughList';
+import Pagination from '../Layout/Pagintation/Pagination'
 
 import classes from './MyPlaythroughs.module.css';
 
 const MyPlaythroughs: React.FC = () => {
 
 	const [playthroughList, setPlaythroughList] = useState<Playthrough[] | null>(null);
-	const { apiGetRequest, apiDeleteRequest } = useApi();
+	const { apiGetRequest, apiDeleteRequest, loading } = useApi();
 	const AuthCtx = useContext(AuthContext);
-	let { countOfTotalItems,
+	let { 
+		countOfTotalItems,
 		pageNumber,
 		pageSize,
 		setCountOfTotalItems,
@@ -28,6 +31,7 @@ const MyPlaythroughs: React.FC = () => {
 	const applyPlaythroughResponseData = (responseData: ResponseDataModel<Playthrough>) => {
 		setPlaythroughList(responseData.items);
 		setCountOfTotalItems(responseData.totalItems);
+		console.log('setOfTotalItems:' + responseData.totalItems);
 	}
 
 	useEffect(() => {
@@ -37,7 +41,7 @@ const MyPlaythroughs: React.FC = () => {
 			itemsPerPage: pageSize,
 			page: pageNumber
 		}
-s
+		
 		if (AuthCtx.token)
 			apiGetRequest<ResponseDataModel<Playthrough>>([AuthCtx.token, source, PageInfo], PlaythroughModel.listThisUsers, applyPlaythroughResponseData);
 
@@ -67,27 +71,28 @@ s
 		playthroughUrl: '/myplaythroughs/'
 	}
 
-	if (playthroughList) {
-		console.log('playthroughList:' + playthroughList)
 		return (
 			<div className={classes.myPlaythroughsBackground}>
 				<div className={classes.myPlaythroughsContainer}>
-					<PlaythroughList
-						playthroughs={playthroughList}
-						playthroughListOptions={playthroughListOptions}
-					/>
+					{playthroughList && !loading ?
+						<PlaythroughList
+							playthroughs={playthroughList}
+							playthroughListOptions={playthroughListOptions}
+						/>
+						: <Spinner className={classes.spinner} />
+					}
+					<div className = {classes.paginationContainer}>
+						<Pagination 
+							initialPage = {pageNumber}
+							totalItems = {countOfTotalItems}
+							itemsPerPage = {pageSize}
+							onPageChange = {pageChangeHandler}
+						/>
+					</div>
 				</div>
 			</div>
 		);
-	}
 
-	return (
-		<div className={classes.myPlaythroughsBackground}>
-			<div className={classes.myPlaythroughsContainer}>
-				<Spinner className={classes.spinner} />
-			</div>
-		</div>
-	);
 }
 
 export default MyPlaythroughs;

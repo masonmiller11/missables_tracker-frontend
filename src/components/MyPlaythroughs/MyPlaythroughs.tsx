@@ -37,9 +37,7 @@ const MyPlaythroughs: React.FC = () => {
 			itemsPerPage: pageSize,
 			page: pageNumber
 		}
-
-		console.log('in useEffect' + PageInfo.itemsPerPage);
-
+s
 		if (AuthCtx.token)
 			apiGetRequest<ResponseDataModel<Playthrough>>([AuthCtx.token, source, PageInfo], PlaythroughModel.listThisUsers, applyPlaythroughResponseData);
 

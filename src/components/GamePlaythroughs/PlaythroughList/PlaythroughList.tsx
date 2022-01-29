@@ -14,6 +14,7 @@ const TemplateList: React.FC<{
 		<div className={classes.playthroughListContainer}>
 			{playthroughs!.map((playthrough) => (
 				<PlaythroughCard
+					key = {playthrough.id}
 					playthrough={playthrough}
 					playthroughCardOptions={playthroughListOptions}
 				/>

@@ -19,14 +19,14 @@ const MyPlaythroughs: React.FC = () => {
 	const [playthroughList, setPlaythroughList] = useState<Playthrough[] | null>(null);
 	const { apiGetRequest, apiDeleteRequest, loading } = useApi();
 	const AuthCtx = useContext(AuthContext);
-	let { 
+	let {
 		countOfTotalItems,
 		pageNumber,
 		pageSize,
 		setCountOfTotalItems,
 		setPageSize,
 		pageChangeHandler
-	} = usePagination(1, 5);
+	} = usePagination(1, 10);
 
 	const applyPlaythroughResponseData = (responseData: ResponseDataModel<Playthrough>) => {
 		setPlaythroughList(responseData.items);
@@ -41,7 +41,7 @@ const MyPlaythroughs: React.FC = () => {
 			itemsPerPage: pageSize,
 			page: pageNumber
 		}
-		
+
 		if (AuthCtx.token)
 			apiGetRequest<ResponseDataModel<Playthrough>>([AuthCtx.token, source, PageInfo], PlaythroughModel.listThisUsers, applyPlaythroughResponseData);
 
@@ -71,27 +71,28 @@ const MyPlaythroughs: React.FC = () => {
 		playthroughUrl: '/myplaythroughs/'
 	}
 
-		return (
-			<div className={classes.myPlaythroughsBackground}>
-				<div className={classes.myPlaythroughsContainer}>
-					{playthroughList && !loading ?
-						<PlaythroughList
-							playthroughs={playthroughList}
-							playthroughListOptions={playthroughListOptions}
-						/>
-						: <Spinner className={classes.spinner} />
-					}
-					<div className = {classes.paginationContainer}>
-						<Pagination 
-							initialPage = {pageNumber}
-							totalItems = {countOfTotalItems}
-							itemsPerPage = {pageSize}
-							onPageChange = {pageChangeHandler}
+	return (
+		<div className={classes.myPlaythroughsBackground}>
+			<div className={classes.myPlaythroughsContainer}>
+				{playthroughList && !loading ?
+					<PlaythroughList
+						playthroughs={playthroughList}
+						playthroughListOptions={playthroughListOptions}
+					/>
+					: <Spinner className={classes.spinner} />
+				} {!loading && playthroughList &&
+					<div className={classes.paginationContainer}>
+						<Pagination
+							initialPage={pageNumber}
+							totalItems={countOfTotalItems}
+							itemsPerPage={pageSize}
+							onPageChange={pageChangeHandler}
 						/>
 					</div>
-				</div>
+				}
 			</div>
-		);
+		</div>
+	);
 
 }
 

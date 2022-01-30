@@ -1,11 +1,18 @@
 import { CancelTokenSource } from 'axios';
 
 import { client, getConfig } from '../..';
+import PageInfo from '../../../interfaces/PageInfo.interface';
 
 export type Like = {
 	id: number|string,
 	template : {
-		id: number|string
+		name?: string,
+		description?: string,
+		id: number|string,
+		game?: {
+			title: string,
+			id: string|number
+		}
 	}
 }
 
@@ -17,10 +24,11 @@ class LikeModel {
 
 	public static async listThisUsers(
 		token: string,
-		source: CancelTokenSource
+		source: CancelTokenSource,
+		PageInfo: PageInfo
 	) {
 		const config = getConfig(token, source);
-		const response = await client.get('like/', config);
+		const response = await client.get('like/' + PageInfo.page + '/' + PageInfo.itemsPerPage, config);
 
 		return response;
 	}

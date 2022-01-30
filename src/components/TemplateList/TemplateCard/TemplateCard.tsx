@@ -96,9 +96,7 @@ const TemplateCard: React.FC<{ likes: Like[], template: Template, templateCardOp
 							<h2>
 								<a onClick={() => history.push(templateGuideUrl + template.id)}>{template.title}</a>
 							</h2>
-
-							<DeleteButton onDelete={deleteTemplateHandler} danger={false}
-							/>
+							<DeleteButton onDelete={deleteTemplateHandler}/>
 						</div>
 						:
 						<h2>

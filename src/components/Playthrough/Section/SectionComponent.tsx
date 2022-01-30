@@ -154,10 +154,9 @@ const SectionComponent: React.FC<{
 								/>
 							</h2>
 						</div>
-						<div>
+						<div className={classes.deleteAndEditButton}>
 							{showEditOption && editing && (
 								<DeleteButton
-									danger={true}
 									onDelete={deleteSectionHandler}
 								/>
 							)}

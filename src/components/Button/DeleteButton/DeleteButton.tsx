@@ -1,20 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Intent } from '@blueprintjs/core';
 
 import classes from './DeleteButton.module.css';
 
-const DeleteButton: React.FC<{ onDelete: (() => void), danger: boolean }> = ({
-	onDelete,
-	danger
+const DeleteButton: React.FC<{ onDelete: (() => void) }> = ({
+	onDelete
 }) => {
 
-	return <Button
-		icon="delete"
-		onClick={() => onDelete()}
-		text="Delete"
-		intent={danger ? Intent.DANGER : Intent.NONE}
-		className={classes.editButton}
-	/>
+	const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
+
+	return <div className={classes.deleteButtonContainer}>
+		<Button
+			icon={confirmDelete ? "trash" : "delete"}
+			onClick={!confirmDelete ? () => setConfirmDelete(true) : () => onDelete()}
+			text={confirmDelete ? "Confirm" : "Delete"}
+			intent={confirmDelete ? Intent.DANGER : Intent.NONE}
+			className={classes.button}
+		/>
+		{confirmDelete &&
+			<Button
+				icon="undo"
+				onClick={() => setConfirmDelete(false)}
+				text="Cancel"
+				intent={Intent.NONE}
+				className={classes.button}
+
+			/>}
+	</div>
 }
 
 export default DeleteButton;

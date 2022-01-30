@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import Template from '../components/Template/TemplateComponent';
 
 
-const TemplatePage: React.FC<{editingAllowed: boolean}>  = ({editingAllowed}) => {
+const TemplatePage: React.FC = () => {
 
     type Params = {
         templateId: string;
@@ -13,7 +13,7 @@ const TemplatePage: React.FC<{editingAllowed: boolean}>  = ({editingAllowed}) =>
     let {templateId} = useParams<Params>();
 
   return (
-    <Template templateId = {templateId} editingAllowed = {editingAllowed}/>
+    <Template templateId = {templateId} editingAllowed = {false}/>
   );
 }
 

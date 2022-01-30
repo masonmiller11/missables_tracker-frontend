@@ -65,7 +65,7 @@ const GameSummaryCard: React.FC<{ game: Game; }> = ({ game }) => {
 					<img src={game.cover}></img>
 					<div className={classes.cardButtonContainer}>
 						<Button
-							text={saving ? "Saving" : "Create Template"}
+							text={saving ? "Creating Template" : "Create Template"}
 							type="submit"
 							large
 							disabled={saving}

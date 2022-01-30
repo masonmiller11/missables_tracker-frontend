@@ -37,7 +37,10 @@ class PlaythroughModel {
 		source: CancelTokenSource,
 		PageInfo: PageInfo
 	) {
-		const config = getConfig(token, source);
+		const config = {
+			cancelToken: source.token,
+		};
+		
 		const response = await client.get('playthroughs/' + PageInfo.page + '/' + PageInfo.itemsPerPage, config);
 
 		return response;
@@ -81,7 +84,7 @@ class PlaythroughModel {
 	}
 
 	public static async read(
-		id: string|number,
+		id: string | number,
 		token: string,
 		source: CancelTokenSource
 	) {

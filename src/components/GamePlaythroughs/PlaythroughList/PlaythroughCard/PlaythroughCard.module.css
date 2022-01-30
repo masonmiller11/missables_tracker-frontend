@@ -6,28 +6,45 @@
 .playthroughCardContainer {
     display: flex;
     justify-content: space-between;
-    width: 100%;
+	width: 100%;
+	flex-direction: column;
+
 }
 
-.playthroughCardTitleAndAuthorContainer {
+.playthroughDetailsContainer {
     flex: 2;
     justify-content: space-evenly;
     flex-direction: column;
     align-items: center;
 }
+
 .cover {
     max-width: 18%;
     margin-right: 2em;
 }
 
-.playthroughCardTitleContainer {
+.playthroughCardContainer > hr {
+    width: 90%;
+    margin-left: 3em;
+}
+
+
+.playthroughName {
+    margin: 0.25em;
+}
+
+
+.imageAndInfoContainer {
 	display: flex;
-	align-items: center;
+	margin: 1em;
+}
+
+.titleAndShowInfoButtonContainer {
+	display: flex;
 	justify-content: space-between;
 }
 
-.playthroughCardTitleAndDeleteContainer {
+
+.buttonsContainer {
 	display: flex;
-	align-items: center;
-	justify-content: space-between;
 }

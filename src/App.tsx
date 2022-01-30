@@ -9,10 +9,10 @@ import FavoritesPage from './pages/FavoritesPage';
 import SearchGamePage from './pages/SearchGamePage';
 import TemplatePage from './pages/TemplatePage';
 import GameTemplatesPage from './pages/GameTemplatesPage';
-import CreateTemplatePage from './pages/CreateTemplatePage';
 import MyTemplatesPage from './pages/MyTemplatesPage';
 import MyPlaythroughsPage from './pages/MyPlaythroughsPage';
-import PlaythroughPage from './pages/PlaythroughPage';
+import MyPlaythroughPage from './pages/MyPlaythroughPage';
+import MyTemplatePage from './pages/MyTemplatePage';
 
 import './App.css';
 
@@ -22,45 +22,22 @@ function App() {
 			<div className={Classes.DARK}>
 				<Layout>
 					<Switch>
-						<Route path="/" exact>
-							<HomePage />
-						</Route>
+						<Route path="/" exact component={HomePage} />
 						<Route path="/login">
 							<AuthPage isLogin={true} />
 						</Route>
 						<Route path="/signup">
 							<AuthPage isLogin={false} />
 						</Route>
-						<Route path="/favorites">
-							<FavoritesPage />
-						</Route>
-						<Route path="/guides/game/:gameId">
-							<GameTemplatesPage />
-						</Route>
-						<Route path="/guides/create/:gameId">
-							<CreateTemplatePage />
-						</Route>
-						<Route path="/guides/:templateId">
-							<TemplatePage editingAllowed={false} />
-						</Route>
-						<Route path="/myguides/:templateId">
-							<TemplatePage editingAllowed={true} />
-						</Route>
-						<Route path="/myguides">
-							<MyTemplatesPage />
-						</Route>
-						<Route path="/myplaythroughs/:playthroughId">
-							<PlaythroughPage editingAllowed={true} />
-						</Route>
-						<Route path="/myplaythroughs">
-							<MyPlaythroughsPage />
-						</Route>
-						<Route path="/search/:searchTerm">
-							<SearchGamePage />
-						</Route>
-						<Route path="/search">
-							<SearchGamePage />
-						</Route>
+						<Route path="/favorites" component={FavoritesPage} />
+						<Route path="/guides/game/:gameId" component={GameTemplatesPage} />
+						<Route path="/guides/:templateId" component={TemplatePage} />
+						<Route path="/myguides/:templateId" component={MyTemplatePage} />
+						<Route path="/myguides" component={MyTemplatesPage} />
+						<Route path="/myplaythroughs/:playthroughId" component={MyPlaythroughPage} />
+						<Route path="/myplaythroughs" component={MyPlaythroughsPage} />
+						<Route path="/search/:searchTerm" component={SearchGamePage} />
+						<Route path="/search" component={SearchGamePage} />
 						<Route path="*">
 							<Redirect to="/" />
 						</Route>

@@ -19,7 +19,7 @@ const MainNavigation: React.FC<{ showSearch: boolean }> = ({ showSearch }) => {
 	let history = useHistory();
 
 	const authCtx = useContext(AuthContext);
-	const isLoggedIn: boolean = authCtx.isLoggedIn;
+	const isLoggedIn = authCtx.isLoggedIn;
 
 	const searchHandler = (term: string | undefined) => {
 		history.replace('/search/' + term);

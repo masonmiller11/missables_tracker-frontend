@@ -1,6 +1,11 @@
 
-import { useState, Dispatch, SetStateAction } from 'react';
+import { useState, Dispatch, SetStateAction, useContext } from 'react';
 import axios, { CancelTokenSource, AxiosResponse, CancelToken } from 'axios';
+
+import AuthContext from '../store/auth-context';
+import { apiRefresh } from '../api';
+import Auth from '../components/Auth/Auth';
+
 
 type apiGet = (...params: any) => Promise<AxiosResponse<any>>;
 type apiDelete<T> = (object: T, token: string, source: CancelTokenSource) => Promise<AxiosResponse<any>>;
@@ -39,6 +44,8 @@ interface ReturnedData {
 
 const useApi = (): ReturnedData => {
 
+	const AuthCtx = useContext(AuthContext);
+
 	//todo: real error handling.
 	//todo add a way for save successfully message
 
@@ -53,6 +60,16 @@ const useApi = (): ReturnedData => {
 	) => {
 
 		setLoading(true);
+
+		if (AuthCtx.isRefreshNeeded()) {
+			console.log('we are now refreshing token');
+			apiRefresh().then((response) => {
+				console.log('new token:' + response.data.token);
+				AuthCtx.login(response.data.token);
+			}).catch((err) => {
+				console.log(err.response?.data.message ?? 'unknown error' + err);
+			})
+		}
 
 		apiGet(...params)
 			.then((response) => {

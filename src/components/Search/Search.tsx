@@ -11,7 +11,7 @@ import axios from 'axios';
 import GamesList from '../Layout/GameList/GameList';
 import GameModel, { Game } from '../../api/models/Game/Game';
 import useApi from '../../hooks/useApi';
-import ErrorMessage from '../Error/ErrorMessage';
+import ErrorMessage from '../Message/ErrorMessage';
 import classes from './Search.module.css';
 
 const Search: React.FC<{ searchTerm: string | null }> = ({ searchTerm: searchTermProp }) => {

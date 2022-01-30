@@ -25,6 +25,8 @@ const PopularGames: React.FC = (props: any) => {
 
 		apiGetRequest([source], GameModel.listPopular, applyGamesResponseData);
 
+		//needs clean up!
+
 	}, []);
 
 	return (

@@ -39,7 +39,7 @@
 	margin: 1em;
 }
 
-.titleAndShowInfoButtonContainer {
+.titleAndButtonsContainer {
 	display: flex;
 	justify-content: space-between;
 }
@@ -47,4 +47,8 @@
 
 .buttonsContainer {
 	display: flex;
+}
+
+.button {
+	margin-right: 1em;
 }

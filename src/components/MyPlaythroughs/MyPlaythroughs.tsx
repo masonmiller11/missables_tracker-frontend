@@ -1,17 +1,14 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { Spinner } from '@blueprintjs/core';
 import axios from 'axios';
-
 import PlaythroughModel, { Playthrough } from '../../api/models/Playthrough/Playthrough';
 import ResponseDataModel from '../../api/models/ResponseData/ListResponseData';
 import PageInfo from '../../interfaces/PageInfo.interface';
 import useApi from '../../hooks/useApi';
 import usePagination from '../../hooks/usePagination';
 import AuthContext from '../../store/auth-context';
-
-import PlaythroughList from '../GamePlaythroughs/PlaythroughList/PlaythroughList';
+import PlaythroughList from '../PlaythroughList/PlaythroughList';
 import Pagination from '../Layout/Pagintation/Pagination'
-
 import classes from './MyPlaythroughs.module.css';
 
 const MyPlaythroughs: React.FC = () => {
@@ -26,12 +23,11 @@ const MyPlaythroughs: React.FC = () => {
 		setCountOfTotalItems,
 		setPageSize,
 		pageChangeHandler
-	} = usePagination(1, 10);
+	} = usePagination(1, 5);
 
 	const applyPlaythroughResponseData = (responseData: ResponseDataModel<Playthrough>) => {
 		setPlaythroughList(responseData.items);
 		setCountOfTotalItems(responseData.totalItems);
-		console.log('setOfTotalItems:' + responseData.totalItems);
 	}
 
 	useEffect(() => {

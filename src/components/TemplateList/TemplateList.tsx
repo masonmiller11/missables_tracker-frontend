@@ -30,7 +30,7 @@ const TemplateList: React.FC<{
 		let source = axios.CancelToken.source();
 
 		if (AuthCtx.isLoggedIn) {
-			apiGetRequest<ResponseDataModel<Like>>([AuthCtx.token, source], LikeModel.listThisUsers, applyLikeResponseData);
+			apiGetRequest<ResponseDataModel<Like>>([AuthCtx.token, source,{page: 1, itemsPerPage: 1000000}], LikeModel.listThisUsers, applyLikeResponseData);
 		}
 
 		return function () {

@@ -46,7 +46,7 @@ const TemplateSummary: React.FC<{
 		let source = axios.CancelToken.source();
 
 		if (AuthCtx.isLoggedIn) {
-			apiGetRequest<ResponseDataModel<Like>>([AuthCtx.token, source], LikeModel.listThisUsers, applyLikeResponseData);
+			apiGetRequest<ResponseDataModel<Like>>([AuthCtx.token, source, {page: 1, itemsPerPage: 1000000}], LikeModel.listThisUsers, applyLikeResponseData);
 		}
 
 
@@ -123,7 +123,7 @@ const TemplateSummary: React.FC<{
 		<Card
 			className={classes.templateSummaryCard}
 			elevation={Elevation.ONE}
-			interactive={false}
+			interactive={true}
 			key={template.id}
 		>
 			<div className={classes.cardContentContainer}>

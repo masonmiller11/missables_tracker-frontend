@@ -1,7 +1,8 @@
 .gamesCard {
     margin: .5em;
     width: 32%;
-    display: flex;
+	display: flex;
+	min-width: 18vw;
 }
 
 .gamesCard > img {

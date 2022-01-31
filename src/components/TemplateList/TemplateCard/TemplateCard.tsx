@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
-import { Card, Spinner, SpinnerSize } from '@blueprintjs/core';
+import { Card, Spinner, SpinnerSize, Elevation } from '@blueprintjs/core';
 
 import { Template } from '../../../api/models/Template/Template';
 import LikeModel, { Like, LikeSubmission } from '../../../api/models/Like/Like';
-import LikeHandlers from '../../../interfaces/LikeHandlers.interface';
 import TemplateListOptions from '../../../interfaces/TemplateListOptions.interface';
 import DeleteButton from '../../Button/DeleteButton/DeleteButton';
 import LikeTemplate from './LikeTemplate/FavoriteTemplate';
@@ -15,7 +14,6 @@ import useApi from '../../../hooks/useApi';
 
 import classes from './TemplateCard.module.css';
 import CreateResponseData from '../../../api/models/ResponseData/CreateResponseData';
-import { SMALL } from '@blueprintjs/core/lib/esm/common/classes';
 
 const TemplateCard: React.FC<{ likes: Like[], template: Template, templateCardOptions: TemplateListOptions }> = ({
 	template,
@@ -25,17 +23,16 @@ const TemplateCard: React.FC<{ likes: Like[], template: Template, templateCardOp
 
 	let { showCover, showFavoriteStar, templateGuideUrl } = templateCardOptions;
 	let [like, setLike] = useState<Like | null>(null);
-	const { apiDeleteRequest, apiGetRequest, apiCreateRequest, saving } = useApi();
+	const { apiDeleteRequest, apiCreateRequest, saving } = useApi();
 	const AuthCtx = useContext(AuthContext);
+	let history = useHistory();
 
 	useEffect(() => {
-		
+
 		let likeIfExists = likes.filter((like) => like.template.id == template.id);
 		!!likeIfExists ? setLike(likeIfExists[0]) : setLike(null);
 
 	}, [likes, template]);
-
-	let history = useHistory();
 
 	const deleteTemplateHandler = () => {
 		templateCardOptions.onDelete && templateCardOptions.onDelete(template);
@@ -71,7 +68,7 @@ const TemplateCard: React.FC<{ likes: Like[], template: Template, templateCardOp
 	let FavoriteStar = () => {
 
 		if (saving) {
-			return <Spinner className={classes.spinner} size = {SpinnerSize.SMALL} />
+			return <Spinner className={classes.spinner} size={SpinnerSize.SMALL} />
 		} else {
 			return <LikeTemplate
 				likeCount={template.likes}
@@ -82,7 +79,10 @@ const TemplateCard: React.FC<{ likes: Like[], template: Template, templateCardOp
 	}
 
 	return (
-		<Card className={classes.templateCard}>
+		<Card className={classes.templateCard}
+			elevation={Elevation.ONE}
+			interactive={true}
+		>
 			<div className={classes.templateTileCardContainer}>
 				{showFavoriteStar &&
 					<FavoriteStar />
@@ -96,7 +96,7 @@ const TemplateCard: React.FC<{ likes: Like[], template: Template, templateCardOp
 							<h2>
 								<a onClick={() => history.push(templateGuideUrl + template.id)}>{template.title}</a>
 							</h2>
-							<DeleteButton onDelete={deleteTemplateHandler}/>
+							<DeleteButton onDelete={deleteTemplateHandler} />
 						</div>
 						:
 						<h2>

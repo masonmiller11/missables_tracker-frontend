@@ -57,7 +57,7 @@ const GameSummaryCard: React.FC<{ game: Game; }> = ({ game }) => {
 		<Card
 			className={classes.gameSummaryCard}
 			elevation={Elevation.ONE}
-			interactive={false}
+			interactive={true}
 			key={game.id}
 		>
 			<div className={classes.cardContentContainer}>

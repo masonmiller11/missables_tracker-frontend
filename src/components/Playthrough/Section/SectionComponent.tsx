@@ -118,7 +118,7 @@ const SectionComponent: React.FC<{
 	};
 
 	return (
-		<Card className={classes.sectionCard}>
+		<Card className={classes.sectionCard} interactive={true}>
 			<div className={classes.sectionTileCardContainer}>
 				<div className={classes.sectionCardTitleAndAuthorContainer}>
 					<div className={classes.sectionCardTitleAndButtonContainer}>

@@ -3,6 +3,7 @@ import jwt from 'jwt-decode';
 
 import DecodedToken from '../api/models/DecodedToken';
 import TokenData from '../api/models/TokenData';
+import User from '../api/models/User';
 import { apiRefresh } from '../api';
 
 let logoutTimer: ReturnType<typeof setTimeout>;
@@ -14,7 +15,7 @@ type initialContext = {
 	login: (encodedToken: string) => void;
 	logout: () => void;
 	isRefreshNeeded: () => boolean
-
+	user: User | null
 }
 
 const AuthContext = React.createContext<initialContext>({
@@ -22,7 +23,11 @@ const AuthContext = React.createContext<initialContext>({
 	isLoggedIn: false,
 	login: () => { },
 	logout: () => { },
-	isRefreshNeeded: () => false
+	isRefreshNeeded: () => false,
+	user: {
+		username: 'temp',
+		email: 'temp'
+	}
 });
 
 //Get remaining duration between now and when the token expires.
@@ -68,7 +73,20 @@ export const AuthContextProvider: React.FC = (props) => {
 
 	let initialToken: string | null = null;
 
-	if (tokenData) initialToken = tokenData.encodedToken;
+	let initialUser: User | null = null;
+
+	if (tokenData) {
+		initialToken = tokenData.encodedToken; 
+
+		const decodedToken: DecodedToken = jwt(initialToken);
+		initialUser = { 
+			email: decodedToken.username,
+			username: decodedToken.userHandle
+		}
+	
+	}
+
+	const [user, setUser] = useState<null | User>(initialUser);
 
 	const [token, setToken] = useState<null | string>(initialToken);
 
@@ -77,8 +95,7 @@ export const AuthContextProvider: React.FC = (props) => {
 	const logoutHandler = useCallback((): void => {
 
 		setToken(null);
-		localStorage.removeItem('token');
-		localStorage.removeItem('expirationTime');
+		setUser(null);
 
 		if (logoutTimer) {
 			clearTimeout(logoutTimer);
@@ -111,6 +128,13 @@ export const AuthContextProvider: React.FC = (props) => {
 
 		const decodedToken: DecodedToken = jwt(encodedToken);
 
+		let initialUser:User = {
+			username: decodedToken.userHandle,
+			email: decodedToken.username
+		}
+
+		setUser(initialUser);
+
 		const expirationTime = new Date(decodedToken.exp * 1000).getTime();
 
 		localStorage.setItem('token', encodedToken);
@@ -132,6 +156,7 @@ export const AuthContextProvider: React.FC = (props) => {
 	const contextValue = {
 		token: token,
 		isLoggedIn: userIsLoggedIn,
+		user: user,
 		login: loginHandler,
 		logout: logoutHandler,
 		isRefreshNeeded

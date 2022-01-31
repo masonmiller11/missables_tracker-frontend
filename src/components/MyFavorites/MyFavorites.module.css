@@ -1,0 +1,21 @@
+.myFavoritesBackground {
+    background-color: #333333;
+    height: 100%; 
+    min-height: 100vh;
+} 
+
+.myFavoritesContainer {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-bottom: 5em;
+    padding-top: 5em;
+}
+
+.spinner {
+    margin: 2em;
+} 
+
+.paginationContainer {
+    padding: 2em;
+}

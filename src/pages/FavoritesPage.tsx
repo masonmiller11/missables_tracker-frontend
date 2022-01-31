@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 
 import AuthContext from '../store/auth-context';
 import NoAccess from '../components/NoAccess/NoAccess';
+import MyFavorites from '../components/MyFavorites/MyFavorites'
 
 const FavoritesPage: React.FC = () => {
 
@@ -10,11 +11,7 @@ const FavoritesPage: React.FC = () => {
 	if (authCtx.isLoggedIn)
 
 		return (
-			<div>
-				<header>
-					<p>Favorites</p>
-				</header>
-			</div>
+			<MyFavorites />
 		);
 
 	return <NoAccess />

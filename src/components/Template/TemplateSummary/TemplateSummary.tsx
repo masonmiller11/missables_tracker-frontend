@@ -46,7 +46,7 @@ const TemplateSummary: React.FC<{
 		let source = axios.CancelToken.source();
 
 		if (AuthCtx.isLoggedIn) {
-			apiGetRequest<ResponseDataModel<Like>>([AuthCtx.token, source, {page: 1, itemsPerPage: 1000000}], LikeModel.listThisUsers, applyLikeResponseData);
+			apiGetRequest<ResponseDataModel<Like>>([source, {page: 1, itemsPerPage: 1000000}], LikeModel.listThisUsers, applyLikeResponseData);
 		}
 
 
@@ -81,7 +81,6 @@ const TemplateSummary: React.FC<{
 		}
 
 	}
-
 
 	const createPlaythroughHandler = () => {
 

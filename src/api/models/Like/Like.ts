@@ -23,11 +23,10 @@ export type LikeSubmission = {
 class LikeModel {
 
 	public static async listThisUsers(
-		token: string,
 		source: CancelTokenSource,
 		PageInfo: PageInfo
 	) {
-		const config = getConfig(token, source);
+		const config = getConfig(source);
 		const response = await client.get('like/' + PageInfo.page + '/' + PageInfo.itemsPerPage, config);
 
 		return response;
@@ -38,7 +37,7 @@ class LikeModel {
 		token: string,
 		source: CancelTokenSource
 	) {
-		const config = getConfig(token, source);
+		const config = getConfig(source);
 		const endpoint = 'like/delete/' + like.id;
 		const response = await client.delete(endpoint, config);
 		return response;
@@ -49,7 +48,7 @@ class LikeModel {
 		token: string,
 		source: CancelTokenSource
 	) {
-		const config = getConfig(token, source);
+		const config = getConfig(source);
 		const response = await client.post('like/create', newLike, config);
 		return response;
 	}

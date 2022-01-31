@@ -56,7 +56,7 @@ class PlaythroughModel {
 			name: playthrough.title,
 			visibility: playthrough.visibility,
 		};
-		const config = getConfig(token, source);
+		const config = getConfig(source);
 		const endpoint = 'playthroughs/update/' + playthrough.id;
 		const response = await client.patch(endpoint, body, config);
 		return response;
@@ -67,7 +67,7 @@ class PlaythroughModel {
 		token: string,
 		source: CancelTokenSource,
 	) {
-		const config = getConfig(token, source);
+		const config = getConfig(source);
 		const response = await client.post('playthroughs/create', newPlaythrough, config);
 		return response;
 	}
@@ -77,7 +77,7 @@ class PlaythroughModel {
 		token: string,
 		source: CancelTokenSource
 	) {
-		const config = getConfig(token, source);
+		const config = getConfig(source);
 		const endpoint = 'playthroughs/delete/' + playthrough.id;
 		const response = await client.delete(endpoint, config);
 		return response;
@@ -88,7 +88,7 @@ class PlaythroughModel {
 		token: string,
 		source: CancelTokenSource
 	) {
-		const config = getConfig(token, source);
+		const config = getConfig(source);
 		const endpoint = 'playthroughs/read/' + id;
 		const response = await client.get(endpoint, config);
 		return response;

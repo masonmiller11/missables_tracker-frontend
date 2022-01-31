@@ -50,7 +50,7 @@ export class TemplateModel {
 		source: CancelTokenSource, 
 		PageInfo: PageInfo
 	) {
-		const config = getConfig(token, source);
+		const config = getConfig(source);
 		const response = await client.get('templates/' + PageInfo.page + '/' + PageInfo.itemsPerPage, config);
 		return response;
 	}
@@ -74,7 +74,7 @@ export class TemplateModel {
 			name: template.title,
 			visibility: template.visibility
 		};
-		const config = getConfig(token, source);
+		const config = getConfig(source);
 		const endpoint = 'templates/update/' + template.id;
 		const response = await client.patch(endpoint, body, config);
 		return response;
@@ -85,7 +85,7 @@ export class TemplateModel {
 		token: string,
 		source: CancelTokenSource
 	) {
-		const config = getConfig(token, source);
+		const config = getConfig(source);
 		const response = await client.post('templates/create', newTemplate, config);
 		return response;
 	}
@@ -95,7 +95,7 @@ export class TemplateModel {
 		token: string,
 		source: CancelTokenSource
 	) {
-		const config = getConfig(token, source);
+		const config = getConfig(source);
 		const endpoint = 'templates/delete/' + template.id;
 		const response = await client.delete(endpoint, config);
 		return response;

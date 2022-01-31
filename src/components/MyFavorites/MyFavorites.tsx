@@ -42,7 +42,7 @@ const MyFavorites: React.FC = () => {
 		};
 
 		if (AuthCtx.token)
-			apiGetRequest<ResponseDataModel<Like>>([AuthCtx.token, source, PageInfo], LikeModel.listThisUsers, applyLikeResponseData);
+			apiGetRequest<ResponseDataModel<Like>>([source, PageInfo], LikeModel.listThisUsers, applyLikeResponseData);
 
 		return function () {
 			source.cancel('cancelling in cleanup');

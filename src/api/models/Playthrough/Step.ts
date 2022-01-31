@@ -32,7 +32,7 @@ export class StepModel {
 			name: step.name,
 			isCompleted: step.isCompleted
 		};
-		const config = getConfig(token, source);
+		const config = getConfig(source);
 		const endpoint = 'step/update/' + step.id;
 		const response = await client.patch(endpoint, body, config);
 		return response;
@@ -43,7 +43,7 @@ export class StepModel {
 		token: string,
 		source: CancelTokenSource
 	) {
-		const config = getConfig(token, source);
+		const config = getConfig(source);
 		const response = await client.post('step/create', newStep, config);
 		return response;
 	}
@@ -53,7 +53,7 @@ export class StepModel {
 		token: string,
 		source: CancelTokenSource
 	) {
-		const config = getConfig(token, source);
+		const config = getConfig(source);
 		const endpoint = 'step/delete/' + step.id;
 		const response = await client.delete(endpoint, config);
 		return response;

@@ -4,19 +4,18 @@ export const client = axios.create({
 	baseURL: 'http://localhost:8000/',
 });
 
-client.interceptors.request.use( config => {
+client.defaults.headers.authorization = 'Bearer ' + localStorage.getItem('token');
 
-	const token = localStorage.getItem('token')
-	config.headers['Authorization'] = 'Bearer ' + token;
-	return config; 
-})
+// client.interceptors.request.use( config => {
+
+// 	const token = localStorage.getItem('token')
+// 	config.headers['Authorization'] = 'Bearer ' + token;
+// 	return config; 
+// })
 
 
-export function getConfig(token: string, source: CancelTokenSource) {
+export function getConfig(source: CancelTokenSource) {
 	const config = {
-		headers: {
-			Authorization: 'Bearer ' + token,
-		},
 		cancelToken: source.token,
 	};
 

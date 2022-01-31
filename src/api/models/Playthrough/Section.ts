@@ -30,7 +30,7 @@ export class SectionModel {
 			position: section.position,
 			name: section.name
 		};
-		const config = getConfig(token, source);
+		const config = getConfig(source);
 		const endpoint = 'section/update/' + section.id;
 		const response = await client.patch(endpoint, body, config);
 		return response;
@@ -41,7 +41,7 @@ export class SectionModel {
 		token: string,
 		source: CancelTokenSource
 	) {
-		const config = getConfig(token, source);
+		const config = getConfig(source);
 		const endpoint = 'section/create';
 		const response = await client.post(endpoint, newSection, config);
 
@@ -53,7 +53,7 @@ export class SectionModel {
 		token: string,
 		source: CancelTokenSource
 	) {
-		const config = getConfig(token, source);
+		const config = getConfig(source);
 		const endpoint = 'section/delete/' + section.id;
 		const response = await client.delete(endpoint, config);
 		return response;

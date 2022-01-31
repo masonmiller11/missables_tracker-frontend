@@ -28,7 +28,7 @@ export class TemplateStepModel {
 			position: templateStep.position,
 			name: templateStep.name,
 		};
-		const config = getConfig(token, source);
+		const config = getConfig(source);
 		const endpoint = 'step/template/update/' + templateStep.id;
 		const response = await client.patch(endpoint, body, config);
 		return response;
@@ -39,7 +39,7 @@ export class TemplateStepModel {
 		token: string,
 		source: CancelTokenSource
 	) {
-		const config = getConfig(token, source);
+		const config = getConfig(source);
 		const response = await client.post('step/template/create', newTemplateStep, config);
 		return response;
 	}
@@ -49,7 +49,7 @@ export class TemplateStepModel {
 		token: string,
 		source: CancelTokenSource
 	) {
-		const config = getConfig(token, source);
+		const config = getConfig(source);
 		const endpoint = 'step/template/delete/' + templateStep.id;
 		const response = await client.delete(endpoint, config);
 		return response;

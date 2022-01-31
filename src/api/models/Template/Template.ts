@@ -2,6 +2,7 @@ import { CancelTokenSource } from 'axios';
 
 import { client, getConfig } from '../..';
 import { TemplateSection } from './TemplateSection';
+import PageInfo from '../../../interfaces/PageInfo.interface';
 
 export type Template = {
 
@@ -36,19 +37,21 @@ export class TemplateModel {
 
 	public static async list(
 		gameId: string,
-		source: CancelTokenSource
+		source: CancelTokenSource,
+		PageInfo: PageInfo
 	) {
-		const endpoint = 'templates/bygame/' + gameId;
+		const endpoint = 'templates/bygame/' + gameId + '/' +  + PageInfo.page + '/' + PageInfo.itemsPerPage;
 		const response = await client.get(endpoint, { cancelToken: source.token });
 		return response;
 	}
 
 	public static async listThisUsers(
 		token: string,
-		source: CancelTokenSource
+		source: CancelTokenSource, 
+		PageInfo: PageInfo
 	) {
 		const config = getConfig(token, source);
-		const response = await client.get('templates', config);
+		const response = await client.get('templates/' + PageInfo.page + '/' + PageInfo.itemsPerPage, config);
 		return response;
 	}
 

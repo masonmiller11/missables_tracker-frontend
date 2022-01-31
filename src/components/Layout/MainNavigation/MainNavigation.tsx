@@ -79,7 +79,7 @@ const MainNavigation: React.FC<{ showSearch: boolean }> = ({ showSearch }) => {
 						text="Login"
 					/>
 				) : (
-					<UserPreferencesPopover onLogout={logoutHandler} />
+					<UserPreferencesPopover onLogout={logoutHandler} user={authCtx.user} />
 				)}
 			</NavbarGroup>
 		</Navbar>

@@ -3,11 +3,16 @@ import { Button, Menu, MenuDivider, MenuItem } from '@blueprintjs/core';
 import { Popover } from '@blueprintjs/core';
 import { useHistory } from 'react-router-dom';
 
-const UserPreferencesPopover: React.FC<{ onLogout: () => void }> = ({
-    onLogout,
+import User from '../../api/models/User';
+
+const UserPreferencesPopover: React.FC<{ user: User|null, onLogout: () => void }> = ({
+	onLogout,
+	user
 }) => {
 
-    let history = useHistory();
+	let history = useHistory();
+	
+	console.log('user:' + user?.username);
 
     const menu = (
         <Menu>
@@ -19,7 +24,7 @@ const UserPreferencesPopover: React.FC<{ onLogout: () => void }> = ({
 
     return (
         <Popover content={menu} placement="right-end">
-            <Button icon="person" text="Profile" />
+            <Button icon="person" text={user ? user.username : "profile"} />
         </Popover>
     );
 };

@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Spinner } from '@blueprintjs/core';
-
 import GameModel, { Game } from '../../api/models/Game/Game';
 import TemplateModel, { Template } from '../../api/models/Template/Template';
+import PageInfo from '../../interfaces/PageInfo.interface';
 import ResponseDataModel from '../../api/models/ResponseData/ListResponseData';
-
 import TemplateList from '../TemplateList/TemplateList';
+import Pagination from '../Layout/Pagintation/Pagination'
 import GameSummaryCard from '../Layout/GameSummary/GameSummaryCard';
-
+import usePagination from '../../hooks/usePagination';
 import useApi from '../../hooks/useApi';
-
 import classes from './GameTemplates.module.css';
 
 const GameTemplates: React.FC<{ gameId: string }> = ({
@@ -27,29 +26,53 @@ const GameTemplates: React.FC<{ gameId: string }> = ({
 	const [templateList, setTemplateList] = useState<null | Template[]>(null);
 	const [game, setGame] = useState<Game>();
 	const [loading, setLoading] = useState<boolean>(false);
-	const { apiGetRequest } = useApi();
+	const { apiGetRequest, loading: apiLoading } = useApi();
+
+	let {
+		countOfTotalItems,
+		pageNumber,
+		pageSize,
+		setCountOfTotalItems,
+		setPageSize,
+		pageChangeHandler
+	} = usePagination(1, 10);
 
 	const applyTemplateResponseData = (responseData: ResponseDataModel<Template>) => {
 		setTemplateList(responseData.items);
-	} 
+		setCountOfTotalItems(responseData.totalItems);
+	}
 
 	useEffect(() => {
 
 		setLoading(true);
-
 		let source = axios.CancelToken.source();
+		let PageInfo: PageInfo = {
+			itemsPerPage: pageSize,
+			page: pageNumber
+		};
 
 		(async function () {
 
-			apiGetRequest([gameIdProp, source], TemplateModel.list, applyTemplateResponseData)
+			apiGetRequest([gameIdProp, source, PageInfo], TemplateModel.list, applyTemplateResponseData)
 
 			apiGetRequest([gameIdProp, source], GameModel.read, setGame);
 
 		})().then(() => setLoading(false));
 
 
-		//todo add real error handling
-	}, [gameIdProp]);
+	}, [gameIdProp,]);
+
+	useEffect(() => {
+
+		let source = axios.CancelToken.source();
+		let PageInfo: PageInfo = {
+			itemsPerPage: pageSize,
+			page: pageNumber
+		};
+
+		apiGetRequest([gameIdProp, source, PageInfo], TemplateModel.list, applyTemplateResponseData)
+
+	}, [pageNumber])
 
 	if (templateList && game) {
 		//get Game and templates in here. If we don't have both, show loading. Remove loading from below children.
@@ -57,10 +80,21 @@ const GameTemplates: React.FC<{ gameId: string }> = ({
 			<div className={classes.gameTemplatesBackground}>
 				<div className={classes.gameTemplatesContainer}>
 					<GameSummaryCard game={game} />
-					<TemplateList
-						templates={templateList}
-						templateListOptions={gameTemplatesListOptions}
-					/>
+					{!apiLoading ?
+						<TemplateList
+							templates={templateList}
+							templateListOptions={gameTemplatesListOptions}
+						/>
+						: <Spinner className={classes.spinner} />
+					}
+					<div className={classes.paginationContainer}>
+						<Pagination
+							initialPage={pageNumber}
+							totalItems={countOfTotalItems}
+							itemsPerPage={pageSize}
+							onPageChange={pageChangeHandler}
+						/>
+					</div>
 				</div>
 			</div>
 		);

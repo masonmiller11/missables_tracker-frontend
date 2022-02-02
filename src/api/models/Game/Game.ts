@@ -1,6 +1,7 @@
 import { CancelTokenSource } from 'axios';
 
 import { client } from '../..';
+import PageInfo from '../../../interfaces/PageInfo.interface';
 
 export type Game = {
 	title: string;
@@ -22,10 +23,12 @@ export class GameModel {
 
 	public static async listPopular(
 		source: CancelTokenSource,
-		itemsPerPage: number = 6,
-		page: number = 1,
+		pageInfo: PageInfo = {
+			itemsPerPage: 6,
+			page: 1
+		}
 	) {
-		const endpoint = 'games/popular/' + page + '/' + itemsPerPage;
+		const endpoint = 'games/popular/' + pageInfo.page + '/' + pageInfo.itemsPerPage;
 		const response = await client.get(endpoint, { cancelToken: source.token });
 		return response;
 	}

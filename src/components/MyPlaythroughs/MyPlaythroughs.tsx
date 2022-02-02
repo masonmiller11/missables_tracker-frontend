@@ -7,7 +7,8 @@ import PageInfo from '../../interfaces/PageInfo.interface';
 import useApi from '../../hooks/useApi';
 import usePagination from '../../hooks/usePagination';
 import PlaythroughList from '../PlaythroughList/PlaythroughList';
-import Pagination from '../Layout/Pagintation/Pagination'
+import Pagination from '../Layout/Pagintation/Pagination';
+import ResourceNotFoundMessage from '../Message/ResourceNotFoundMessage';
 import classes from './MyPlaythroughs.module.css';
 
 const MyPlaythroughs: React.FC = () => {
@@ -36,21 +37,19 @@ const MyPlaythroughs: React.FC = () => {
 			page: pageNumber
 		}
 
-		if (AuthCtx.token)
-			apiGetRequest<ResponseDataModel<Playthrough>>([AuthCtx.token, source, PageInfo], PlaythroughModel.listThisUsers, applyPlaythroughResponseData);
+			apiGetRequest<ResponseDataModel<Playthrough>>(PlaythroughModel.listThisUsers(source, PageInfo), applyPlaythroughResponseData);
 
 		return function () {
 			source.cancel('cancelling in cleanup');
 		}
 
-	}, [AuthCtx, pageNumber]);
+	}, [pageNumber]);
 
 	const deletePlaythroughHandler = (playthroughToDelete: Playthrough) => {
 
 		let source = axios.CancelToken.source();
 
-		if (AuthCtx.token)
-			apiDeleteRequest<Playthrough>(playthroughToDelete, AuthCtx.token, source, PlaythroughModel.delete);
+		apiDeleteRequest<Playthrough>(playthroughToDelete, source, PlaythroughModel.delete);
 
 		let newPlaythroughArray = playthroughList!.filter((playthrough) => {
 			return playthrough.id != playthroughToDelete.id
@@ -64,6 +63,16 @@ const MyPlaythroughs: React.FC = () => {
 		onDelete: deletePlaythroughHandler,
 		playthroughUrl: '/myplaythroughs/'
 	}
+
+	if (error == "No playthroughs were found.")
+		return (
+			<div className={classes.myPlaythroughsBackground}>
+				<div className={classes.myPlaythroughsContainer}>
+					<ResourceNotFoundMessage messageText="You haven't started any playthroughs yet. What are you waiting for?" />
+				</div>
+			</div>
+		)
+
 
 	return (
 		<div className={classes.myPlaythroughsBackground}>

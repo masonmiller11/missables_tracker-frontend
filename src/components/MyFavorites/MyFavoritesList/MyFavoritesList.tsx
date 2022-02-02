@@ -1,11 +1,9 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import { HTMLTable, Button } from '@blueprintjs/core';
-import axios from 'axios';
+import { HTMLTable } from '@blueprintjs/core';
 
-import LikeModel, { Like } from '../../../api/models/Like/Like';
-import ResponseDataModel from '../../../api/models/ResponseData/ListResponseData';
-import CreateResponseData from '../../../api/models/ResponseData/CreateResponseData';
+import { Like } from '../../../api/models/Like/Like';
+
 import classes from './MyFavoritesList.module.css';
 import DeleteButton from '../../Button/DeleteButton/DeleteButton';
 
@@ -43,10 +41,10 @@ const MyFavoritesList: React.FC<{
 						<td>{like.template.game?.title}</td>
 						<td>
 							<DeleteButton
-								onDelete={()=> onDelete(like)}
+								onDelete={() => onDelete(like)}
 								buttonText="Remove From Favorites" />
 						</td>
-						
+
 					</tr>
 				))}
 			</tbody>

@@ -20,7 +20,6 @@ export class TemplateStepModel {
 
 	public static async patch(
 		templateStep: TemplateStep,
-		token: string,
 		source: CancelTokenSource
 	) {
 		const body = {
@@ -36,7 +35,6 @@ export class TemplateStepModel {
 
 	public static async create(
 		newTemplateStep: TemplateStepSubmission,
-		token: string,
 		source: CancelTokenSource
 	) {
 		const config = getConfig(source);
@@ -46,7 +44,6 @@ export class TemplateStepModel {
 
 	public static async delete(
 		templateStep: TemplateStep,
-		token: string,
 		source: CancelTokenSource
 	) {
 		const config = getConfig(source);

@@ -15,7 +15,6 @@ import Defaults from '../../../api/DefaultValues';
 import useEditing from '../../../hooks/useEditing';
 import useApi from '../../../hooks/useApi';
 import useTemplateObject from '../../../hooks/useTemplateObject';
-import AuthContext from '../../../store/auth-context';
 import classes from './Section.module.css';
 
 const SectionComponent: React.FC<{
@@ -25,14 +24,12 @@ const SectionComponent: React.FC<{
 	onDeleteSection: (section: Section) => void;
 }> = ({ section: sectionProp, showEditOption, onUpdateSection, onDeleteSection }) => {
 
-	const AuthCtx = useContext(AuthContext);
-
 	const defaults = new Defaults();
 	const defaultNewStep: StepSubmission = { ...defaults.newStep, sectionId: parseInt(sectionProp.id as string) };
 
 	const { editing, editingStateHandler } = useEditing();
 	const { object: section, editObjectHandler: editSectionHandler, setObjectHandler: setSection } = useTemplateObject<Section>(sectionProp);
-	const { saving, addingNew: addingNewStep, apiDeleteRequest, apiPatchRequest, apiCreateRequest } = useApi();
+	const { saving, addingNew: addingNewStep, apiDeleteRequest, apiUpdateRequest, apiCreateRequest } = useApi();
 
 	useEffect(() => {
 		setSection(sectionProp);
@@ -60,8 +57,8 @@ const SectionComponent: React.FC<{
 
 		let source = axios.CancelToken.source();
 
-		if (AuthCtx.token && stepToDelete.id)
-			apiDeleteRequest<Step>(stepToDelete, AuthCtx.token, source, StepModel.delete);
+		if (stepToDelete.id)
+			apiDeleteRequest<Step>(stepToDelete, source, StepModel.delete);
 
 		let newStepArray = section.steps.filter((step) => {
 			return step.id !== stepToDelete.id;
@@ -75,8 +72,7 @@ const SectionComponent: React.FC<{
 
 		let source = axios.CancelToken.source();
 
-		if (AuthCtx.token)
-			apiPatchRequest<Step>(editedTemplateStep, AuthCtx.token, source, StepModel.patch);
+		apiUpdateRequest<Step>(editedTemplateStep, source, StepModel.patch);
 
 		//find index of step we're updating.
 		let indexOfStep = section.steps.findIndex(
@@ -99,17 +95,16 @@ const SectionComponent: React.FC<{
 
 		const applyNewTemplateStep = (responseData: CreateResponseData) => {
 			let newStepsArray = section.steps;
-			newStepsArray.push({...defaultNewStep, id: responseData.id });
+			newStepsArray.push({ ...defaultNewStep, id: responseData.id });
 			setSection({ ...section, steps: newStepsArray });
 		}
 
-		if (AuthCtx.token && section.id) {
+		if (section.id) {
 
 			let source = axios.CancelToken.source();
 
 			apiCreateRequest<StepSubmission>(
 				defaultNewStep,
-				AuthCtx.token,
 				source,
 				StepModel.create,
 				applyNewTemplateStep

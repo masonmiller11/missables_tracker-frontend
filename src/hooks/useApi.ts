@@ -1,83 +1,77 @@
 
-import { useState, Dispatch, SetStateAction, useContext } from 'react';
-import axios, { CancelTokenSource, AxiosResponse, CancelToken } from 'axios';
-import { Button, Card, Elevation, Intent } from '@blueprintjs/core';
+import { useState, useContext } from 'react';
+import axios, { CancelTokenSource, AxiosResponse } from 'axios';
+import { Intent } from '@blueprintjs/core';
 
 import AuthContext from '../store/auth-context';
 import { apiRefresh } from '../api';
-import Auth from '../components/Auth/Auth';
 import { AppToaster } from '../components/Layout/Toaster';
 
 
-type apiGet = (...params: any) => Promise<AxiosResponse<any>>;
-type apiDelete<T> = (object: T, token: string, source: CancelTokenSource) => Promise<AxiosResponse<any>>;
-type apiPatch<T> = (object: T, token: string, source: CancelTokenSource) => Promise<AxiosResponse<any>>;
-type apiCreate<T> = (object: T, token: string, source: CancelTokenSource) => Promise<AxiosResponse<any>>;
+type apiGet = Promise<AxiosResponse<any>>;
+type apiDelete<T> = (object: T, source: CancelTokenSource) => Promise<AxiosResponse<any>>;
+type apiUpdate<T> = (object: T, source: CancelTokenSource) => Promise<AxiosResponse<any>>;
+type apiCreate<T> = (object: T, source: CancelTokenSource) => Promise<AxiosResponse<any>>;
 
 interface ReturnedData {
 	saving: boolean,
 	addingNew: boolean,
 	loading: boolean,
+	error: string | null,
 	apiGetRequest: <T> (
-		params: any[],
 		apiGet: apiGet,
 		applyData: (data: T) => void,
 	) => void,
 	apiDeleteRequest: <T>(
 		object: T,
-		token: string,
 		source: CancelTokenSource,
 		apiDelete: apiDelete<T>,
 	) => void,
-	apiPatchRequest: <T>(
+	apiUpdateRequest: <T>(
 		data: T,
-		token: string,
 		source: CancelTokenSource,
-		apiPatch: apiPatch<T>
+		apiUpdate: apiUpdate<T>
 	) => void,
 	apiCreateRequest: <T>(
 		data: T,
-		token: string,
 		source: CancelTokenSource,
 		apiCreate: apiCreate<T>,
 		applyData: (data: any) => void
 	) => void
 }
 
-const useApi = (): ReturnedData => {
+const useApi = (useErrorHandling: boolean = true): ReturnedData => {
 
 	const AuthCtx = useContext(AuthContext);
 
-	const errorHandler = (message: string, intent: Intent) => {
-		AppToaster.show({ message: message, intent: intent });
-	};
-
-	//todo: real error handling.
 	//todo add a way for save successfully message
 
 	const [saving, setSaving] = useState<boolean>(false);
 	const [addingNew, setAddingNew] = useState<boolean>(false);
 	const [loading, setLoading] = useState<boolean>(false);
+	const [error, setError] = useState<string | null>(null);
+
+	const errorHandler = (message: string) => {
+		setError(message);
+		if (useErrorHandling)
+			AppToaster.show({ message: message, intent: Intent.DANGER });
+	};
 
 	const apiGetRequest = <T extends {}>(
-		params: any[],
 		apiGet: apiGet,
 		applyData: (data: T) => void
 	) => {
-
 		setLoading(true);
-
 		if (AuthCtx.isRefreshNeeded()) {
 			apiRefresh()
 				.then((response) => {
 					AuthCtx.login(response.data.token);
 				})
 				.catch((err) => {
-					errorHandler(err.response?.data.message ?? 'Unknown Error', Intent.DANGER);
+					errorHandler(err.response?.data.message ?? 'Unknown Error');
 				})
 		}
-
-		apiGet(...params)
+		apiGet
 			.then((response) => {
 				applyData(response.data);
 				setLoading(false);
@@ -87,22 +81,18 @@ const useApi = (): ReturnedData => {
 				if (axios.isCancel(err)) {
 					console.log('api request cancelled');
 				} else {
-					errorHandler(err.response?.data.message ?? 'Unknown Error', Intent.DANGER);
+					errorHandler(err.response?.data.message ?? 'Unknown Error');
 				}
 			});
-
 	}
 
 	const apiDeleteRequest = <T extends {}>(
 		object: T,
-		token: string,
 		source: CancelTokenSource,
 		apiDelete: apiDelete<T>,
 	) => {
-
 		setSaving(true);
-
-		apiDelete(object, token, source)
+		apiDelete(object, source)
 			.then((response) => {
 				console.log(response);
 				setSaving(false);
@@ -112,22 +102,18 @@ const useApi = (): ReturnedData => {
 				if (axios.isCancel(err)) {
 					console.log('api request cancelled');
 				} else {
-					errorHandler(err.response?.data.message ?? 'Unknown Error', Intent.DANGER);
+					errorHandler(err.response?.data.message ?? 'Unknown Error');
 				}
 			});
-
 	}
 
-	const apiPatchRequest = <T extends {}>(
+	const apiUpdateRequest = <T extends {}>(
 		data: T,
-		token: string,
 		source: CancelTokenSource,
-		apiPatch: apiPatch<T>
+		apiUpdate: apiUpdate<T>
 	) => {
-
 		setSaving(true);
-
-		apiPatch(data, token, source)
+		apiUpdate(data, source)
 			.then(() => {
 				setSaving(false);
 			})
@@ -136,24 +122,20 @@ const useApi = (): ReturnedData => {
 				if (axios.isCancel(err)) {
 					console.log('api request cancelled');
 				} else {
-					errorHandler(err.response?.data.message ?? 'Unknown Error', Intent.DANGER);
+					errorHandler(err.response?.data.message ?? 'Unknown Error');
 				}
 			});
-
 	}
 
 	const apiCreateRequest = <T extends {}>(
 		data: T,
-		token: string,
 		source: CancelTokenSource,
 		apiCreate: apiCreate<T>,
 		applyData: (data: any) => void
 	) => {
-
 		setSaving(true);
 		setAddingNew(true);
-
-		let returnData = apiCreate(data, token, source)
+		let returnData = apiCreate(data, source)
 			.then((response) => {
 				setSaving(false);
 				setAddingNew(false);
@@ -165,21 +147,20 @@ const useApi = (): ReturnedData => {
 				if (axios.isCancel(err)) {
 					console.log('api request cancelled');
 				} else {
-					errorHandler(err.response?.data.message ?? 'Unknown Error', Intent.DANGER);
+					errorHandler(err.response?.data.message ?? 'Unknown Error');
 				}
 			});
-
 		return returnData;
-
 	}
 
 	return {
 		loading,
 		saving,
 		addingNew,
+		error,
 		apiGetRequest,
 		apiDeleteRequest,
-		apiPatchRequest,
+		apiUpdateRequest,
 		apiCreateRequest
 	};
 };

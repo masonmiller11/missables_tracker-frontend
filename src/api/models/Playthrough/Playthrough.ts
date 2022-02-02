@@ -33,7 +33,6 @@ export type Playthrough = {
 class PlaythroughModel {
 
 	public static async listThisUsers(
-		token: string,
 		source: CancelTokenSource,
 		PageInfo: PageInfo
 	) {
@@ -48,7 +47,6 @@ class PlaythroughModel {
 
 	public static async patch(
 		playthrough: Playthrough,
-		token: string,
 		source: CancelTokenSource
 	) {
 		const body = {
@@ -64,7 +62,6 @@ class PlaythroughModel {
 
 	public static async create(
 		newPlaythrough: PlaythroughSubmission,
-		token: string,
 		source: CancelTokenSource,
 	) {
 		const config = getConfig(source);
@@ -74,7 +71,6 @@ class PlaythroughModel {
 
 	public static async delete(
 		playthrough: Playthrough,
-		token: string,
 		source: CancelTokenSource
 	) {
 		const config = getConfig(source);
@@ -85,7 +81,6 @@ class PlaythroughModel {
 
 	public static async read(
 		id: string | number,
-		token: string,
 		source: CancelTokenSource
 	) {
 		const config = getConfig(source);

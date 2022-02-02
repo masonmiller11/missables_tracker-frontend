@@ -48,8 +48,8 @@ const TemplateCard: React.FC<{ likes: Like[], template: Template, templateCardOp
 
 		let source = axios.CancelToken.source();
 
-		if (likes && AuthCtx.token) {
-			apiCreateRequest<LikeSubmission>({ templateId: template.id }, AuthCtx.token, source, LikeModel.create, likeCreateResponseHandler);
+		if (likes) {
+			apiCreateRequest<LikeSubmission>({ templateId: template.id }, source, LikeModel.create, likeCreateResponseHandler);
 		}
 	}
 
@@ -57,12 +57,11 @@ const TemplateCard: React.FC<{ likes: Like[], template: Template, templateCardOp
 
 		let source = axios.CancelToken.source();
 
-		if (like && AuthCtx.token) {
-			apiDeleteRequest<Like>(like, AuthCtx.token, source, LikeModel.delete);
+		if (like) {
+			apiDeleteRequest<Like>(like, source, LikeModel.delete);
 			setLike(null);
 			template.likes--;
 		}
-
 	}
 
 	let FavoriteStar = () => {

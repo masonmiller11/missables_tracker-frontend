@@ -53,9 +53,9 @@ const GameTemplates: React.FC<{ gameId: string }> = ({
 
 		(async function () {
 
-			apiGetRequest([gameIdProp, source, PageInfo], TemplateModel.list, applyTemplateResponseData)
+			apiGetRequest(TemplateModel.list(gameIdProp, source, PageInfo), applyTemplateResponseData)
 
-			apiGetRequest([gameIdProp, source], GameModel.read, setGame);
+			apiGetRequest(GameModel.read(gameIdProp, source), setGame);
 
 		})().then(() => setLoading(false));
 
@@ -70,7 +70,7 @@ const GameTemplates: React.FC<{ gameId: string }> = ({
 			page: pageNumber
 		};
 
-		apiGetRequest([gameIdProp, source, PageInfo], TemplateModel.list, applyTemplateResponseData)
+		apiGetRequest(TemplateModel.list(gameIdProp, source, PageInfo), applyTemplateResponseData)
 
 	}, [pageNumber])
 

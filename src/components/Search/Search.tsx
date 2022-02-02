@@ -43,7 +43,7 @@ const Search: React.FC<{ searchTerm: string | null }> = ({ searchTerm: searchTer
 
 			let source = axios.CancelToken.source();
 
-			apiGetRequest([searchTerm, source], GameModel.search, setGames);
+			apiGetRequest(GameModel.search(searchTerm, source), setGames);
 
 		}
 	}, [searchTerm]);

@@ -23,7 +23,7 @@ const PopularGames: React.FC = (props: any) => {
 	useEffect(() => {
 		let source = axios.CancelToken.source();
 
-		apiGetRequest([source], GameModel.listPopular, applyGamesResponseData);
+		apiGetRequest(GameModel.listPopular(source), applyGamesResponseData);
 
 		//needs clean up!
 

@@ -18,20 +18,16 @@ const GameSummaryCard: React.FC<{ game: Game; }> = ({ game }) => {
 
 	const errorHandler = (message: string, intent: Intent) => {
         AppToaster.show({ message: message, intent: intent });
-    };
-
+	};
+	
 	let history = useHistory();
 	const { apiCreateRequest, saving } = useApi();
 	const AuthCtx = useContext(AuthContext);
 
-
-
 	const createTemplateHandler = () => {
 
 		const redirectToNewTemplate = (data: { status: string, id: string | number }) => {
-
 			history.push('/myguides/' + data.id);
-
 		};
 
 		const newTemplate: TemplateSubmission = {
@@ -41,21 +37,17 @@ const GameSummaryCard: React.FC<{ game: Game; }> = ({ game }) => {
 			visibility: true
 		}
 
-		if (AuthCtx.isLoggedIn && AuthCtx.token) {
+		if (AuthCtx.isLoggedIn ) {
 			let source = axios.CancelToken.source();
 			apiCreateRequest<TemplateSubmission>(
 				newTemplate,
-				AuthCtx.token,
 				source,
 				TemplateModel.create,
 				redirectToNewTemplate
 			)
 		} else {
-
 			errorHandler('You have to be logged in to do that.', Intent.DANGER);
-
 		}
-
 	}
 
 	return (

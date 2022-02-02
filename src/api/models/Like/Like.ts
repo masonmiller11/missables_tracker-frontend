@@ -34,7 +34,6 @@ class LikeModel {
 
 	public static async delete(
 		like: Like,
-		token: string,
 		source: CancelTokenSource
 	) {
 		const config = getConfig(source);
@@ -45,7 +44,6 @@ class LikeModel {
 
 	public static async create(
 		newLike: LikeSubmission,
-		token: string,
 		source: CancelTokenSource
 	) {
 		const config = getConfig(source);

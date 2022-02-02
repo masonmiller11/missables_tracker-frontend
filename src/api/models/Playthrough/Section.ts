@@ -22,7 +22,6 @@ export class SectionModel {
 
 	public static async patch(
 		section: Section,
-		token: string,
 		source: CancelTokenSource
 	) {
 		const body = {
@@ -38,7 +37,6 @@ export class SectionModel {
 
 	public static async create(
 		newSection: SectionSubmission,
-		token: string,
 		source: CancelTokenSource
 	) {
 		const config = getConfig(source);
@@ -50,7 +48,6 @@ export class SectionModel {
 
 	public static async delete(
 		section: Section,
-		token: string,
 		source: CancelTokenSource
 	) {
 		const config = getConfig(source);

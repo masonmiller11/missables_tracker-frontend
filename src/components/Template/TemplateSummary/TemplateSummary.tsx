@@ -46,9 +46,8 @@ const TemplateSummary: React.FC<{
 		let source = axios.CancelToken.source();
 
 		if (AuthCtx.isLoggedIn) {
-			apiGetRequest<ResponseDataModel<Like>>([source, {page: 1, itemsPerPage: 1000000}], LikeModel.listThisUsers, applyLikeResponseData);
+			apiGetRequest<ResponseDataModel<Like>>(LikeModel.listThisUsers(source, { page: 1, itemsPerPage: 1000000 }), applyLikeResponseData);
 		}
-
 
 	}, [AuthCtx.isLoggedIn])
 
@@ -63,9 +62,8 @@ const TemplateSummary: React.FC<{
 
 			let source = axios.CancelToken.source();
 
-			if (AuthCtx.token) {
-				apiCreateRequest<LikeSubmission>({ templateId: template.id }, AuthCtx.token, source, LikeModel.create, likeCreateResponseHandler);
-			}
+			apiCreateRequest<LikeSubmission>({ templateId: template.id }, source, LikeModel.create, likeCreateResponseHandler);
+
 		} else {
 			console.log('you must be logged in for that');
 		}
@@ -75,11 +73,10 @@ const TemplateSummary: React.FC<{
 
 		let source = axios.CancelToken.source();
 
-		if (like && AuthCtx.token) {
-			apiDeleteRequest<Like>(like, AuthCtx.token, source, LikeModel.delete);
+		if (like) {
+			apiDeleteRequest<Like>(like, source, LikeModel.delete);
 			setLike(null);
 		}
-
 	}
 
 	const createPlaythroughHandler = () => {
@@ -99,15 +96,14 @@ const TemplateSummary: React.FC<{
 		};
 
 
-		if (AuthCtx.token && AuthCtx.isLoggedIn) {
-			
+		if (AuthCtx.isLoggedIn) {
+
 			setCreatingNewPlaythrough(true);
 
 			let source = axios.CancelToken.source();
 
 			apiCreateRequest<PlaythroughSubmission>(
 				newPlaythrough,
-				AuthCtx.token,
 				source,
 				PlaythroughModel.create,
 				redirectToNewPlaythrough

@@ -6,7 +6,6 @@ import ResponseDataModel from '../../api/models/ResponseData/ListResponseData';
 import PageInfo from '../../interfaces/PageInfo.interface';
 import useApi from '../../hooks/useApi';
 import usePagination from '../../hooks/usePagination';
-import AuthContext from '../../store/auth-context';
 import PlaythroughList from '../PlaythroughList/PlaythroughList';
 import Pagination from '../Layout/Pagintation/Pagination'
 import classes from './MyPlaythroughs.module.css';
@@ -14,8 +13,7 @@ import classes from './MyPlaythroughs.module.css';
 const MyPlaythroughs: React.FC = () => {
 
 	const [playthroughList, setPlaythroughList] = useState<Playthrough[] | null>(null);
-	const { apiGetRequest, apiDeleteRequest, loading } = useApi();
-	const AuthCtx = useContext(AuthContext);
+	const { apiGetRequest, apiDeleteRequest, loading, error } = useApi();
 	let {
 		countOfTotalItems,
 		pageNumber,

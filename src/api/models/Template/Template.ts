@@ -46,7 +46,6 @@ export class TemplateModel {
 	}
 
 	public static async listThisUsers(
-		token: string,
 		source: CancelTokenSource, 
 		PageInfo: PageInfo
 	) {
@@ -66,7 +65,6 @@ export class TemplateModel {
 
 	public static async patch(
 		template: Template,
-		token: string,
 		source: CancelTokenSource
 	) {
 		const body = {
@@ -82,7 +80,6 @@ export class TemplateModel {
 
 	public static async create(
 		newTemplate: TemplateSubmission,
-		token: string,
 		source: CancelTokenSource
 	) {
 		const config = getConfig(source);
@@ -92,7 +89,6 @@ export class TemplateModel {
 
 	public static async delete(
 		template: Template,
-		token: string,
 		source: CancelTokenSource
 	) {
 		const config = getConfig(source);

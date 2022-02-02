@@ -25,13 +25,13 @@ const TemplateComponent: React.FC<{ templateId: string; editingAllowed: boolean 
 
 	const [showEditOption, setShowEditOption] = useState<boolean>(editingAllowed);
 	const [template, setTemplate] = useState<Template>();
-	const { apiGetRequest, apiPatchRequest, apiCreateRequest, apiDeleteRequest, addingNew: addingNewSection } = useApi();
+	const { apiGetRequest, apiUpdateRequest, apiCreateRequest, apiDeleteRequest, addingNew: addingNewSection } = useApi();
 
 	useEffect(() => {
 
 		let source = axios.CancelToken.source();
 
-		apiGetRequest<Template | undefined>([templateIdProp, source], TemplateModel.read, setTemplate);
+		apiGetRequest<Template | undefined>(TemplateModel.read(templateIdProp, source), setTemplate);
 
 		return function () {
 			source.cancel('cancelling in cleanup');
@@ -48,9 +48,7 @@ const TemplateComponent: React.FC<{ templateId: string; editingAllowed: boolean 
 
 			let source = axios.CancelToken.source();
 
-			if (AuthCtx.token) {
-				apiPatchRequest<TemplateSection>(editedSection, AuthCtx.token, source, TemplateSectionModel.patch)
-			}
+			apiUpdateRequest<TemplateSection>(editedSection, source, TemplateSectionModel.patch)
 
 			//find index of section we're updating
 			let indexOfSection = template.sections.findIndex(
@@ -76,24 +74,18 @@ const TemplateComponent: React.FC<{ templateId: string; editingAllowed: boolean 
 			const applyNewTemplateSectionId = (responseData: CreateResponseData) => {
 
 				let newSectionArray = template.sections;
-				newSectionArray.push({...defaultNewSection, steps: [], id: responseData.id});
+				newSectionArray.push({ ...defaultNewSection, steps: [], id: responseData.id });
 				setTemplate({ ...template, sections: newSectionArray });
 			}
 
-			if (AuthCtx.token) {
+			let source = axios.CancelToken.source();
 
-				let source = axios.CancelToken.source();
-
-				apiCreateRequest<TemplateSectionSubmission>(
-					defaultNewSection,
-					AuthCtx.token,
-					source,
-					TemplateSectionModel.create,
-					applyNewTemplateSectionId);
-			}
-
+			apiCreateRequest<TemplateSectionSubmission>(
+				defaultNewSection,
+				source,
+				TemplateSectionModel.create,
+				applyNewTemplateSectionId);
 		}
-
 	};
 
 	const deleteSectionHandler = (sectionToDelete: TemplateSection) => {
@@ -101,9 +93,9 @@ const TemplateComponent: React.FC<{ templateId: string; editingAllowed: boolean 
 
 			let source = axios.CancelToken.source();
 
-			if (AuthCtx.token && sectionToDelete.id)
-				apiDeleteRequest<TemplateSection>(sectionToDelete,
-					AuthCtx.token,
+			if (sectionToDelete.id)
+				apiDeleteRequest<TemplateSection>(
+					sectionToDelete,
 					source,
 					TemplateSectionModel.delete);
 
@@ -116,12 +108,8 @@ const TemplateComponent: React.FC<{ templateId: string; editingAllowed: boolean 
 	};
 
 	const updateTemplateHandler = () => {
-
 		let source = axios.CancelToken.source();
-
-		if (AuthCtx.token)
-			apiPatchRequest<Template>(template!, AuthCtx.token, source, TemplateModel.patch);
-
+		apiUpdateRequest<Template>(template!, source, TemplateModel.patch);
 	};
 
 	if (template) {

@@ -23,7 +23,6 @@ export class StepModel {
 
 	public static async patch(
 		step: Step,
-		token: string,
 		source: CancelTokenSource
 	) {
 		const body = {
@@ -40,7 +39,6 @@ export class StepModel {
 
 	public static async create(
 		newStep: StepSubmission,
-		token: string,
 		source: CancelTokenSource
 	) {
 		const config = getConfig(source);
@@ -50,7 +48,6 @@ export class StepModel {
 
 	public static async delete(
 		step: Step,
-		token: string,
 		source: CancelTokenSource
 	) {
 		const config = getConfig(source);

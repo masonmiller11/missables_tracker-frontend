@@ -6,7 +6,6 @@ import PageInfo from '../../interfaces/PageInfo.interface';
 import ResponseDataModel from '../../api/models/ResponseData/ListResponseData';
 import TemplateList from '../TemplateList/TemplateList';
 import Pagination from '../Layout/Pagintation/Pagination'
-import AuthContext from '../../store/auth-context';
 import useApi from '../../hooks/useApi';
 import usePagination from '../../hooks/usePagination';
 import ResourceNotFoundMessage from '../Message/ResourceNotFoundMessage';
@@ -16,7 +15,6 @@ const MyTemplates: React.FC = () => {
 
 	const [templateList, setTemplateList] = useState<null | Template[]>(null);
 	const { apiGetRequest, apiDeleteRequest, loading, error } = useApi();
-	const AuthCtx = useContext(AuthContext);
 	let {
 		countOfTotalItems,
 		pageNumber,
@@ -41,21 +39,19 @@ const MyTemplates: React.FC = () => {
 			page: pageNumber
 		};
 
-		if (AuthCtx.token)
-			apiGetRequest<ResponseDataModel<Template>>([AuthCtx.token, source, PageInfo], TemplateModel.listThisUsers, applyTemplateResponseData);
+		apiGetRequest<ResponseDataModel<Template>>(TemplateModel.listThisUsers(source, PageInfo), applyTemplateResponseData);
 
 		return function () {
 			source.cancel('cancelling in cleanup');
 		};
 
-	}, [AuthCtx, pageNumber]);
+	}, [pageNumber]);
 
 	const deleteTemplateHandler = (templateToDelete: Template) => {
 
 		let source = axios.CancelToken.source();
 
-		if (AuthCtx.token)
-			apiDeleteRequest<Template>(templateToDelete, AuthCtx.token, source, TemplateModel.delete);
+		apiDeleteRequest<Template>(templateToDelete, source, TemplateModel.delete);
 
 		let newTemplatesArray = templateList!.filter((template) => {
 			return template.id !== templateToDelete.id;
@@ -72,14 +68,14 @@ const MyTemplates: React.FC = () => {
 		onDelete: deleteTemplateHandler
 	};
 
-	if (error == "No guides were found.") 
-	return (
-		<div className={classes.myTemplatesBackground}>
-			<div className={classes.myTemplatesContainer}>
-				<ResourceNotFoundMessage messageText="You haven't created any guides yet. Get cracking!" />
+	if (error == "No guides were found.")
+		return (
+			<div className={classes.myTemplatesBackground}>
+				<div className={classes.myTemplatesContainer}>
+					<ResourceNotFoundMessage messageText="You haven't created any guides yet. Get cracking!" />
+				</div>
 			</div>
-		</div>
-	)
+		)
 
 	if (templateList && !loading) {
 		return (

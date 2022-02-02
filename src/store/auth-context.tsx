@@ -10,7 +10,6 @@ let logoutTimer: ReturnType<typeof setTimeout>;
 const maxDuration = 3600000;
 
 type initialContext = {
-	token: string | null;
 	isLoggedIn: boolean;
 	login: (encodedToken: string) => void;
 	logout: () => void;
@@ -19,7 +18,6 @@ type initialContext = {
 }
 
 const AuthContext = React.createContext<initialContext>({
-	token: '',
 	isLoggedIn: false,
 	login: () => { },
 	logout: () => { },

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Button, Card, Elevation } from '@blueprintjs/core';
+import { Button, Card, Elevation, Intent } from '@blueprintjs/core';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
@@ -9,17 +9,22 @@ import CreateResponseData from '../../../api/models/ResponseData/CreateResponseD
 import useApi from '../../../hooks/useApi';
 import classes from './GameSummaryCard.module.css';
 import AuthContext from '../../../store/auth-context';
-import { create } from 'domain';
-
+import { AppToaster } from '../../Layout/Toaster';
 
 const GameSummaryCard: React.FC<{ game: Game; }> = ({ game }) => {
 	//todo Create banner, Create stats component, Publisher, Developer
 
 	game.releaseDate = new Date(game.releaseDate);
 
+	const errorHandler = (message: string, intent: Intent) => {
+        AppToaster.show({ message: message, intent: intent });
+    };
+
 	let history = useHistory();
 	const { apiCreateRequest, saving } = useApi();
 	const AuthCtx = useContext(AuthContext);
+
+
 
 	const createTemplateHandler = () => {
 
@@ -47,7 +52,7 @@ const GameSummaryCard: React.FC<{ game: Game; }> = ({ game }) => {
 			)
 		} else {
 
-			console.log('you have to be logged in to do that')
+			errorHandler('You have to be logged in to do that.', Intent.DANGER);
 
 		}
 

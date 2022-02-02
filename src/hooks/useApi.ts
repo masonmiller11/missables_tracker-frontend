@@ -1,10 +1,12 @@
 
 import { useState, Dispatch, SetStateAction, useContext } from 'react';
 import axios, { CancelTokenSource, AxiosResponse, CancelToken } from 'axios';
+import { Button, Card, Elevation, Intent } from '@blueprintjs/core';
 
 import AuthContext from '../store/auth-context';
 import { apiRefresh } from '../api';
 import Auth from '../components/Auth/Auth';
+import { AppToaster } from '../components/Layout/Toaster';
 
 
 type apiGet = (...params: any) => Promise<AxiosResponse<any>>;
@@ -46,6 +48,10 @@ const useApi = (): ReturnedData => {
 
 	const AuthCtx = useContext(AuthContext);
 
+	const errorHandler = (message: string, intent: Intent) => {
+		AppToaster.show({ message: message, intent: intent });
+	};
+
 	//todo: real error handling.
 	//todo add a way for save successfully message
 
@@ -62,13 +68,13 @@ const useApi = (): ReturnedData => {
 		setLoading(true);
 
 		if (AuthCtx.isRefreshNeeded()) {
-			console.log('we are now refreshing token');
-			apiRefresh().then((response) => {
-				console.log('new token:' + response.data.token);
-				AuthCtx.login(response.data.token);
-			}).catch((err) => {
-				console.log(err.response?.data.message ?? 'unknown error' + err);
-			})
+			apiRefresh()
+				.then((response) => {
+					AuthCtx.login(response.data.token);
+				})
+				.catch((err) => {
+					errorHandler(err.response?.data.message ?? 'Unknown Error', Intent.DANGER);
+				})
 		}
 
 		apiGet(...params)
@@ -81,7 +87,7 @@ const useApi = (): ReturnedData => {
 				if (axios.isCancel(err)) {
 					console.log('api request cancelled');
 				} else {
-					console.log(err.response?.data.message ?? 'unknown error' + err);
+					errorHandler(err.response?.data.message ?? 'Unknown Error', Intent.DANGER);
 				}
 			});
 
@@ -106,9 +112,7 @@ const useApi = (): ReturnedData => {
 				if (axios.isCancel(err)) {
 					console.log('api request cancelled');
 				} else {
-					console.log(
-						err.response?.data.message ?? 'unknown error'
-					);
+					errorHandler(err.response?.data.message ?? 'Unknown Error', Intent.DANGER);
 				}
 			});
 
@@ -124,18 +128,15 @@ const useApi = (): ReturnedData => {
 		setSaving(true);
 
 		apiPatch(data, token, source)
-			.then((response) => {
+			.then(() => {
 				setSaving(false);
-				console.log(response);
 			})
 			.catch((err) => {
 				setSaving(false);
 				if (axios.isCancel(err)) {
 					console.log('api request cancelled');
 				} else {
-					console.log(
-						err.response?.data.message ?? 'unknown error'
-					);
+					errorHandler(err.response?.data.message ?? 'Unknown Error', Intent.DANGER);
 				}
 			});
 
@@ -164,9 +165,7 @@ const useApi = (): ReturnedData => {
 				if (axios.isCancel(err)) {
 					console.log('api request cancelled');
 				} else {
-					console.log(
-						err.response?.data.message ?? 'unknown error'
-					);
+					errorHandler(err.response?.data.message ?? 'Unknown Error', Intent.DANGER);
 				}
 			});
 

@@ -9,12 +9,13 @@ import Pagination from '../Layout/Pagintation/Pagination'
 import AuthContext from '../../store/auth-context';
 import useApi from '../../hooks/useApi';
 import usePagination from '../../hooks/usePagination';
+import ResourceNotFoundMessage from '../Message/ResourceNotFoundMessage';
 import classes from './MyTemplates.module.css';
 
 const MyTemplates: React.FC = () => {
 
 	const [templateList, setTemplateList] = useState<null | Template[]>(null);
-	const { apiGetRequest, apiDeleteRequest, loading } = useApi();
+	const { apiGetRequest, apiDeleteRequest, loading, error } = useApi();
 	const AuthCtx = useContext(AuthContext);
 	let {
 		countOfTotalItems,
@@ -70,6 +71,15 @@ const MyTemplates: React.FC = () => {
 		allowDelete: true,
 		onDelete: deleteTemplateHandler
 	};
+
+	if (error == "No guides were found.") 
+	return (
+		<div className={classes.myTemplatesBackground}>
+			<div className={classes.myTemplatesContainer}>
+				<ResourceNotFoundMessage messageText="You haven't created any guides yet. Get cracking!" />
+			</div>
+		</div>
+	)
 
 	if (templateList && !loading) {
 		return (

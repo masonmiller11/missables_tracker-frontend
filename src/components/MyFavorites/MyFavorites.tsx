@@ -11,12 +11,13 @@ import Pagination from '../Layout/Pagintation/Pagination'
 import AuthContext from '../../store/auth-context';
 import useApi from '../../hooks/useApi';
 import usePagination from '../../hooks/usePagination';
+import ResourceNotFoundMessage from '../Message/ResourceNotFoundMessage';
 import classes from './MyFavorites.module.css';
 
 const MyFavorites: React.FC = () => {
 
 	const [likeList, setLikeList] = useState<null | Like[]>(null);
-	const { apiGetRequest, apiDeleteRequest, loading } = useApi();
+	const { apiGetRequest, apiDeleteRequest, loading, error } = useApi();
 	const AuthCtx = useContext(AuthContext);
 	let {
 		countOfTotalItems,
@@ -53,9 +54,9 @@ const MyFavorites: React.FC = () => {
 	const deleteLikeHandler = (likeToDelete: Like) => {
 
 		let source = axios.CancelToken.source();
-		
+
 		if (AuthCtx.token)
-		apiDeleteRequest<Like>(likeToDelete, AuthCtx.token, source, LikeModel.delete);
+			apiDeleteRequest<Like>(likeToDelete, AuthCtx.token, source, LikeModel.delete);
 
 		const newLikesArray = likeList!.filter((like) => {
 			return like.id !== likeToDelete.id
@@ -65,12 +66,24 @@ const MyFavorites: React.FC = () => {
 
 	}
 
+	if (error == "No favorites were found.") {
+		console.log('check out error:')
+		console.log(error);
+
+		return (
+			<div className={classes.myFavoritesBackground}>
+				<div className={classes.myFavoritesContainer}>
+					<ResourceNotFoundMessage messageText="Add some guides to your favorites, and they will show up here." />
+				</div>
+			</div>
+		)
+	}
 
 	if (likeList && !loading) {
 		return (
 			<div className={classes.myFavoritesBackground}>
 				<div className={classes.myFavoritesContainer}>
-					<MyFavoritesList 
+					<MyFavoritesList
 						onDelete={deleteLikeHandler}
 						likes={likeList}
 					/>

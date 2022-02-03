@@ -36,7 +36,6 @@
     font-family: 'Staatliches', cursive;
     margin-bottom: 0em;
     margin-top: 0em;
-    
 }
 
 .searchContainer > h3 {
@@ -53,3 +52,11 @@
     margin-top: 1em;
     align-items: center;
 }
+
+.paginationContainer {
+    padding: 2em;
+}
+
+.spinner {
+    margin: 2em;
+} 

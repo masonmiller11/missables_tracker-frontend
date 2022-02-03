@@ -35,9 +35,10 @@ export class GameModel {
 
 	public static async search(
 		searchTerm: string,
-		source: CancelTokenSource
+		source: CancelTokenSource,
+		pageInfo: PageInfo
 	) {
-		const endpoint = 'games/search/' + searchTerm;
+		const endpoint = 'games/search/' + searchTerm + '/' + pageInfo.page + '/' + pageInfo.itemsPerPage;;
 		const response = await client.get(endpoint, { cancelToken: source.token });
 		return response;
 	}

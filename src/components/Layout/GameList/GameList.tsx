@@ -14,7 +14,7 @@ const GamesList: React.FC<{
 	}
 
 	if (games === null) {
-		return <Spinner />;
+		return null
 	}
 
 	if (hideGamesWithoutGuides) {
@@ -23,7 +23,7 @@ const GamesList: React.FC<{
 				{games!
 					.filter((game) => game.templateCount > 0)
 					.map((game) => (
-						<GamesCard game={game} />
+						<GamesCard key={game.id} game={game} />
 					))}
 			</div>
 		);

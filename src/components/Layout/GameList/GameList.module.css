@@ -9,6 +9,10 @@
     max-width: 1180px;
 }
 
+.spinner {
+	margin: 10em;
+}
+
 @media screen and (min-width:1200px) {
     .gamesContainer {
         justify-content: flex-start;

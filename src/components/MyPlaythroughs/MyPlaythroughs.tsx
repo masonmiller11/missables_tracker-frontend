@@ -86,7 +86,7 @@ const MyPlaythroughs: React.FC = () => {
 				} {!loading && playthroughList &&
 					<div className={classes.paginationContainer}>
 						<Pagination
-							initialPage={pageNumber}
+							page={pageNumber}
 							totalItems={countOfTotalItems}
 							itemsPerPage={pageSize}
 							onPageChange={pageChangeHandler}

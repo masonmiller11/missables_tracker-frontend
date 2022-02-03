@@ -80,7 +80,7 @@ const MyFavorites: React.FC = () => {
 					/>
 					<div className={classes.paginationContainer}>
 						<Pagination
-							initialPage={pageNumber}
+							page={pageNumber}
 							totalItems={countOfTotalItems}
 							itemsPerPage={pageSize}
 							onPageChange={pageChangeHandler}

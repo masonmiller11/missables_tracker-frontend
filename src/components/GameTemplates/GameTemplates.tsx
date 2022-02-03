@@ -89,7 +89,7 @@ const GameTemplates: React.FC<{ gameId: string }> = ({
 					}
 					<div className={classes.paginationContainer}>
 						<Pagination
-							initialPage={pageNumber}
+							page={pageNumber}
 							totalItems={countOfTotalItems}
 							itemsPerPage={pageSize}
 							onPageChange={pageChangeHandler}

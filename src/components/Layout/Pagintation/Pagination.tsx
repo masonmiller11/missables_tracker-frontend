@@ -13,7 +13,7 @@ interface State extends initialState {
 }
 
 interface Props {
-    initialPage?: number;
+    page?: number;
     totalItems: number;
     itemsPerPage: number;
     onPageChange: (page: number) => void;
@@ -89,12 +89,12 @@ const reducer: Reducer<State, Actions> = (state, action) => {
 };
 
 export const Pagination = React.memo<Props>(
-    ({ initialPage = 1, totalItems, itemsPerPage, onPageChange }) => {
+    ({ page = 1, totalItems, itemsPerPage, onPageChange }) => {
 
         const [paginationState, paginationDispatch] = useReducer(
             reducer,
             {
-                currentPage: initialPage,
+                currentPage: page,
                 totalItems,
                 itemsPerPage,
                 totalPages: 0,
@@ -104,14 +104,16 @@ export const Pagination = React.memo<Props>(
 
         const changePage = (page: number) => {
             paginationDispatch({ type: 'CHANGE_PAGE', page, totalItems });
-            onPageChange(page);
+			onPageChange(page);
+			console.log('in changePage');
+			console.log(page);
         };
 
         //This is so that the UI doesn't show a page that no longer exists due to deleting items.
         //If paginationState.currentPage < 0 then we're loading the page for the first time and show use initialPage instead
         useEffect(() => {
-            changePage(paginationState.currentPage > 0 ? paginationState.currentPage : initialPage);
-        }, [totalItems, initialPage]);
+            changePage(page);
+        }, [totalItems, page]);
 
         //If there's only one page, do not show anything
         if (paginationState.totalPages === 1) return null;

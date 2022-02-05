@@ -34,7 +34,7 @@ const TemplateSectionComponent: React.FC<{
 		editObjectHandler: editTemplateSectionHandler,
 		setObjectHandler: setSection,
 	} = useTemplateObject<TemplateSection>(templateSectionProp);
-	const { saving, addingNew: addingNewStep, apiDeleteRequest, apiUpdateRequest: apiPatchRequest, apiCreateRequest } = useApi();
+	const { saving, addingNew: addingNewStep, apiDeleteRequest, apiUpdateRequest, apiCreateRequest } = useApi();
 
 	useEffect(() => {
 		setSection(templateSectionProp);
@@ -77,7 +77,7 @@ const TemplateSectionComponent: React.FC<{
 
 		let source = axios.CancelToken.source();
 
-		apiPatchRequest<TemplateStep>(editedTemplateStep, source, TemplateStepModel.patch);
+		apiUpdateRequest<TemplateStep>(editedTemplateStep, source, TemplateStepModel.update);
 
 		//find index of step we're updating.
 		let indexOfStep = templateSection.steps.findIndex(

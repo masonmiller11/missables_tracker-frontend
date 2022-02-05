@@ -26,7 +26,7 @@ const Search: React.FC<{ searchTerm: string | null }> = ({ searchTerm: searchTer
 	const [hideGamesWithoutGuides, setHideGamesWithoutGuides] = useState<boolean>(false);
 	const [games, setGames] = useState<Game[] | null>(null);
 	const [error, setError] = useState<string | null>(null);
-	const { apiGetRequest, loading } = useApi();
+	const { apiReadRequest, loading } = useApi();
 	const searchRef = useRef<HTMLInputElement>(null);
 
 	const hideGamesWithoutGuidesSwitchHandler = () => {
@@ -59,7 +59,7 @@ const Search: React.FC<{ searchTerm: string | null }> = ({ searchTerm: searchTer
 		event.preventDefault();
 		const searchTerm = searchRef.current?.value;
 		let source = axios.CancelToken.source();
-		apiGetRequest(GameModel.search(searchTerm!, source, {
+		apiReadRequest(GameModel.search(searchTerm!, source, {
 			itemsPerPage: pageSize,
 			page: 1
 		}), applyGamesResponseData);
@@ -74,7 +74,7 @@ const Search: React.FC<{ searchTerm: string | null }> = ({ searchTerm: searchTer
 
 			let source = axios.CancelToken.source();
 
-			apiGetRequest(GameModel.search(searchTerm, source, PageInfo), applyGamesResponseData);
+			apiReadRequest(GameModel.search(searchTerm, source, PageInfo), applyGamesResponseData);
 
 		}
 	}, [pageNumber]);
@@ -86,7 +86,7 @@ const Search: React.FC<{ searchTerm: string | null }> = ({ searchTerm: searchTer
 			searchRef.current.value = searchTermProp;
 		let source = axios.CancelToken.source();
 
-		apiGetRequest(GameModel.search(searchTermProp!, source, PageInfo), applyGamesResponseData);
+		apiReadRequest(GameModel.search(searchTermProp!, source, PageInfo), applyGamesResponseData);
 
 	}, []);
 

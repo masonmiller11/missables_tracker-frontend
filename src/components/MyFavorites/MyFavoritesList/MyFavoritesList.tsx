@@ -1,14 +1,10 @@
 import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { HTMLTable } from '@blueprintjs/core';
-
 import { Like } from '../../../api/models/Like/Like';
-
 import classes from './MyFavoritesList.module.css';
 import DeleteButton from '../../Button/DeleteButton/DeleteButton';
-
 import AuthContext from '../../../store/auth-context';
-import useApi from '../../../hooks/useApi';
 
 const MyFavoritesList: React.FC<{
 	likes: Like[] | null,
@@ -16,7 +12,6 @@ const MyFavoritesList: React.FC<{
 }> = ({ likes, onDelete }) => {
 
 	const AuthCtx = useContext(AuthContext);
-	const { apiGetRequest, apiCreateRequest } = useApi();
 	let history = useHistory();
 
 	return (

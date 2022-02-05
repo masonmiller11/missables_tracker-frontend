@@ -27,13 +27,13 @@ const PlaythroughComponent: React.FC<{
 	let defaultNewSection: SectionSubmission = { ...defaults.newSection, playthroughId: parseInt(playthroughIdProp) };
 
 	const [playthrough, setPlaythrough] = useState<Playthrough>();
-	const { apiGetRequest, apiUpdateRequest, apiCreateRequest, apiDeleteRequest, addingNew: addingNewSection } = useApi();
+	const { apiReadRequest, apiUpdateRequest, apiCreateRequest, apiDeleteRequest, addingNew: addingNewSection } = useApi();
 
 	useEffect(() => {
 
 		let source = axios.CancelToken.source();
 
-		apiGetRequest<Playthrough | undefined>(PlaythroughModel.read(playthroughIdProp, source), setPlaythrough);
+		apiReadRequest<Playthrough | undefined>(PlaythroughModel.read(playthroughIdProp, source), setPlaythrough);
 
 		return function () {
 			source.cancel('cancelling in cleanup');
@@ -50,7 +50,7 @@ const PlaythroughComponent: React.FC<{
 
 			let source = axios.CancelToken.source();
 
-			apiUpdateRequest<Section>(editedSection, source, SectionModel.patch);
+			apiUpdateRequest<Section>(editedSection, source, SectionModel.update);
 
 			//find index of section we're updating
 			let indexOfSection = playthrough.sections.findIndex(
@@ -110,7 +110,7 @@ const PlaythroughComponent: React.FC<{
 
 	const updatePlaythroughHandler = () => {
 		let source = axios.CancelToken.source();
-		apiUpdateRequest<Playthrough>(playthrough!, source, PlaythroughModel.patch);
+		apiUpdateRequest<Playthrough>(playthrough!, source, PlaythroughModel.update);
 	};
 
 	if (playthrough) {

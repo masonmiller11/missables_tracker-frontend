@@ -20,7 +20,7 @@ export type SectionSubmission = {
 
 export class SectionModel {
 
-	public static async patch(
+	public static async update(
 		section: Section,
 		source: CancelTokenSource
 	) {

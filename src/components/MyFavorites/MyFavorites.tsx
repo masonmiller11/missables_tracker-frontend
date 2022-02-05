@@ -14,7 +14,7 @@ import classes from './MyFavorites.module.css';
 const MyFavorites: React.FC = () => {
 
 	const [likeList, setLikeList] = useState<null | Like[]>(null);
-	const { apiGetRequest, apiDeleteRequest, loading, error } = useApi();
+	const { apiReadRequest, apiDeleteRequest, loading, error } = useApi();
 	let {
 		countOfTotalItems,
 		pageNumber,
@@ -38,7 +38,7 @@ const MyFavorites: React.FC = () => {
 			page: pageNumber
 		};
 
-		apiGetRequest<ResponseDataModel<Like>>(LikeModel.listThisUsers(source, PageInfo), applyLikeResponseData);
+		apiReadRequest<ResponseDataModel<Like>>(LikeModel.listThisUsers(source, PageInfo), applyLikeResponseData);
 
 		return function () {
 			source.cancel('cancelling in cleanup');

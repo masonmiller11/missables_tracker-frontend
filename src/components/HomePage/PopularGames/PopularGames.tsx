@@ -11,7 +11,7 @@ import classes from './PopularGames.module.css';
 const PopularGames: React.FC = (props: any) => {
 
 	const [games, setGames] = useState<null | Game[]>(null);
-	const { apiGetRequest, loading } = useApi();
+	const { apiReadRequest, loading } = useApi();
 
 	const applyGamesResponseData = (responseData: ResponseDataModel<Game>) => {
 		setGames(responseData.items);
@@ -20,7 +20,7 @@ const PopularGames: React.FC = (props: any) => {
 	useEffect(() => {
 		let source = axios.CancelToken.source();
 
-		apiGetRequest(GameModel.listPopular(source), applyGamesResponseData);
+		apiReadRequest(GameModel.listPopular(source), applyGamesResponseData);
 
 		//needs clean up!
 

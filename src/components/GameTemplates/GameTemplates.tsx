@@ -26,7 +26,7 @@ const GameTemplates: React.FC<{ gameId: string }> = ({
 	const [templateList, setTemplateList] = useState<null | Template[]>(null);
 	const [game, setGame] = useState<Game>();
 	const [loading, setLoading] = useState<boolean>(false);
-	const { apiGetRequest, loading: apiLoading } = useApi();
+	const { apiReadRequest, loading: apiLoading } = useApi();
 
 	let {
 		countOfTotalItems,
@@ -53,9 +53,9 @@ const GameTemplates: React.FC<{ gameId: string }> = ({
 
 		(async function () {
 
-			apiGetRequest(TemplateModel.list(gameIdProp, source, PageInfo), applyTemplateResponseData)
+			apiReadRequest(TemplateModel.list(gameIdProp, source, PageInfo), applyTemplateResponseData)
 
-			apiGetRequest(GameModel.read(gameIdProp, source), setGame);
+			apiReadRequest(GameModel.read(gameIdProp, source), setGame);
 
 		})().then(() => setLoading(false));
 
@@ -70,7 +70,7 @@ const GameTemplates: React.FC<{ gameId: string }> = ({
 			page: pageNumber
 		};
 
-		apiGetRequest(TemplateModel.list(gameIdProp, source, PageInfo), applyTemplateResponseData)
+		apiReadRequest(TemplateModel.list(gameIdProp, source, PageInfo), applyTemplateResponseData)
 
 	}, [pageNumber])
 

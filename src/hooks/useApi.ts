@@ -8,7 +8,7 @@ import { apiRefresh } from '../api';
 import { AppToaster } from '../components/Layout/Toaster';
 
 
-type apiGet = Promise<AxiosResponse<any>>;
+type apiRead = Promise<AxiosResponse<any>>;
 type apiDelete<T> = (object: T, source: CancelTokenSource) => Promise<AxiosResponse<any>>;
 type apiUpdate<T> = (object: T, source: CancelTokenSource) => Promise<AxiosResponse<any>>;
 type apiCreate<T> = (object: T, source: CancelTokenSource) => Promise<AxiosResponse<any>>;
@@ -18,8 +18,8 @@ interface ReturnedData {
 	addingNew: boolean,
 	loading: boolean,
 	error: string | null,
-	apiGetRequest: <T> (
-		apiGet: apiGet,
+	apiReadRequest: <T> (
+		apiRead: apiRead,
 		applyData: (data: T) => void,
 	) => void,
 	apiDeleteRequest: <T>(
@@ -57,8 +57,8 @@ const useApi = (useErrorHandling: boolean = true): ReturnedData => {
 			AppToaster.show({ message: message, intent: Intent.DANGER });
 	};
 
-	const apiGetRequest = <T extends {}>(
-		apiGet: apiGet,
+	const apiReadRequest = <T extends {}>(
+		apiRead: apiRead,
 		applyData: (data: T) => void
 	) => {
 		setLoading(true);
@@ -71,7 +71,7 @@ const useApi = (useErrorHandling: boolean = true): ReturnedData => {
 					errorHandler(err.response?.data.message ?? 'Unknown Error');
 				})
 		}
-		apiGet
+		apiRead
 			.then((response) => {
 				applyData(response.data);
 				setLoading(false);
@@ -158,7 +158,7 @@ const useApi = (useErrorHandling: boolean = true): ReturnedData => {
 		saving,
 		addingNew,
 		error,
-		apiGetRequest,
+		apiReadRequest,
 		apiDeleteRequest,
 		apiUpdateRequest,
 		apiCreateRequest

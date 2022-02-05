@@ -20,7 +20,7 @@ const TemplateList: React.FC<{
 
 	const AuthCtx = useContext(AuthContext);
 	let [likes, setLikes] = useState<Like[] | null>([]);
-	const { apiGetRequest, apiCreateRequest } = useApi(false);
+	const { apiReadRequest } = useApi(false);
 
 	const applyLikeResponseData = (responseData: ResponseDataModel<Like>) => {
 		setLikes(responseData.items);
@@ -30,7 +30,7 @@ const TemplateList: React.FC<{
 		let source = axios.CancelToken.source();
 
 		if (AuthCtx.isLoggedIn) {
-			apiGetRequest<ResponseDataModel<Like>>(LikeModel.listThisUsers(source,{page: 1, itemsPerPage: 1000000}), applyLikeResponseData);
+			apiReadRequest<ResponseDataModel<Like>>(LikeModel.listThisUsers(source, { page: 1, itemsPerPage: 1000000 }), applyLikeResponseData);
 		}
 
 		return function () {
@@ -39,18 +39,18 @@ const TemplateList: React.FC<{
 
 	}, [AuthCtx])
 
-		return (
-			<div className={classes.templateListContainer}>
-				{likes && templates!.map((template) => (
-					<TemplateCard
-						key={template.id}
-						likes={likes!}
-						templateCardOptions={templateListOptions}
-						template={template}
-					/>
-				))}
-			</div>
-		);
-	};
+	return (
+		<div className={classes.templateListContainer}>
+			{likes && templates!.map((template) => (
+				<TemplateCard
+					key={template.id}
+					likes={likes!}
+					templateCardOptions={templateListOptions}
+					template={template}
+				/>
+			))}
+		</div>
+	);
+};
 
-	export default TemplateList;
+export default TemplateList;

@@ -14,7 +14,7 @@ import classes from './MyTemplates.module.css';
 const MyTemplates: React.FC = () => {
 
 	const [templateList, setTemplateList] = useState<null | Template[]>(null);
-	const { apiGetRequest, apiDeleteRequest, loading, error } = useApi();
+	const { apiReadRequest, apiDeleteRequest, loading, error } = useApi();
 	let {
 		countOfTotalItems,
 		pageNumber,
@@ -39,7 +39,7 @@ const MyTemplates: React.FC = () => {
 			page: pageNumber
 		};
 
-		apiGetRequest<ResponseDataModel<Template>>(TemplateModel.listThisUsers(source, PageInfo), applyTemplateResponseData);
+		apiReadRequest<ResponseDataModel<Template>>(TemplateModel.listThisUsers(source, PageInfo), applyTemplateResponseData);
 
 		return function () {
 			source.cancel('cancelling in cleanup');

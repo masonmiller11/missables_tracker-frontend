@@ -14,7 +14,7 @@ import classes from './MyPlaythroughs.module.css';
 const MyPlaythroughs: React.FC = () => {
 
 	const [playthroughList, setPlaythroughList] = useState<Playthrough[] | null>(null);
-	const { apiGetRequest, apiDeleteRequest, loading, error } = useApi();
+	const { apiReadRequest, apiDeleteRequest, loading, error } = useApi();
 	let {
 		countOfTotalItems,
 		pageNumber,
@@ -37,7 +37,7 @@ const MyPlaythroughs: React.FC = () => {
 			page: pageNumber
 		}
 
-			apiGetRequest<ResponseDataModel<Playthrough>>(PlaythroughModel.listThisUsers(source, PageInfo), applyPlaythroughResponseData);
+		apiReadRequest<ResponseDataModel<Playthrough>>(PlaythroughModel.listThisUsers(source, PageInfo), applyPlaythroughResponseData);
 
 		return function () {
 			source.cancel('cancelling in cleanup');

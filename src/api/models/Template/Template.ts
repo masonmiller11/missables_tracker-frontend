@@ -63,7 +63,7 @@ export class TemplateModel {
 		return response;
 	}
 
-	public static async patch(
+	public static async update(
 		template: Template,
 		source: CancelTokenSource
 	) {

@@ -20,7 +20,7 @@ export type TemplateSectionSubmission = {
 
 export class TemplateStepModel {
 
-	public static async patch(
+	public static async update(
 		templateSection: TemplateSection,
 		source: CancelTokenSource
 	) {

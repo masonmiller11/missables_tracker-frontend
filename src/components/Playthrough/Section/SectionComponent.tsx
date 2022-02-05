@@ -72,7 +72,7 @@ const SectionComponent: React.FC<{
 
 		let source = axios.CancelToken.source();
 
-		apiUpdateRequest<Step>(editedTemplateStep, source, StepModel.patch);
+		apiUpdateRequest<Step>(editedTemplateStep, source, StepModel.update);
 
 		//find index of step we're updating.
 		let indexOfStep = section.steps.findIndex(

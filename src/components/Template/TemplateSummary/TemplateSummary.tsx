@@ -31,7 +31,7 @@ const TemplateSummary: React.FC<{
 
 	const AuthCtx = useContext(AuthContext);
 	const { editing, editingStateHandler } = useEditing();
-	const { apiGetRequest, apiCreateRequest, apiDeleteRequest, saving } = useApi();
+	const { apiReadRequest, apiCreateRequest, apiDeleteRequest, saving } = useApi();
 	let [like, setLike] = useState<Like | null>(null);
 	let [creatingNewPlaythrough, setCreatingNewPlaythrough] = useState(false);
 	let history = useHistory();
@@ -46,7 +46,7 @@ const TemplateSummary: React.FC<{
 		let source = axios.CancelToken.source();
 
 		if (AuthCtx.isLoggedIn) {
-			apiGetRequest<ResponseDataModel<Like>>(LikeModel.listThisUsers(source, { page: 1, itemsPerPage: 1000000 }), applyLikeResponseData);
+			apiReadRequest<ResponseDataModel<Like>>(LikeModel.listThisUsers(source, { page: 1, itemsPerPage: 1000000 }), applyLikeResponseData);
 		}
 
 	}, [AuthCtx.isLoggedIn])

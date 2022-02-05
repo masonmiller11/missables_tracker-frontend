@@ -25,13 +25,13 @@ const TemplateComponent: React.FC<{ templateId: string; editingAllowed: boolean 
 
 	const [showEditOption, setShowEditOption] = useState<boolean>(editingAllowed);
 	const [template, setTemplate] = useState<Template>();
-	const { apiGetRequest, apiUpdateRequest, apiCreateRequest, apiDeleteRequest, addingNew: addingNewSection } = useApi();
+	const { apiReadRequest, apiUpdateRequest, apiCreateRequest, apiDeleteRequest, addingNew: addingNewSection } = useApi();
 
 	useEffect(() => {
 
 		let source = axios.CancelToken.source();
 
-		apiGetRequest<Template | undefined>(TemplateModel.read(templateIdProp, source), setTemplate);
+		apiReadRequest<Template | undefined>(TemplateModel.read(templateIdProp, source), setTemplate);
 
 		return function () {
 			source.cancel('cancelling in cleanup');
@@ -48,7 +48,7 @@ const TemplateComponent: React.FC<{ templateId: string; editingAllowed: boolean 
 
 			let source = axios.CancelToken.source();
 
-			apiUpdateRequest<TemplateSection>(editedSection, source, TemplateSectionModel.patch)
+			apiUpdateRequest<TemplateSection>(editedSection, source, TemplateSectionModel.update)
 
 			//find index of section we're updating
 			let indexOfSection = template.sections.findIndex(
@@ -109,7 +109,7 @@ const TemplateComponent: React.FC<{ templateId: string; editingAllowed: boolean 
 
 	const updateTemplateHandler = () => {
 		let source = axios.CancelToken.source();
-		apiUpdateRequest<Template>(template!, source, TemplateModel.patch);
+		apiUpdateRequest<Template>(template!, source, TemplateModel.update);
 	};
 
 	if (template) {

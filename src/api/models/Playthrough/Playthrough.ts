@@ -45,7 +45,7 @@ class PlaythroughModel {
 		return response;
 	}
 
-	public static async patch(
+	public static async update(
 		playthrough: Playthrough,
 		source: CancelTokenSource
 	) {

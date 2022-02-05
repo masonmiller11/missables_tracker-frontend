@@ -10,7 +10,6 @@ export type Step = {
 	isCompleted: boolean;
 }
 
-
 export type StepSubmission = {
 	description: string,
 	position: string | number,
@@ -21,7 +20,7 @@ export type StepSubmission = {
 
 export class StepModel {
 
-	public static async patch(
+	public static async update(
 		step: Step,
 		source: CancelTokenSource
 	) {

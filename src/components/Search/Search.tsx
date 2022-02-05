@@ -15,6 +15,7 @@ import useApi from '../../hooks/useApi';
 import usePagination from '../../hooks/usePagination';
 import Pagination from '../Layout/Pagintation/Pagination'
 import ErrorMessage from '../Message/ErrorMessage';
+import ResourceNotFoundMessage from '../Message/ResourceNotFoundMessage';
 import classes from './Search.module.css';
 
 const Search: React.FC<{ searchTerm: string | null }> = ({ searchTerm: searchTermProp }) => {
@@ -104,7 +105,6 @@ const Search: React.FC<{ searchTerm: string | null }> = ({ searchTerm: searchTer
 			<div className={classes.searchContainer}>
 				<h1>Search Results</h1>
 				<div className={classes.searchOptionsContainer}>
-					{/* We should break this out into its own component SearchField with a property that takes a boolean for showing search or not. */}
 					<form>
 						<InputGroup
 							className={classes.search}
@@ -122,7 +122,6 @@ const Search: React.FC<{ searchTerm: string | null }> = ({ searchTerm: searchTer
 						></InputGroup>
 					</form>
 					{/* We should break this out into its own component SearchOptions */}
-					{/* <FormGroup> */}
 					<Switch
 						checked={hideGamesWithoutGuides} //gotta put some logic behind this, lol
 						onChange={hideGamesWithoutGuidesSwitchHandler}
@@ -130,10 +129,13 @@ const Search: React.FC<{ searchTerm: string | null }> = ({ searchTerm: searchTer
 							<em>Hide Games That Do Not Have Guides</em>
 						}
 					/>
-					{/* </FormGroup> */}
 				</div>
 			</div>
-			{/* TODO: create error component */}
+			{!loading && games!.length == 0 &&
+				<div className={classes.searchResultsContainer}>
+					<ResourceNotFoundMessage messageText="Your search did not return any games." />
+				</div>
+			}
 			<div className={classes.searchResultsContainer}>
 				{loading || !games ? (
 					<Spinner className={classes.spinner} />

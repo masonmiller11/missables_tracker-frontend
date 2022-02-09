@@ -25,7 +25,7 @@ const Search: React.FC<{ searchTerm: string | null }> = ({ searchTerm: searchTer
 	);
 
 	const [hideGamesWithoutGuides, setHideGamesWithoutGuides] = useState<boolean>(false);
-	const [games, setGames] = useState<Game[] | null>(null);
+	const [games, setGames] = useState<Game[] | null>([]);
 	const [error, setError] = useState<string | null>(null);
 	const { apiReadRequest, loading } = useApi();
 	const searchRef = useRef<HTMLInputElement>(null);
@@ -133,7 +133,7 @@ const Search: React.FC<{ searchTerm: string | null }> = ({ searchTerm: searchTer
 			</div>
 			{!loading && games!.length == 0 &&
 				<div className={classes.searchResultsContainer}>
-					<ResourceNotFoundMessage messageText="Your search did not return any games." />
+					<ResourceNotFoundMessage messageText="Your search did not return any games" />
 				</div>
 			}
 			<div className={classes.searchResultsContainer}>

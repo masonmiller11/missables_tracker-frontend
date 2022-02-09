@@ -5,11 +5,10 @@ import axios from 'axios';
 
 import { Game } from '../../../api/models/Game/Game';
 import TemplateModel, { TemplateSubmission } from '../../../api/models/Template/Template';
-import CreateResponseData from '../../../api/models/ResponseData/CreateResponseData';
 import useApi from '../../../hooks/useApi';
-import classes from './GameSummaryCard.module.css';
 import AuthContext from '../../../store/auth-context';
 import { AppToaster } from '../../Layout/Toaster';
+import classes from './GameSummaryCard.module.css';
 
 const GameSummaryCard: React.FC<{ game: Game; }> = ({ game }) => {
 	//todo Create banner, Create stats component, Publisher, Developer

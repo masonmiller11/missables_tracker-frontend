@@ -81,7 +81,8 @@ const useApi = (useErrorHandling: boolean = true): ReturnedData => {
 				if (axios.isCancel(err)) {
 					console.log('api request cancelled');
 				} else {
-					errorHandler(err.response?.data.message ?? 'Unknown Error');
+					if (err.response.data.message != 'No favorites were found.')
+						errorHandler(err.response?.data.message ?? 'Unknown Error');
 				}
 			});
 	}

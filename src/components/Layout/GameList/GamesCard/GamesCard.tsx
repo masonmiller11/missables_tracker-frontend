@@ -1,36 +1,73 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button, Card, Classes, Elevation, H5 } from '@blueprintjs/core';
+import { Button, Card, Classes, Elevation, H5, Intent } from '@blueprintjs/core';
+import axios from 'axios';
 
 import { Game } from '../../../../api/models/Game/Game';
+import TemplateModel, { TemplateSubmission } from '../../../../api/models/Template/Template';
+import { AppToaster } from '../../../Layout/Toaster';
+import AuthContext from '../../../../store/auth-context';
+import useApi from '../../../../hooks/useApi';
 import classes from './GamesCard.module.css';
 
 const GamesCard: React.FC<{ game: Game }> = ({ game }) => {
 	let history = useHistory();
 
-	const createButton = (
-		onClick: (gameId: number) => void,
-		gameId: number,
-		buttonText: string
-	): React.HTMLProps<HTMLButtonElement> => {
-		const onClickHandler = () => onClick(gameId);
+	const errorHandler = (message: string, intent: Intent) => {
+		AppToaster.show({ message: message, intent: intent });
+	};
+
+	const { apiCreateRequest, saving } = useApi();
+	const AuthCtx = useContext(AuthContext);
+
+	const createTemplateHandler = () => {
+
+		const redirectToNewTemplate = (data: { status: string, id: string | number }) => {
+			history.push('/myguides/' + data.id);
+		};
+
+		const newTemplate: TemplateSubmission = {
+			name: 'New Template',
+			gameId: game.id,
+			description: 'New Description',
+			visibility: true
+		}
+
+		if (AuthCtx.isLoggedIn ) {
+			let source = axios.CancelToken.source();
+			apiCreateRequest<TemplateSubmission>(
+				newTemplate,
+				source,
+				TemplateModel.create,
+				redirectToNewTemplate
+			)
+		} else {
+			errorHandler('You have to be logged in to do that.', Intent.DANGER);
+		}
+	}
+
+	const GamesCardButton = () => {
+
+		if (game.templateCount > 0) {
+			return (
+				<Button
+					text='See Templates'
+					onClick={() => history.push('/guides/game/' + game.id)}
+					className={Classes.BUTTON}
+				/>
+			);
+		}
 
 		return (
 			<Button
-				text={buttonText}
-				onClick={onClickHandler}
+				text={saving ? "Creating Template" : "Create Template"}
+				disabled={saving}
+				onClick={() => createTemplateHandler()}
 				className={Classes.BUTTON}
 			/>
 		);
 	};
 
-	const onSeeChecklists = (gameId: number) => {
-		history.push('/guides/game/' + gameId);
-	};
-
-	const onCreateTemplate = (gameId: number) => {
-		history.push('/guides/create/' + gameId);
-	};
 
 	return (
 		<Card
@@ -50,9 +87,7 @@ const GamesCard: React.FC<{ game: Game }> = ({ game }) => {
 				<p>Total Playthroughs: {game.playthroughCount}</p>
 				<p>Total Templates: {game.templateCount}</p>
 
-				{game.templateCount > 0
-					? createButton(onSeeChecklists, game.id, 'See Templates')
-					: createButton(onCreateTemplate, game.id, 'Create Guide')}
+				<GamesCardButton />
 			</div>
 		</Card>
 	);

@@ -75,7 +75,7 @@ const PlaythroughSummary: React.FC<{
 							<strong>Author:</strong> {playthrough.owner.owner}
 						</p>
 						<p>
-							<strong>Total Playthroughs:</strong> We meet have to add this as to-do
+							<strong>Placeholder:</strong> We will put something here. Stay tuned!
 						</p>
 					</div>
 					<hr />

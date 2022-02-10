@@ -61,6 +61,7 @@ class Defaults {
 			stepPositions: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
 			sectionPositions: [1, 2, 3],
 			likes: 0,
+			playthroughs: 0,
 			sections: [
 				{
 					id: 1,

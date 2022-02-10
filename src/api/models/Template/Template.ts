@@ -22,6 +22,7 @@ export type Template = {
 	stepPositions: number[];
 	sectionPositions: number[];
 	likes: number;
+	playthroughs: number;
 	sections: TemplateSection[];
 
 }

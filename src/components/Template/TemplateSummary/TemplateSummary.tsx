@@ -174,8 +174,7 @@ const TemplateSummary: React.FC<{
 							<strong>Author:</strong> {template.owner.owner}
 						</p>
 						<p>
-							<strong>Total Playthroughs:</strong> We meet have to
-							add this as to-do
+							<strong>Total Playthroughs:</strong> {template.playthroughs}.
 						</p>
 					</div>
 					<hr />

@@ -3,11 +3,11 @@ import { Button, Card, Elevation, Intent } from '@blueprintjs/core';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
-import { Game } from '../../../api/models/Game/Game';
-import TemplateModel, { TemplateSubmission } from '../../../api/models/Template/Template';
-import useApi from '../../../hooks/useApi';
-import AuthContext from '../../../store/auth-context';
-import { AppToaster } from '../../Layout/Toaster';
+import { Game } from '../../api/models/Game/Game';
+import TemplateModel, { TemplateSubmission } from '../../api/models/Template/Template';
+import useApi from '../../hooks/useApi';
+import AuthContext from '../../store/auth-context';
+import { AppToaster } from '../Layout/Toaster';
 import classes from './GameSummaryCard.module.css';
 
 const GameSummaryCard: React.FC<{ game: Game; }> = ({ game }) => {

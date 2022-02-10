@@ -2,7 +2,7 @@ import React from 'react';
 import { Spinner } from '@blueprintjs/core';
 
 import classes from './GameList.module.css';
-import { Game } from '../../../api/models/Game/Game';
+import { Game } from '../../api/models/Game/Game';
 import GamesCard from './GamesCard/GamesCard';
 
 const GamesList: React.FC<{

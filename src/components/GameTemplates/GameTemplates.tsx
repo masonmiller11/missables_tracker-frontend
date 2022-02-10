@@ -7,7 +7,7 @@ import PageInfo from '../../interfaces/PageInfo.interface';
 import ResponseDataModel from '../../api/models/ResponseData/ListResponseData';
 import TemplateList from '../TemplateList/TemplateList';
 import Pagination from '../Layout/Pagintation/Pagination'
-import GameSummaryCard from '../Layout/GameSummary/GameSummaryCard';
+import GameSummaryCard from '../GameSummary/GameSummaryCard';
 import usePagination from '../../hooks/usePagination';
 import useApi from '../../hooks/useApi';
 import classes from './GameTemplates.module.css';

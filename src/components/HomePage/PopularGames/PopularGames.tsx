@@ -4,7 +4,7 @@ import { Spinner } from '@blueprintjs/core';
 import GameModel, { Game } from '../../../api/models/Game/Game';
 import ResponseDataModel from '../../../api/models/ResponseData/ListResponseData';
 import useApi from '../../../hooks/useApi';
-import GamesList from '../../Layout/GameList/GameList';
+import GamesList from '../../GameList/GameList';
 import classes from './PopularGames.module.css';
 
 

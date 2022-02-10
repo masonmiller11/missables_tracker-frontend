@@ -7,7 +7,7 @@ import {
 	SpinnerSize,
 } from '@blueprintjs/core';
 import axios from 'axios';
-import GamesList from '../Layout/GameList/GameList';
+import GamesList from '../GameList/GameList';
 import GameModel, { Game } from '../../api/models/Game/Game';
 import ResponseDataModel from '../../api/models/ResponseData/ListResponseData';
 import PageInfo from '../../interfaces/PageInfo.interface';

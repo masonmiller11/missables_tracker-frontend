@@ -3,11 +3,11 @@ import { useHistory } from 'react-router-dom';
 import { Button, Card, Classes, Elevation, H5, Intent } from '@blueprintjs/core';
 import axios from 'axios';
 
-import { Game } from '../../../../api/models/Game/Game';
-import TemplateModel, { TemplateSubmission } from '../../../../api/models/Template/Template';
-import { AppToaster } from '../../../Layout/Toaster';
-import AuthContext from '../../../../store/auth-context';
-import useApi from '../../../../hooks/useApi';
+import { Game } from '../../../api/models/Game/Game';
+import TemplateModel, { TemplateSubmission } from '../../../api/models/Template/Template';
+import { AppToaster } from '../../Layout/Toaster';
+import AuthContext from '../../../store/auth-context';
+import useApi from '../../../hooks/useApi';
 import classes from './GamesCard.module.css';
 
 const GamesCard: React.FC<{ game: Game }> = ({ game }) => {

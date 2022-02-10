@@ -16,8 +16,8 @@ const UserPreferencesPopover: React.FC<{ user: User|null, onLogout: () => void }
 
     const menu = (
         <Menu>
-            <MenuItem icon="graph" text="Preferences" onClick={() => history.push('/preferences')}/>
-            <MenuDivider />
+            {/* <MenuItem icon="graph" text="Preferences" onClick={() => history.push('/preferences')}/> */}
+            {/* <MenuDivider /> */}
             <MenuItem icon="log-out" text="Log Out" onClick={onLogout} />
         </Menu>
     );

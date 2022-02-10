@@ -10,7 +10,7 @@ const EditButton: React.FC<{ isEditing: boolean, onClick: (() => void) }> = ({
 	if (isEditing) return <Button
 		icon="cross"
 		intent={Intent.NONE}
-		className={classes.editButton}
+		className={classes.button}
 		onClick={onClick}
 		text="Stop Editing"
 	/>
@@ -18,7 +18,7 @@ const EditButton: React.FC<{ isEditing: boolean, onClick: (() => void) }> = ({
 	return <Button
 		icon="edit"
 		// intent={Intent.WARNING}
-		className={classes.editButton}
+		className={classes.button}
 		onClick={onClick}
 		text="Edit"
 	/>

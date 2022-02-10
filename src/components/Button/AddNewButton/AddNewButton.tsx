@@ -12,13 +12,13 @@ const AddNewButton: React.FC<{ onClick: (() => void), savingNewObject: boolean, 
 	if (savingNewObject)
 		return <Spinner
 			size={SpinnerSize.SMALL}
-			className={classes.newButton}
+			className={classes.button}
 		/>
 
 
 	return <Button
 		icon="add"
-		className={classes.newButton}
+		className={classes.button}
 		onClick={onClick}
 		text={"New " + objectName}
 	/>

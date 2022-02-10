@@ -38,3 +38,7 @@
 .completed {
 	color: rgba(160, 160, 160, 0.425);
 }
+
+.deleteButton {
+	margin-bottom: 1em;
+}

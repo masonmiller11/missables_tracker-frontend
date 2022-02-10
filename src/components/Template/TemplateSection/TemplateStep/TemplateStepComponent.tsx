@@ -76,7 +76,7 @@ const TemplateStepComponent: React.FC<{
 					</div>
 				</div>
 
-				{editing && <DeleteButton onDelete={() => onDeleteStep(step)} />}
+				{editing && <div className={classes.deleteButton}><DeleteButton onDelete={() => onDeleteStep(step)} /></div>}
 
 			</div>
 			<p className={classes.stepDescription}>

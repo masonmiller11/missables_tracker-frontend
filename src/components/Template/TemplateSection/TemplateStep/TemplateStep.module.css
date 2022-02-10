@@ -34,3 +34,7 @@
 	display: flex;
 	justify-content: space-between;
 }
+
+.deleteButton {
+	margin-bottom: 1em;
+}

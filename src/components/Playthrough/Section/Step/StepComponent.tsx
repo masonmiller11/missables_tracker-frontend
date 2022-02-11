@@ -52,7 +52,7 @@ const StepComponent: React.FC<{
 
 	return (
 		<div className={isCompleted ? `${classes.stepContainer} ${classes.completed}` : classes.stepContainer}>
-			<div className={classes.postionNameDeleteContainer}>
+			<div className={classes.positionNameDeleteContainer}>
 				<div>
 					<Checkbox
 						className={classes.tick}

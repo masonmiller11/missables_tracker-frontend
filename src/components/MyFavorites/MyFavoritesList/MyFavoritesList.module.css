@@ -2,10 +2,6 @@
 	min-width: 65%;
 }
 
-.buttonsContainer {
-	display: flex;
-}
-
 .button {
 	margin-right: 1em;
 }

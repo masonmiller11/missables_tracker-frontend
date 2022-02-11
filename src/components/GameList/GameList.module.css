@@ -1,16 +1,9 @@
 .gamesContainer {
     display: flex;
-    align-items: stretch;
-    justify-content: center;
-    padding-left: 1em;
     margin: 2em;
     flex-wrap: wrap;
     /* width: 80vw; */
     max-width: 1180px;
-}
-
-.spinner {
-	margin: 10em;
 }
 
 @media screen and (min-width:1200px) {

@@ -114,37 +114,35 @@ const TemplateComponent: React.FC<{ templateId: string; editingAllowed: boolean 
 
 	if (template) {
 		return (
-			<div className={classes.templateBackground}>
-				<div className={classes.templatesContainer}>
-					<TemplateSummary
-						template={template}
-						showEditOption={showEditOption}
-						onTemplateChange={editTemplateHandler}
-						onTemplateConfirm={updateTemplateHandler}
-					/>
+			<div className={classes.templatesContainer}>
+				<TemplateSummary
+					template={template}
+					showEditOption={showEditOption}
+					onTemplateChange={editTemplateHandler}
+					onTemplateConfirm={updateTemplateHandler}
+				/>
 
-					<div className={classes.sectionsContainer}>
-						{template.sections
-							.sort((a, b) => (a.position > b.position ? 1 : -1))
-							.map((section) => (
-								<TemplateSectionComponent
-									key={section.id}
-									templateSection={section}
-									showEditOption={showEditOption}
-									onUpdateSection={updateSectionHandler}
-									onDeleteSection={deleteSectionHandler}
-								/>
-							))}
-					</div>
-					<div className={classes.addNewSectionButton}>
-						{showEditOption && (
-							<AddNewButton
-								objectName="Section"
-								savingNewObject={addingNewSection}
-								onClick={addNewSectionHandler}
+				<div className={classes.sectionsContainer}>
+					{template.sections
+						.sort((a, b) => (a.position > b.position ? 1 : -1))
+						.map((section) => (
+							<TemplateSectionComponent
+								key={section.id}
+								templateSection={section}
+								showEditOption={showEditOption}
+								onUpdateSection={updateSectionHandler}
+								onDeleteSection={deleteSectionHandler}
 							/>
-						)}
-					</div>
+						))}
+				</div>
+				<div className={classes.addNewSectionButton}>
+					{showEditOption && (
+						<AddNewButton
+							objectName="Section"
+							savingNewObject={addingNewSection}
+							onClick={addNewSectionHandler}
+						/>
+					)}
 				</div>
 			</div>
 		);

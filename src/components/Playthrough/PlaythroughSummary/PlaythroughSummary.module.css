@@ -3,7 +3,6 @@
     max-width: 1000px;
 }
 
-
 .cardContentContainer {
     display: flex;
 }
@@ -11,15 +10,12 @@
 .cardDescriptionContainer {
     width: 100%;
     display:flex;
-    justify-content: space-evenly;
     flex-direction: column;
     align-items: center;
 }
 
-
 .cardDescriptionContainer > hr {
     width: 90%;
-    margin-left: 3em;
 }
 
 .cardStatsContainer {
@@ -29,10 +25,12 @@
     margin: 1em;
 }
 
+.cardStatsContainer > p {
+	margin: 0;
+}
+
 .cardSummaryTextContainer {
     margin: 2em;
-    margin-left: 3em;
-	/* text-align: center; */
 	min-width:90%;
 	flex-grow: 1;
 }
@@ -46,10 +44,6 @@
 .button {
     width: 100%;
     margin-bottom: .75em;
-}
-
-.editButton {
-	height: 1em;
 }
 
 .titleAndEditButtonContainer {

@@ -42,7 +42,7 @@ const GamesCard: React.FC<{ game: Game }> = ({ game }) => {
 				redirectToNewTemplate
 			)
 		} else {
-			errorHandler('You have to be logged in to do that.', Intent.DANGER);
+			errorHandler('You have to be logged in to create guides.', Intent.DANGER);
 		}
 	}
 
@@ -60,7 +60,7 @@ const GamesCard: React.FC<{ game: Game }> = ({ game }) => {
 
 		return (
 			<Button
-				text={saving ? "Creating Template" : "Create Template"}
+				text={saving ? "Creating Guide" : "Create Guide"}
 				disabled={saving}
 				onClick={() => createTemplateHandler()}
 				className={Classes.BUTTON}
@@ -75,6 +75,7 @@ const GamesCard: React.FC<{ game: Game }> = ({ game }) => {
 			elevation={Elevation.ONE}
 			interactive={true}
 			key={game.id}
+			onClick={game.templateCount > 0 ? () => history.push('/guides/game/' + game.id) : () => createTemplateHandler() }
 		>
 			<img src={game.cover}></img>
 			<div className={classes.gamesCardTextContainer}>

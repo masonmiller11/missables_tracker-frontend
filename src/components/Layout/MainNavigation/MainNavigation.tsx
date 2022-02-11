@@ -13,7 +13,6 @@ import React, { useContext } from 'react';
 import AuthContext from '../../../store/auth-context';
 import UserPreferencesPopover from '../UserPreferencesPopover';
 import NavSearchGames from './NavSearchGames';
-import Wrapper from '../../Helpers/Wrapper';
 
 const MainNavigation: React.FC<{ showSearch: boolean }> = ({ showSearch }) => {
 	let history = useHistory();
@@ -43,31 +42,31 @@ const MainNavigation: React.FC<{ showSearch: boolean }> = ({ showSearch }) => {
 				/>
 				{isLoggedIn &&
 					<React.Fragment>
-					<Button
-						onClick={() => history.push('/favorites')}
-						className={Classes.MINIMAL}
-						icon="star"
-						text="Favorites"
-					/>
-					<Button
-						onClick={() => history.push('/myguides')}
-						className={Classes.MINIMAL}
-						icon="manual"
-						text="My Guides"
-					/>
-					<Button
-						onClick={() => history.push('/myplaythroughs')}
-						className={Classes.MINIMAL}
-						icon="send-to-map"
-						text="My Playthroughs"
-					/>
+						<Button
+							onClick={() => history.push('/favorites')}
+							className={Classes.MINIMAL}
+							icon="star"
+							text="Favorites"
+						/>
+						<Button
+							onClick={() => history.push('/myguides')}
+							className={Classes.MINIMAL}
+							icon="manual"
+							text="My Guides"
+						/>
+						<Button
+							onClick={() => history.push('/myplaythroughs')}
+							className={Classes.MINIMAL}
+							icon="send-to-map"
+							text="My Playthroughs"
+						/>
 					</React.Fragment>
 				}
 				{showSearch ? (
-					<Wrapper>
+					<React.Fragment>
 						<NavbarDivider />{' '}
 						<NavSearchGames onSearch={searchHandler} />
-					</Wrapper>
+					</React.Fragment>
 				) : null}
 			</NavbarGroup>
 			<NavbarGroup align={Alignment.RIGHT}>

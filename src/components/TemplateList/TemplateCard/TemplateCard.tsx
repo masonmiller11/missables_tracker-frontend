@@ -82,14 +82,13 @@ const TemplateCard: React.FC<{ likes: Like[], template: Template, templateCardOp
 			elevation={Elevation.ONE}
 			interactive={true}
 		>
-			<div className={classes.templateTileCardContainer}>
 				{showFavoriteStar &&
 					<FavoriteStar />
 				}
 				{showCover &&
 					<img className={classes.cover} src={template.game.cover}></img>
 				}
-				<div className={classes.templateCardTitleAndAuthorContainer}>
+				<div className={classes.titleAndDescriptionContainer}>
 					{templateCardOptions.allowDelete ?
 						<div className={classes.templateCardTitleAndDeleteContainer}>
 							<h2>
@@ -105,7 +104,6 @@ const TemplateCard: React.FC<{ likes: Like[], template: Template, templateCardOp
 					<p>Template Created by {template.owner.owner}</p>
 					<p>{template.description}</p>
 				</div>
-			</div>
 		</Card>
 	);
 };

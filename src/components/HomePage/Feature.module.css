@@ -1,7 +1,6 @@
 .featureTextContainer {
     padding: 5vh 20px 30vh;
     line-height: 1.5;
-    padding-right: 45em;    
 }
 
 .featureTextContainer > h2 {
@@ -31,13 +30,13 @@
 .featureContainer {
     background-color: #333333;
     display: flex;
-    align-items: center;
-    /* height: 80vh; */
     justify-content: center;
     background-image: linear-gradient(rgba(0,0,0,0.9), rgba(0,0,0,0.7)), url("../../assets/images/dark_souls_3_sc.jpg");
     background-position:center;
     background-repeat: no-repeat;
-    background-size: cover;
+	background-size: cover;
+	justify-content: flex-start;
+	padding-left: 15em;
 }
 
 .buttonContainer {

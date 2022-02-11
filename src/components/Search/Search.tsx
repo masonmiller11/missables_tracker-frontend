@@ -20,10 +20,6 @@ import classes from './Search.module.css';
 
 const Search: React.FC<{ searchTerm: string | null }> = ({ searchTerm: searchTermProp }) => {
 
-	const [searchTerm, setSearchTerm] = useState<null | string | undefined>(
-		searchTermProp ?? null
-	);
-
 	const [hideGamesWithoutGuides, setHideGamesWithoutGuides] = useState<boolean>(false);
 	const [games, setGames] = useState<Game[] | null>([]);
 	const [error, setError] = useState<string | null>(null);

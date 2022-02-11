@@ -62,10 +62,8 @@ const MyFavorites: React.FC = () => {
 
 	if (error == "No favorites were found." || likeList?.length === 0) {
 		return (
-			<div className={classes.myFavoritesBackground}>
-				<div className={classes.myFavoritesContainer}>
-					<ResourceNotFoundMessage messageText="Add some guides to your favorites, and they will show up here." />
-				</div>
+			<div className={classes.myFavoritesContainer}>
+				<ResourceNotFoundMessage messageText="Add some guides to your favorites, and they will show up here." />
 			</div>
 		)
 	}

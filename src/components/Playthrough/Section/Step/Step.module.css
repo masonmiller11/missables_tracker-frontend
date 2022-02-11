@@ -25,12 +25,7 @@
 	flex-direction: row;
 }
 
-.newStepMessage {
-	max-width: 7em;
-	background-color:#275652;
-}
-
-.postionNameDeleteContainer {
+.positionNameDeleteContainer {
 	display: flex;
 	justify-content: space-between;
 }

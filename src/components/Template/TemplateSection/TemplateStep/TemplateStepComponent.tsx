@@ -46,7 +46,7 @@ const TemplateStepComponent: React.FC<{
 
 	return (
 		<div className={classes.stepContainer}>
-			<div className={classes.postionNameDeleteContainer}>
+			<div className={classes.positionNameDeleteContainer}>
 				<div>
 					<Icon icon="tick" className={classes.tick} />
 					<div className={classes.positionAndNameContainer}>

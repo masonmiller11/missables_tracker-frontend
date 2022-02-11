@@ -16,9 +16,9 @@ const GameSummaryCard: React.FC<{ game: Game; }> = ({ game }) => {
 	game.releaseDate = new Date(game.releaseDate);
 
 	const errorHandler = (message: string, intent: Intent) => {
-        AppToaster.show({ message: message, intent: intent });
+		AppToaster.show({ message: message, intent: intent });
 	};
-	
+
 	let history = useHistory();
 	const { apiCreateRequest, saving } = useApi();
 	const AuthCtx = useContext(AuthContext);
@@ -36,7 +36,7 @@ const GameSummaryCard: React.FC<{ game: Game; }> = ({ game }) => {
 			visibility: true
 		}
 
-		if (AuthCtx.isLoggedIn ) {
+		if (AuthCtx.isLoggedIn) {
 			let source = axios.CancelToken.source();
 			apiCreateRequest<TemplateSubmission>(
 				newTemplate,
@@ -57,18 +57,16 @@ const GameSummaryCard: React.FC<{ game: Game; }> = ({ game }) => {
 			key={game.id}
 		>
 			<div className={classes.cardContentContainer}>
-				<div className={classes.cardImageAndButtonContainer}>
+				<div>
 					<img src={game.cover}></img>
-					<div className={classes.cardButtonContainer}>
-						<Button
-							text={saving ? "Creating Guide" : "Create Guide"}
-							type="submit"
-							large
-							disabled={saving}
-							className={classes.button}
-							onClick={()=> createTemplateHandler()}
-						/>
-					</div>
+					<Button
+						text={saving ? "Creating Guide" : "Create Guide"}
+						type="submit"
+						large
+						disabled={saving}
+						className={classes.button}
+						onClick={() => createTemplateHandler()}
+					/>
 				</div>
 
 				<div className={classes.cardDescriptionContainer}>

@@ -114,11 +114,10 @@ const SectionComponent: React.FC<{
 
 	return (
 		<Card className={classes.sectionCard} interactive={true}>
-			<div className={classes.sectionTileCardContainer}>
-				<div className={classes.sectionCardTitleAndAuthorContainer}>
-					<div className={classes.sectionCardTitleAndButtonContainer}>
+				<div>
+					<div className={classes.titleAndButtonContainer}>
 						<div className={classes.positionAndNameContainer}>
-							<h2 className={classes.sectionCardTitle}>Part #</h2>
+							<h2>Part #</h2>
 							<div className={classes.position}>
 								<h2>
 									<EditableText
@@ -204,7 +203,6 @@ const SectionComponent: React.FC<{
 					{/* </Collapse> */}
 					{saving && <SavingMessage />}
 				</div>
-			</div>
 		</Card>
 	);
 };

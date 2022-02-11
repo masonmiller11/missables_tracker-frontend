@@ -77,26 +77,26 @@ const GameTemplates: React.FC<{ gameId: string }> = ({
 	if (templateList && game) {
 		//get Game and templates in here. If we don't have both, show loading. Remove loading from below children.
 		return (
-			<div className={classes.gameTemplatesBackground}>
-				<div className={classes.gameTemplatesContainer}>
-					<GameSummaryCard game={game} />
-					{!apiLoading ?
-						<TemplateList
-							templates={templateList}
-							templateListOptions={gameTemplatesListOptions}
-						/>
-						: <Spinner className={classes.spinner} />
-					}
-					<div className={classes.paginationContainer}>
-						<Pagination
-							page={pageNumber}
-							totalItems={countOfTotalItems}
-							itemsPerPage={pageSize}
-							onPageChange={pageChangeHandler}
-						/>
-					</div>
+
+			<div className={classes.gameTemplatesContainer}>
+				<GameSummaryCard game={game} />
+				{!apiLoading ?
+					<TemplateList
+						templates={templateList}
+						templateListOptions={gameTemplatesListOptions}
+					/>
+					: <Spinner className={classes.spinner} />
+				}
+				<div className={classes.paginationContainer}>
+					<Pagination
+						page={pageNumber}
+						totalItems={countOfTotalItems}
+						itemsPerPage={pageSize}
+						onPageChange={pageChangeHandler}
+					/>
 				</div>
 			</div>
+
 		);
 	}
 

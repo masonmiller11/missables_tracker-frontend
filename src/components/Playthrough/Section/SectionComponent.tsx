@@ -114,7 +114,7 @@ const SectionComponent: React.FC<{
 
 	return (
 		<Card className={classes.sectionCard} interactive={true}>
-				<div>
+				<div style={{width:'100%'}}>
 					<div className={classes.titleAndButtonContainer}>
 						<div className={classes.positionAndNameContainer}>
 							<h2>Part #</h2>

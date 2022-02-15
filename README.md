@@ -1,3 +1,5 @@
+![Website Demo](https://media.giphy.com/media/kv8cWAoxqNxTVPNpdQ/giphy.gif)
+
 ### `yarn start`
 
 Runs the app in the development mode.\

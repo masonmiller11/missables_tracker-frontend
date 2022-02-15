@@ -1,4 +1,4 @@
-![Website Demo](https://media.giphy.com/media/kv8cWAoxqNxTVPNpdQ/giphy.gif)
+![Website Demo](https://media.giphy.com/media/kv8cWAoxqNxTVPNpdQ/giphy.gif =1920x1080)
 
 ### `yarn start`
 

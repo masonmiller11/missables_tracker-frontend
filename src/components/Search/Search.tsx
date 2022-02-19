@@ -16,6 +16,7 @@ import usePagination from '../../hooks/usePagination';
 import Pagination from '../Layout/Pagintation/Pagination'
 import ErrorMessage from '../Message/ErrorMessage';
 import ResourceNotFoundMessage from '../Message/ResourceNotFoundMessage';
+import SearchOptions from './SearchOptions/SearchOptions';
 import classes from './Search.module.css';
 
 const Search: React.FC<{ searchTerm: string | null }> = ({ searchTerm: searchTermProp }) => {
@@ -100,32 +101,13 @@ const Search: React.FC<{ searchTerm: string | null }> = ({ searchTerm: searchTer
 		<React.Fragment>
 			<div className={classes.searchContainer}>
 				<h1>Search Results</h1>
-				<div className={classes.searchOptionsContainer}>
-					<form>
-						<InputGroup
-							className={classes.search}
-							leftIcon="search"
-							placeholder="Search Games"
-							inputRef={searchRef}
-							large={true}
-							rightElement={
-								games || error ? (
-									button
-								) : (
-									<Spinner size={SpinnerSize.SMALL} />
-								)
-							}
-						></InputGroup>
-					</form>
-					{/* We should break this out into its own component SearchOptions */}
-					<Switch
-						checked={hideGamesWithoutGuides} //gotta put some logic behind this, lol
-						onChange={hideGamesWithoutGuidesSwitchHandler}
-						labelElement={
-							<em>Hide Games That Do Not Have Guides</em>
-						}
-					/>
-				</div>
+				<SearchOptions
+					showButton={!!(games || error)}
+					onSearch={searchSubmitHandler}
+					searchRef={searchRef}
+					hideGamesWithoutGuides={hideGamesWithoutGuides}
+					hideGamesWithoutGuidesSwitchHandler={hideGamesWithoutGuidesSwitchHandler}
+				/>
 			</div>
 			{!loading && games!.length == 0 &&
 				<div className={classes.searchResultsContainer}>

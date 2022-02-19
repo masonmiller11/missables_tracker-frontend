@@ -82,7 +82,7 @@ const useApi = (useErrorHandling: boolean = true): ReturnedData => {
 					console.log('api request cancelled');
 				} else {
 					if (err.response.data.message != 'No favorites were found.')
-						errorHandler(err.response?.data.message ?? 'Unknown Error');
+						errorHandler(err.response ? err.response.data.message : 'Unknown Error');
 				}
 			});
 	}

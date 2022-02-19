@@ -79,10 +79,7 @@ const GamesCard: React.FC<{ game: Game }> = ({ game }) => {
 		>
 			<img src={game.cover} alt={"This is an image of " + game.title + "'s cover"}></img>
 			<div className={classes.gamesCardTextContainer}>
-				<H5>{game.templateCount > 0 ?
-					<a onClick={() => history.push('/guides/game/' + game.id)}>{game.title}</a>
-					: game.title
-				}
+				<H5>{game.title.length < 60 ? game.title : game.title.substring(0,61) + "..."}
 				</H5>
 
 				<p>Total Playthroughs: {game.playthroughCount}</p>

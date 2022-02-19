@@ -33,7 +33,7 @@ const GamesCard: React.FC<{ game: Game }> = ({ game }) => {
 			visibility: true
 		}
 
-		if (AuthCtx.isLoggedIn ) {
+		if (AuthCtx.isLoggedIn) {
 			let source = axios.CancelToken.source();
 			apiCreateRequest<TemplateSubmission>(
 				newTemplate,
@@ -42,6 +42,7 @@ const GamesCard: React.FC<{ game: Game }> = ({ game }) => {
 				redirectToNewTemplate
 			)
 		} else {
+			console.log('errorHandler running')
 			errorHandler('You have to be logged in to create guides.', Intent.DANGER);
 		}
 	}
@@ -73,11 +74,10 @@ const GamesCard: React.FC<{ game: Game }> = ({ game }) => {
 		<Card
 			className={classes.gamesCard}
 			elevation={Elevation.ONE}
-			interactive={true}
+			interactive={game.templateCount > 0}
 			key={game.id}
-			onClick={game.templateCount > 0 ? () => history.push('/guides/game/' + game.id) : () => createTemplateHandler() }
 		>
-			<img src={game.cover}></img>
+			<img src={game.cover} alt={"This is an image of " + game.title + "'s cover"}></img>
 			<div className={classes.gamesCardTextContainer}>
 				<H5>{game.templateCount > 0 ?
 					<a onClick={() => history.push('/guides/game/' + game.id)}>{game.title}</a>

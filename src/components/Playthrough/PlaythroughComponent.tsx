@@ -73,6 +73,9 @@ const PlaythroughComponent: React.FC<{
 	const addNewSectionHandler = () => {
 		if (playthrough) {
 
+			//change the the defaultNewSection's position to one more than the last step in the array
+			defaultNewSection.position = parseInt(playthrough.sections[playthrough.sections.length - 1].position.toString())+1;
+
 			const applyNewSectionId = (responseData: CreateResponseData) => {
 
 				let newSectionArray = playthrough.sections;

@@ -71,6 +71,9 @@ const TemplateComponent: React.FC<{ templateId: string; editingAllowed: boolean 
 	const addNewSectionHandler = () => {
 		if (template) {
 
+			//change the the defaultNewSection's position to one more than the last step in the array
+			defaultNewSection.position  = parseInt(template.sections[template.sections.length - 1].position.toString()) +1;
+
 			const applyNewTemplateSectionId = (responseData: CreateResponseData) => {
 
 				let newSectionArray = template.sections;

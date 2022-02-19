@@ -98,6 +98,9 @@ const TemplateSectionComponent: React.FC<{
 
 	const addNewStepHandler = () => {
 
+		//change the the defaultNewStep's position to one more than the last step in the array
+		defaultNewStep.position  = parseInt(templateSection.steps[templateSection.steps.length -1].position.toString())+1;
+
 		const applyNewTemplateStep = (responseData: CreateResponseData) => {
 			let newStepsArray = templateSection.steps;
 			newStepsArray.push({ ...defaultNewStep, id: responseData.id });
@@ -201,7 +204,7 @@ const TemplateSectionComponent: React.FC<{
 				{editing && (
 					<AddNewButton
 						onClick={addNewStepHandler}
-						savingNewObject={addingNewStep}
+						savingNewObject={false}
 						objectName="Step"
 					/>
 				)}

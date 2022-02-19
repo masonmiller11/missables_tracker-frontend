@@ -93,6 +93,9 @@ const SectionComponent: React.FC<{
 
 	const addNewStepHandler = () => {
 
+		//change the the defaultNewStep's position to one more than the last step in the array
+		defaultNewStep.position = parseInt(section.steps[section.steps.length - 1].position.toString()) +1;
+		
 		const applyNewTemplateStep = (responseData: CreateResponseData) => {
 			let newStepsArray = section.steps;
 			newStepsArray.push({ ...defaultNewStep, id: responseData.id });
@@ -114,95 +117,95 @@ const SectionComponent: React.FC<{
 
 	return (
 		<Card className={classes.sectionCard} interactive={true}>
-				<div style={{width:'100%'}}>
-					<div className={classes.titleAndButtonContainer}>
-						<div className={classes.positionAndNameContainer}>
-							<h2>Part #</h2>
-							<div className={classes.position}>
-								<h2>
-									<EditableText
-										onChange={(newValueString) => {
-											changeSectionPositionHandler(
-												newValueString
-											);
-										}}
-										disabled={editing ? false : true}
-										value={section.position.toString()}
-										maxLength={2}
-										onConfirm={() => saveSectionHandler()}
-									/>
-								</h2>
-							</div>
-
+			<div style={{ width: '100%' }}>
+				<div className={classes.titleAndButtonContainer}>
+					<div className={classes.positionAndNameContainer}>
+						<h2>Part #</h2>
+						<div className={classes.position}>
 							<h2>
 								<EditableText
 									onChange={(newValueString) => {
-										editSectionHandler({
-											...section,
-											name: newValueString,
-										});
+										changeSectionPositionHandler(
+											newValueString
+										);
 									}}
-									disabled={!editing}
-									value={section.name}
+									disabled={editing ? false : true}
+									value={section.position.toString()}
+									maxLength={2}
 									onConfirm={() => saveSectionHandler()}
 								/>
 							</h2>
 						</div>
-						<div className={classes.deleteAndEditButton}>
-							{showEditOption && editing && (
-								<DeleteButton
-									onDelete={deleteSectionHandler}
-								/>
-							)}
-							{showEditOption && !saving && (
-								<EditButton
-									isEditing={editing}
-									onClick={editingStateHandler}
-								/>
-							)}
-						</div>
-					</div>
-					{/* <Collapse isOpen> */}
 
-					<p>
-						<strong>Section Summary: </strong>
-					</p>
-					<p>
-						<EditableText
-							onChange={(newValueString) => {
-								editSectionHandler({
-									...section,
-									description: newValueString,
-								});
-							}}
-							disabled={editing ? false : true}
-							value={section.description}
-							onConfirm={() => saveSectionHandler()}
-							multiline={true}
-						/>
-					</p>
-					<hr />
-					{section.steps
-						.sort((a, b) => (a.position > b.position ? 1 : -1))
-						.map((step) => (
-							<StepComponent
-								key={step.id}
-								editing={editing}
-								step={step}
-								onUpdateStep={updateStepHandler}
-								onDeleteStep={deleteStepHandler}
+						<h2>
+							<EditableText
+								onChange={(newValueString) => {
+									editSectionHandler({
+										...section,
+										name: newValueString,
+									});
+								}}
+								disabled={!editing}
+								value={section.name}
+								onConfirm={() => saveSectionHandler()}
 							/>
-						))}
-					{editing && (
-						<AddNewButton
-							onClick={addNewStepHandler}
-							savingNewObject={addingNewStep}
-							objectName="Step"
-						/>
-					)}
-					{/* </Collapse> */}
-					{saving && <SavingMessage />}
+						</h2>
+					</div>
+					<div className={classes.deleteAndEditButton}>
+						{showEditOption && editing && (
+							<DeleteButton
+								onDelete={deleteSectionHandler}
+							/>
+						)}
+						{showEditOption && !saving && (
+							<EditButton
+								isEditing={editing}
+								onClick={editingStateHandler}
+							/>
+						)}
+					</div>
 				</div>
+				{/* <Collapse isOpen> */}
+
+				<p>
+					<strong>Section Summary: </strong>
+				</p>
+				<p>
+					<EditableText
+						onChange={(newValueString) => {
+							editSectionHandler({
+								...section,
+								description: newValueString,
+							});
+						}}
+						disabled={editing ? false : true}
+						value={section.description}
+						onConfirm={() => saveSectionHandler()}
+						multiline={true}
+					/>
+				</p>
+				<hr />
+				{section.steps
+					.sort((a, b) => (a.position > b.position ? 1 : -1))
+					.map((step) => (
+						<StepComponent
+							key={step.id}
+							editing={editing}
+							step={step}
+							onUpdateStep={updateStepHandler}
+							onDeleteStep={deleteStepHandler}
+						/>
+					))}
+				{editing && (
+					<AddNewButton
+						onClick={addNewStepHandler}
+						savingNewObject={addingNewStep}
+						objectName="Step"
+					/>
+				)}
+				{/* </Collapse> */}
+				{saving && <SavingMessage />}
+			</div>
 		</Card>
 	);
 };

@@ -58,7 +58,7 @@ const GameSummaryCard: React.FC<{ game: Game; }> = ({ game }) => {
 		>
 			<div className={classes.cardContentContainer}>
 				<div>
-					<img src={game.cover}></img>
+					<img src={game.cover} alt={"This is an image of " + game.title + "'s cover"}></img>
 					<Button
 						text={saving ? "Creating Guide" : "Create Guide"}
 						type="submit"

@@ -3,6 +3,7 @@
     width: 32%;
 	display: flex;
 	min-width: 18vw;
+	max-height: 182px;
 }
 
 .gamesCard > img {

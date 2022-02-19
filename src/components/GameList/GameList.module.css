@@ -1,6 +1,6 @@
 .gamesContainer {
     display: flex;
-    margin: 2em;
+    /* margin: 2em; */
     flex-wrap: wrap;
     /* width: 80vw; */
     max-width: 1180px;

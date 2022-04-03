@@ -26,7 +26,6 @@
     line-height: 1.75;
 }
 
-
 .featureContainer {
     background-color: #333333;
     display: flex;
@@ -47,4 +46,23 @@
 .buttonContainer > Button {
     margin: 0em .75em;
     background-color:#4CAF50;
+}
+
+@media (max-width: 480px) {
+	.featureContainer {
+		padding-left: 0em;
+	}
+	.featureTextContainer > h1 {
+		font-size: 200%;
+	}
+	.featureTextContainer {
+		padding: 1vh 20px 2vh;
+		line-height: 1.5;
+	}
+	.featureTextContainer > h2 {
+		margin-bottom: 1em;
+	}	
+	.buttonContainer {
+		justify-content: center;
+	}
 }

@@ -11,8 +11,11 @@ import {
 import React, { useContext } from 'react';
 
 import AuthContext from '../../../store/auth-context';
-import UserPreferencesPopover from '../UserPreferencesPopover';
+import UserPreferencesPopover from './UserPreferencesPopover';
 import NavSearchGames from './NavSearchGames';
+import MobileNavMenu from './MobileNavMenu';
+
+import classes from './MainNavigation.module.css';
 
 const MainNavigation: React.FC<{ showSearch: boolean }> = ({ showSearch }) => {
 	let history = useHistory();
@@ -32,16 +35,18 @@ const MainNavigation: React.FC<{ showSearch: boolean }> = ({ showSearch }) => {
 	return (
 		<Navbar>
 			<NavbarGroup align={Alignment.LEFT}>
-				<NavbarHeading>NMA Tracker</NavbarHeading>
-				<NavbarDivider />
-				<Button
-					onClick={() => history.push('/')}
-					className={Classes.MINIMAL}
-					icon="home"
-					text="Home"
-				/>
+				<NavbarHeading className={classes.desktopOnly}>NMA Tracker</NavbarHeading>
+				<NavbarDivider className={classes.desktopOnly} />
+				<div className={classes.desktopOnly}>
+					<Button
+						onClick={() => history.push('/')}
+						className={Classes.MINIMAL}
+						icon="home"
+						text="Home"
+					/>
+				</div>
 				{isLoggedIn &&
-					<React.Fragment>
+					<div className={classes.desktopOnly}>
 						<Button
 							onClick={() => history.push('/favorites')}
 							className={Classes.MINIMAL}
@@ -60,25 +65,32 @@ const MainNavigation: React.FC<{ showSearch: boolean }> = ({ showSearch }) => {
 							icon="send-to-map"
 							text="My Playthroughs"
 						/>
-					</React.Fragment>
+					</div>
 				}
 				{showSearch ? (
 					<React.Fragment>
-						<NavbarDivider />{' '}
+						<NavbarDivider className={classes.desktopOnly} />{' '}
 						<NavSearchGames onSearch={searchHandler} />
 					</React.Fragment>
 				) : null}
 			</NavbarGroup>
 			<NavbarGroup align={Alignment.RIGHT}>
+				<div className={classes.mobileNavMenu}>
+				<MobileNavMenu isLoggedIn={isLoggedIn} onLogout={logoutHandler} user={authCtx.user} />
+				</div>
 				{!isLoggedIn ? (
-					<Button
-						onClick={() => history.push('/login')}
-						className={Classes.MINIMAL}
-						icon="log-in"
-						text="Login"
-					/>
+					<div className={classes.hideOnMobile}>
+						<Button
+							onClick={() => history.push('/login')}
+							className={Classes.MINIMAL}
+							icon="log-in"
+							text="Login"
+						/>
+					</div>
 				) : (
-					<UserPreferencesPopover onLogout={logoutHandler} user={authCtx.user} />
+					<div className={classes.hideOnMobile}>
+						<UserPreferencesPopover onLogout={logoutHandler} user={authCtx.user} />
+					</div>
 				)}
 			</NavbarGroup>
 		</Navbar>

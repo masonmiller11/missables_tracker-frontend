@@ -1,9 +1,9 @@
 import React from 'react';
-import { Button, Menu, MenuDivider, MenuItem } from '@blueprintjs/core';
+import { Button, Menu, MenuItem } from '@blueprintjs/core';
 import { Popover } from '@blueprintjs/core';
 import { useHistory } from 'react-router-dom';
 
-import User from '../../api/models/User';
+import User from '../../../api/models/User';
 
 const UserPreferencesPopover: React.FC<{ user: User|null, onLogout: () => void }> = ({
 	onLogout,
@@ -23,7 +23,7 @@ const UserPreferencesPopover: React.FC<{ user: User|null, onLogout: () => void }
     );
 
     return (
-        <Popover content={menu} placement="right-end">
+        <Popover content={menu}>
             <Button icon="person" text={user ? user.username : "profile"} />
         </Popover>
     );

@@ -1,6 +1,6 @@
 .gamesCard {
     margin: .5em;
-    width: 32%;
+    max-width: 27em;
 	display: flex;
 	min-width: 18vw;
 	max-height: 182px;
@@ -20,7 +20,10 @@
 
 @media (max-width: 480px) {
     .gamesCard {
-        width: 100%;
+		width: 100%;
+	}
+	.gamesCard > img {
+		max-width: 130px;
 	}
 	.gamesCardTextContainer {
 		align-items: flex-start;

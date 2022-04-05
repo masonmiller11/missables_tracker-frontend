@@ -33,38 +33,62 @@ export const Pagination = React.memo<Props>(
 
 			const totalPages = Math.ceil(totalItems / itemsPerPage);
 
+			//We're going to show a different amount of pages depending on mobile or desktop.
 			let startPage: number,
-				endPage = 0;
-			let maxPagesShown = mobileVersion ? 5 : 10;
+				endPage = 0,
+				maxPagesShown = mobileVersion ? 5 : 10;
+
+			//If we have less or equal pages as the max we're going to show, then show them all.
 			if (totalPages <= maxPagesShown) {
-				// if there are less than 10 pages total, show all
 				startPage = 1;
 				endPage = totalPages;
 			} else {
-				//let's figure out start and end pages
-				//don't do anything if current page is lower than page 3
-				if (currentPage <= 3) {
-					startPage = 1;
-					endPage = mobileVersion ? 5 : 4;
-					//if we're within 3 pages of the end
-				} else if (currentPage + 3 >= totalPages) {
-					startPage = mobileVersion ? totalPages - 4: totalPages - 3;
-					endPage = totalPages;
-					//else take the previous 5 pages and the next 4 pages and show those
+
+				//Figure out start and end pages. Start with mobile.
+				if (mobileVersion) {
+
+					//If we're witin the first two pages, just show the next 4.
+					if (currentPage <= 2) {
+						startPage = 1;
+						endPage = 4;
+
+						//If we're within 2 pages of the end show the last 4 (desktop).
+					} else if (currentPage + 2 >= totalPages) {
+						startPage = totalPages - 4;
+						endPage = totalPages;
+
+						//Show the previous 2 and next 2 pages on mobile.
+					} else {
+						startPage = currentPage - 2;
+						endPage = currentPage + 2;
+					}
+
+					//Desktop
 				} else {
-					startPage = currentPage - 2;
-					endPage = currentPage + 2;
+					if (currentPage <= 5) {
+						startPage = 1;
+						endPage = 10;
+
+						//If we're within 5 pages of the end show the last 10 (desktop).
+					} else if (currentPage + 5 >= totalPages) {
+						startPage = totalPages - 10;
+						endPage = totalPages;
+
+						//Show the previous 5 and next 5 pages on desktop.
+					} else {
+						startPage = currentPage - 5;
+						endPage = currentPage + 5;
+					}
 				}
 			}
 
-			//let's create an array with a length equal to the number of pages that we need to show
-			//since the array is initialized with `undefined` at each position, v is undefined
+			//Create an array with a length equal to the number of pages that we need to show. We will map through tis later to create buttons.
 			const pages = Array.from(
 				{ length: endPage + 1 - startPage },
 				(v, i) => startPage + i
 			);
 
-			//if current page is somehow outside the range of total pages
+			//If current page is somehow outside the range of total pages
 			let correctCurrentpage = currentPage;
 			if (currentPage > totalPages) correctCurrentpage = totalPages;
 			if (currentPage <= 0) correctCurrentpage = 1;
@@ -100,19 +124,15 @@ export const Pagination = React.memo<Props>(
 				totalItems,
 				itemsPerPage,
 				totalPages: 0,
-			},
-			getState
-		);
+				pages: []
+			});
 
 		const changePage = (page: number) => {
 			paginationDispatch({ type: 'CHANGE_PAGE', page, totalItems });
 			onPageChange(page);
-			console.log('in changePage');
-			console.log(page);
 		};
 
 		//This is so that the UI doesn't show a page that no longer exists due to deleting items.
-		//If paginationState.currentPage < 0 then we're loading the page for the first time and show use initialPage instead
 		useEffect(() => {
 			changePage(page);
 		}, [totalItems, page]);

@@ -129,6 +129,7 @@ const Search: React.FC<{ searchTerm: string | null }> = ({ searchTerm: searchTer
 						totalItems={countOfTotalItems}
 						itemsPerPage={pageSize}
 						onPageChange={pageChangeHandler}
+						mobileVersion={false}
 					/>
 				</div>
 			</div>

@@ -82,6 +82,7 @@ const MyFavorites: React.FC = () => {
 							totalItems={countOfTotalItems}
 							itemsPerPage={pageSize}
 							onPageChange={pageChangeHandler}
+							mobileVersion={false}
 						/>
 					</div>
 				</div>

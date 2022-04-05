@@ -90,6 +90,7 @@ const MyPlaythroughs: React.FC = () => {
 							totalItems={countOfTotalItems}
 							itemsPerPage={pageSize}
 							onPageChange={pageChangeHandler}
+							mobileVersion={false}
 						/>
 					</div>
 				}

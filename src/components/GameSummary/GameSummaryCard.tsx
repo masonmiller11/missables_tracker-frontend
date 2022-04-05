@@ -56,6 +56,10 @@ const GameSummaryCard: React.FC<{ game: Game; }> = ({ game }) => {
 			interactive={true}
 			key={game.id}
 		>
+				backgroundColor: '#333333',
+				backgroundImage: 'linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.99)), url("https://gamingbolt.com/wp-content/gallery/dark-souls-pc-wallpapers-in-hd/dark_souls_wallpaper.jpg")',
+				backgroundRepeat: 'no-repeat',
+			}}>
 			<div className={classes.cardContentContainer}>
 				<div>
 					<img src={game.cover} alt={"This is an image of " + game.title + "'s cover"}></img>

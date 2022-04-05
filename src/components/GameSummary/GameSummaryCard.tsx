@@ -56,47 +56,59 @@ const GameSummaryCard: React.FC<{ game: Game; }> = ({ game }) => {
 			interactive={true}
 			key={game.id}
 		>
+			<div style={{
 				backgroundColor: '#333333',
 				backgroundImage: 'linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.99)), url("https://gamingbolt.com/wp-content/gallery/dark-souls-pc-wallpapers-in-hd/dark_souls_wallpaper.jpg")',
 				backgroundRepeat: 'no-repeat',
 			}}>
-			<div className={classes.cardContentContainer}>
-				<div>
-					<img src={game.cover} alt={"This is an image of " + game.title + "'s cover"}></img>
-					<Button
-						text={saving ? "Creating Guide" : "Create Guide"}
-						type="submit"
-						large
-						disabled={saving}
-						className={classes.button}
-						onClick={() => createTemplateHandler()}
-					/>
-				</div>
-
-				<div className={classes.cardDescriptionContainer}>
-					<h2>
-						{game.title} ({game.releaseDate.getFullYear()})
-					</h2>
-					<hr />
-					<div className={classes.cardStatsContainer}>
-						<p>
-							<strong>Total Playthroughs:</strong>{' '}
-							{game.playthroughCount}
-						</p>
-						<p>
-							<strong>Total Templates:</strong>{' '}
-							{game.templateCount}
-						</p>
+				<div className={classes.cardContentContainer}>
+					<div className={classes.nameAndImageContainer}>
+						<img src={game.cover} alt={"This is an image of " + game.title + "'s cover"}></img>
+						<Button
+							text={saving ? "Creating Guide" : "Create Guide"}
+							type="submit"
+							large
+							disabled={saving}
+							className={classes.button}
+							onClick={() => createTemplateHandler()}
+						/>
 					</div>
-					<hr />
-					<div className={classes.cardSummaryTextContainer}>
-						<p>
-							<strong>Game Summary:</strong> {game.summary}
-						</p>
+
+					<div className={classes.cardDescriptionContainer}>
+						<h2>
+							{game.title} ({game.releaseDate.getFullYear()})
+						</h2>
+						<hr />
+						<div className={classes.cardStatsContainer}>
+							<p>
+								<strong>Total Playthroughs:</strong>{' '}
+								{game.playthroughCount}
+							</p>
+							<p>
+								<strong>Total Templates:</strong>{' '}
+								{game.templateCount}
+							</p>
+						</div>
+						<hr />
+						<div className={classes.cardSummaryTextContainer}>
+							<p>
+								<strong>Game Summary:</strong> {game.summary}
+							</p>
+							<div className={classes.mobileOnly}>
+								<Button
+									text={saving ? "Creating Guide" : "Create Guide"}
+									type="submit"
+									large
+									disabled={saving}
+									className={classes.button}
+									onClick={() => createTemplateHandler()}
+								/>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
-		</Card>
+		</Card >
 	);
 };
 

@@ -9,6 +9,24 @@
     margin: 2em;
 } 
 
-.paginationContainer {
+.desktopPaginationContainer {
     padding: 2em;
+}
+
+.mobilePaginationContainer {
+	display: none;
+}
+
+@media (max-width: 480px) {
+	.gameTemplatesContainer {
+		padding-top: 2em;
+		padding-bottom: 2em;
+	}
+	.desktopPaginationContainer {
+		display: none;
+	}
+	.mobilePaginationContainer {
+		display: initial;
+		padding: 2em;
+	}
 }

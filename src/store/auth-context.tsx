@@ -9,6 +9,7 @@ import { apiRefresh } from '../api';
 let logoutTimer: ReturnType<typeof setTimeout>;
 const maxDuration = 3600000;
 
+const maxDuration = 86400000;
 type initialContext = {
 	isLoggedIn: boolean;
 	login: (encodedToken: string) => void;
@@ -147,6 +148,7 @@ export const AuthContextProvider: React.FC = (props) => {
 
 	useEffect(() => {
 		if (tokenData) {
+			logoutTimer && clearTimeout(logoutTimer);
 			logoutTimer = setTimeout(logoutHandler, tokenData.duration);
 		}
 	}, [tokenData, logoutHandler]);

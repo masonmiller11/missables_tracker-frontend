@@ -37,7 +37,7 @@ const TemplateList: React.FC<{
 			source.cancel('cancelling in cleanup');
 		};
 
-	}, [AuthCtx])
+	}, [AuthCtx.isLoggedIn]);
 
 	return (
 		<div className={classes.templateListContainer}>

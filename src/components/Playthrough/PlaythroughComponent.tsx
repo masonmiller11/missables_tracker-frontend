@@ -74,7 +74,10 @@ const PlaythroughComponent: React.FC<{
 		if (playthrough) {
 
 			//change the the defaultNewSection's position to one more than the last step in the array
-			defaultNewSection.position = parseInt(playthrough.sections[playthrough.sections.length - 1].position.toString())+1;
+			//If sections.length is 0, then position is 1. 
+			defaultNewSection.position = playthrough.sections.length > 0 ?
+				parseInt(playthrough.sections[playthrough.sections.length - 1].position.toString()) + 1
+				: 1;
 
 			const applyNewSectionId = (responseData: CreateResponseData) => {
 

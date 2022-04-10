@@ -99,8 +99,9 @@ const TemplateSectionComponent: React.FC<{
 
 	const addNewStepHandler = () => {
 
-		//change the the defaultNewStep's position to one more than the last step in the array
-		defaultNewStep.position  = parseInt(templateSection.steps[templateSection.steps.length -1].position.toString())+1;
+		//change the the defaultNewStep's position to one more than the last step in the array.
+		//If steps.length is 0, then position should be 1.
+		defaultNewStep.position = templateSection.steps.length > 0 ? parseInt(templateSection.steps[templateSection.steps.length - 1].position.toString()) + 1 : 1;
 
 		const applyNewTemplateStep = (responseData: CreateResponseData) => {
 			let newStepsArray = templateSection.steps;

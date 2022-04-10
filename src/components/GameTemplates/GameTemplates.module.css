@@ -9,10 +9,6 @@
     margin: 2em;
 } 
 
-.desktopPaginationContainer {
-    padding: 2em;
-}
-
 .mobilePaginationContainer {
 	display: none;
 }
@@ -21,12 +17,5 @@
 	.gameTemplatesContainer {
 		padding-top: 2em;
 		padding-bottom: 2em;
-	}
-	.desktopPaginationContainer {
-		display: none;
-	}
-	.mobilePaginationContainer {
-		display: initial;
-		padding: 2em;
 	}
 }

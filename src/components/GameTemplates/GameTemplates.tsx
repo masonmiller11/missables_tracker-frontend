@@ -87,24 +87,12 @@ const GameTemplates: React.FC<{ gameId: string }> = ({
 					/>
 					: <Spinner className={classes.spinner} />
 				}
-				<div className={classes.desktopPaginationContainer}>
 					<Pagination
 						page={pageNumber}
 						totalItems={countOfTotalItems}
 						itemsPerPage={pageSize}
 						onPageChange={pageChangeHandler}
-						mobileVersion={false}
 					/>
-				</div>
-				<div className={classes.mobilePaginationContainer}>
-					<Pagination
-						page={pageNumber}
-						totalItems={countOfTotalItems}
-						itemsPerPage={pageSize}
-						onPageChange={pageChangeHandler}
-						mobileVersion={true}
-					/>
-				</div>
 			</div>
 
 		);

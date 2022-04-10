@@ -1,16 +1,20 @@
-import React, { useReducer, Reducer, useEffect } from 'react';
+import React, { useReducer, Reducer, useEffect, useRef } from 'react';
 import { Button, ButtonGroup, Intent } from '@blueprintjs/core';
+import classes from './Pagination.module.css';
+import { MutableRefObject } from 'react';
+import { LegacyRef } from 'react';
 
 interface Props {
 	page?: number;
 	totalItems: number;
 	itemsPerPage: number;
 	onPageChange: (page: number) => void;
-	mobileVersion: boolean
 }
 
 export const Pagination = React.memo<Props>(
-	({ page = 1, totalItems, itemsPerPage, onPageChange, mobileVersion }) => {
+	({ page = 1, totalItems, itemsPerPage, onPageChange }) => {
+
+		const containerRef = useRef<HTMLDivElement>(null);
 
 		interface initialState {
 			currentPage: number;
@@ -33,53 +37,55 @@ export const Pagination = React.memo<Props>(
 
 			const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-			//We're going to show a different amount of pages depending on mobile or desktop.
+			//We're going to show a different amount of pages depending on the size of the container.
+			//trailing pages in front of and behind current page number.
+			//maxVisiblePages, the number of pages we want to display at any time.
 			let startPage: number,
 				endPage = 0,
-				maxPagesShown = mobileVersion ? 5 : 10;
+				trailingPages = Math.floor(containerRef.current!.clientWidth / 120),
+				maxVisiblePages = Math.floor(containerRef.current!.clientWidth / 60);
 
-			//If we have less or equal pages as the max we're going to show, then show them all.
-			if (totalPages <= maxPagesShown) {
+			//Figure out start and end pages. 
+
+			//If we have less or equal pages as the maxVisiblePages, show them all.
+			if (totalPages <= maxVisiblePages) {
 				startPage = 1;
 				endPage = totalPages;
 			} else {
 
-				//Figure out start and end pages. Start with mobile.
-				if (mobileVersion) {
+				//If we're witin the first set of trailingPages, endPage should be maxVisiblePages.
+				if (currentPage <= trailingPages) {
+					startPage = 1;
+					endPage = maxVisiblePages;
 
-					//If we're witin the first two pages, just show the next 4.
-					if (currentPage <= 2) {
-						startPage = 1;
-						endPage = 4;
+				//If we're within the last set of trailingPages, then end page should be the last page.
+				} else if (currentPage + trailingPages >= totalPages) {
+					startPage = totalPages - maxVisiblePages;
+					endPage = totalPages;
 
-						//If we're within 2 pages of the end show the last 4 (desktop).
-					} else if (currentPage + 2 >= totalPages) {
-						startPage = totalPages - 4;
-						endPage = totalPages;
-
-						//Show the previous 2 and next 2 pages on mobile.
-					} else {
-						startPage = currentPage - 2;
-						endPage = currentPage + 2;
-					}
-
-					//Desktop
+				//If we are not within the last or first set of trailingPages, then show a set of trailingPage before and after the current page.
 				} else {
-					if (currentPage <= 5) {
-						startPage = 1;
-						endPage = 10;
-
-						//If we're within 5 pages of the end show the last 10 (desktop).
-					} else if (currentPage + 5 >= totalPages) {
-						startPage = totalPages - 10;
-						endPage = totalPages;
-
-						//Show the previous 5 and next 5 pages on desktop.
-					} else {
-						startPage = currentPage - 5;
-						endPage = currentPage + 5;
-					}
+					startPage = currentPage - trailingPages;
+					endPage = currentPage + trailingPages;
 				}
+
+				//Desktop
+				// } else {
+				// 	if (currentPage <= 5) {
+				// 		startPage = 1;
+				// 		endPage = 10;
+
+				// 		//If we're within 5 pages of the end show the last 10 (desktop).
+				// 	} else if (currentPage + 5 >= totalPages) {
+				// 		startPage = totalPages - 10;
+				// 		endPage = totalPages;
+
+				// 		//Show the previous 5 and next 5 pages on desktop.
+				// 	} else {
+				// 		startPage = currentPage - 5;
+				// 		endPage = currentPage + 5;
+				// 	}
+				// }
 			}
 
 			//Create an array with a length equal to the number of pages that we need to show. We will map through tis later to create buttons.
@@ -130,18 +136,20 @@ export const Pagination = React.memo<Props>(
 		const changePage = (page: number) => {
 			paginationDispatch({ type: 'CHANGE_PAGE', page, totalItems });
 			onPageChange(page);
+			console.log(containerRef.current?.clientWidth)
 		};
 
 		//This is so that the UI doesn't show a page that no longer exists due to deleting items.
 		useEffect(() => {
 			changePage(page);
+			console.log('IN USE EFFFECT, WIDTH:' + containerRef.current?.clientWidth)
 		}, [totalItems, page]);
 
 		//If there's only one page, do not show anything
 		if (paginationState.totalPages === 1) return null;
 
 		return (
-			<div>
+			<div ref={containerRef} className={classes.paginationContainer}>
 				<ButtonGroup>
 					<Button
 						disabled={paginationState.currentPage === 1}

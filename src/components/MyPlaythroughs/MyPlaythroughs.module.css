@@ -12,3 +12,9 @@
 .paginationContainer {
     padding: 2em;
 }
+
+@media (max-width: 480px) {
+	.myPlaythroughsContainer {
+		padding-top: 1em;
+	}
+}

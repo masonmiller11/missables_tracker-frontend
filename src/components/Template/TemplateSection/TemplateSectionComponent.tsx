@@ -123,10 +123,11 @@ const TemplateSectionComponent: React.FC<{
 
 	return (
 		<Card className={classes.sectionCard} interactive={true}>
-			<div style={{width:'100%'}}>
+			<div style={{ width: '100%' }}>
 				<div className={classes.sectionCardTitleAndButtonContainer}>
 					<div className={classes.positionAndNameContainer}>
-						<h2 className={classes.sectionCardTitle}>Part #</h2>
+						<div className={classes.sectionPositionContainer}>
+						<h2>Part #</h2>
 						<div className={classes.position}>
 							<h2>
 								<EditableText
@@ -138,9 +139,11 @@ const TemplateSectionComponent: React.FC<{
 									disabled={editing ? false : true}
 									value={templateSection.position.toString()}
 									maxLength={2}
+									multiline={true}
 									onConfirm={() => saveSectionHandler()}
 								/>
 							</h2>
+						</div>
 						</div>
 
 						<h2>
@@ -153,22 +156,27 @@ const TemplateSectionComponent: React.FC<{
 								}}
 								disabled={!editing}
 								value={templateSection.name}
+								multiline={true}
 								onConfirm={() => saveSectionHandler()}
 							/>
 						</h2>
 					</div>
 					<div className={classes.deleteAndEditButton}>
 						{showEditOption && editing && (
-							<DeleteButton
-								onDelete={deleteSectionHandler}
-							/>
+							<React.Fragment>
+								<DeleteButton
+									onDelete={deleteSectionHandler}
+								/>
 								<MobileDeleteButton onDelete={deleteSectionHandler} />
+							</React.Fragment>
 						)}
 						{showEditOption && !saving && (
+							<div className={classes.editButton}>
 							<EditButton
 								isEditing={editing}
 								onClick={editingStateHandler}
 							/>
+							</div>
 						)}
 					</div>
 				</div>

@@ -53,3 +53,34 @@
 	align-items: center;
 	margin-left: 1.5em;
 }
+
+@media (max-width: 480px) {
+	.playthroughSummaryCard {
+		width: 90%
+	}
+	.cardContentContainer {
+		width: 175px;
+	}
+	.playthroughSummaryCard {
+		padding: 0!important;
+	}
+	.button {
+		text-align: center;
+	}
+	.titleAndEditButtonContainer {
+		text-align: center;
+		margin-left: 0;
+		flex-direction: column-reverse;
+	}
+	.cardImageAndButtonContainer {
+		padding: 1em;
+	}
+	.cardImageAndButtonContainer > img {
+		height: auto;
+		width: 100%;
+	}
+	.playthroughSummaryButton{
+		margin-top: 1em;
+		align-self: end;
+	}
+}

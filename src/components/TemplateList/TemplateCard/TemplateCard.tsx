@@ -82,6 +82,13 @@ const TemplateCard: React.FC<{ likes: Like[], template: Template, templateCardOp
 		<Card className={classes.templateCard}
 			elevation={Elevation.ONE}
 			interactive={true}
+			style={ showFavoriteStar ? {} : {
+				backgroundColor: '#333333',
+				backgroundImage: 'linear-gradient(rgba(0,0,0,0.99), rgba(0,0,0,0.7)), url("'+ template.game.cover + '")',
+				backgroundRepeat: 'no-repeat',
+				backgroundSize: 'cover',
+				backgroundPosition: 'center'
+			} }
 		>
 				{showFavoriteStar &&
 					<FavoriteStar />

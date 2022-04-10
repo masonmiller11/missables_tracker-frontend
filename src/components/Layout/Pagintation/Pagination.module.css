@@ -1,0 +1,14 @@
+.paginationContainer{
+	display: flex;
+	justify-content: center;
+	padding-bottom: 3em;
+	padding-top: 2em;
+	width: 500px;
+}
+
+@media (max-width: 480px) {
+	.paginationContainer {
+		width: 325px;
+		padding: 1.5em;
+	}
+}

@@ -5,6 +5,8 @@ import { Like } from '../../../api/models/Like/Like';
 import classes from './MyFavoritesList.module.css';
 import DeleteButton from '../../Button/DeleteButton/DeleteButton';
 import AuthContext from '../../../store/auth-context';
+import MobileDeleteButton from '../../Button/MobileDeleteButton/MobileDeleteButton';
+
 
 const MyFavoritesList: React.FC<{
 	likes: Like[] | null,
@@ -19,7 +21,7 @@ const MyFavoritesList: React.FC<{
 			<thead>
 				<tr>
 					<th>Template Name</th>
-					<th>Description</th>
+					<th className={classes.desktopOnly}>Description</th>
 					<th>Game</th>
 					<th></th>
 				</tr>
@@ -28,12 +30,12 @@ const MyFavoritesList: React.FC<{
 				{likes!.map((like) => (
 					<tr key={like.id}>
 						<td><a onClick={() => history.push('/guides/' + like.template.id)}>{like.template.name}</a></td>
-						<td>{
+						<td className={classes.desktopOnly}>{
 							like.template.description!.length > 45 ?
 								like.template.description!.substring(0, 43) + '...' :
 								like.template.description}
 						</td>
-						<td>{like.template.game?.title}</td>
+						<td >{like.template.game?.title}</td>
 						<td>
 							<DeleteButton
 								onDelete={() => onDelete(like)}

@@ -31,7 +31,7 @@ const TemplateComponent: React.FC<{ templateId: string; editingAllowed: boolean 
 
 		let source = axios.CancelToken.source();
 
-		apiReadRequest<Template | undefined>(TemplateModel.read(templateIdProp, source), setTemplate);
+		apiReadRequest<Template>(TemplateModel.get(templateIdProp, source), setTemplate);
 
 		return function () {
 			source.cancel('cancelling in cleanup');

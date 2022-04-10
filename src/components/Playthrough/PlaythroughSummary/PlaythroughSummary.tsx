@@ -63,10 +63,13 @@ const PlaythroughSummary: React.FC<{
 								onConfirm={() => onPlaythroughConfirm()}
 							/>
 						</h2>
-						{showEditOption && <EditButton
-							isEditing={editing}
-							onClick={editingStateHandler}
-						/>}
+						{showEditOption &&
+							<div className={classes.playthroughSummaryButton}>
+								<EditButton
+									isEditing={editing}
+									onClick={editingStateHandler}
+								/>
+							</div>}
 					</div>
 
 					<hr />

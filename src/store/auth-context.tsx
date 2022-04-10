@@ -7,7 +7,11 @@ import User from '../api/models/User';
 import { apiRefresh } from '../api';
 
 let logoutTimer: ReturnType<typeof setTimeout>;
-const maxDuration = 3600000;
+
+//This is manually added and should match what we have set in the backend. 
+//This time is in milliseconds. The backend setting is in seconds.
+//We should include this in the token header and pull it in to set it automatically.
+const maxDuration = 86400000;
 
 type initialContext = {
 	isLoggedIn: boolean;
@@ -53,6 +57,7 @@ const retrieveStoredTokenData = (): TokenData | null => {
 	const remainingTime = calculateRemainingTime(storedExpirationTimeAsNumber);
 
 	if (remainingTime <= 3600) {
+		console.log("REMAINING TIME" + remainingTime);
 		localStorage.removeItem('token');
 		localStorage.removeItem('expirationTime');
 		return null;
@@ -92,6 +97,7 @@ export const AuthContextProvider: React.FC = (props) => {
 
 	const logoutHandler = useCallback((): void => {
 
+		console.log("Logging out!");
 		setToken(null);
 		setUser(null);
 
@@ -109,14 +115,17 @@ export const AuthContextProvider: React.FC = (props) => {
 		if (!storedToken || !storedExpirationTime) return false;
 
 		const storedExpirationTimeAsNumber = parseInt(storedExpirationTime);
+		
+		//remainingTime is in Milliseconds.
 		const remainingTime = calculateRemainingTime(storedExpirationTimeAsNumber);
-		console.log('lets check to see if we need to refresh token')
-		console.log('remainingTime ' + remainingTime);
-		console.log('compared to ' + (maxDuration/2))
-		if (remainingTime < (maxDuration/2) && remainingTime > 3600) {
-			return true
+		console.log('Lets check to see if we need to refresh token.')
+		console.log('Remaining time: ' + remainingTime);
+		console.log('Compared to: ' + (maxDuration/2))
+		if (remainingTime < maxDuration/2 && remainingTime > 3600) {
+			console.log('refresh needed!');
+			return true;
 		} 
-
+		console.log('refresh not needed');
 		return false;
 	}
 
@@ -146,7 +155,9 @@ export const AuthContextProvider: React.FC = (props) => {
 	};
 
 	useEffect(() => {
+		console.log("In auth-context useEffect, token data has changed!");
 		if (tokenData) {
+			logoutTimer && clearTimeout(logoutTimer);
 			logoutTimer = setTimeout(logoutHandler, tokenData.duration);
 		}
 	}, [tokenData, logoutHandler]);

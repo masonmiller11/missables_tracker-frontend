@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Button, Card, Elevation, Intent } from '@blueprintjs/core';
+import { Button, Card, Elevation, Intent, Text } from '@blueprintjs/core';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
@@ -56,43 +56,60 @@ const GameSummaryCard: React.FC<{ game: Game; }> = ({ game }) => {
 			interactive={true}
 			key={game.id}
 		>
-			<div className={classes.cardContentContainer}>
-				<div>
-					<img src={game.cover} alt={"This is an image of " + game.title + "'s cover"}></img>
-					<Button
-						text={saving ? "Creating Guide" : "Create Guide"}
-						type="submit"
-						large
-						disabled={saving}
-						className={classes.button}
-						onClick={() => createTemplateHandler()}
-					/>
-				</div>
-
-				<div className={classes.cardDescriptionContainer}>
-					<h2>
-						{game.title} ({game.releaseDate.getFullYear()})
-					</h2>
-					<hr />
-					<div className={classes.cardStatsContainer}>
-						<p>
-							<strong>Total Playthroughs:</strong>{' '}
-							{game.playthroughCount}
-						</p>
-						<p>
-							<strong>Total Templates:</strong>{' '}
-							{game.templateCount}
-						</p>
+			<div className={classes.backgroundImage} style={{
+				backgroundColor: '#333333',
+				backgroundImage: 'linear-gradient(rgba(0,0,0,0.99), rgba(0,0,0,0.5)), url("'+ game.cover + '")',
+				backgroundRepeat: 'no-repeat',
+				backgroundSize: 'cover',
+			}}>
+				<div className={classes.cardContentContainer}>
+					<div className={classes.nameAndImageContainer}>
+						<img src={game.cover} alt={"This is an image of " + game.title + "'s cover"}></img>
+						<Button
+							text={saving ? "Creating Guide" : "Create Guide"}
+							type="submit"
+							large
+							disabled={saving}
+							className={classes.button}
+							onClick={() => createTemplateHandler()}
+						/>
 					</div>
-					<hr />
-					<div className={classes.cardSummaryTextContainer}>
-						<p>
-							<strong>Game Summary:</strong> {game.summary}
-						</p>
+
+					<div className={classes.cardDescriptionContainer}>
+						<h2>
+							{game.title} ({game.releaseDate.getFullYear()})
+						</h2>
+						<hr />
+						<div className={classes.cardStatsContainer}>
+							<p>
+								<strong>Total Playthroughs:</strong>{' '}
+								{game.playthroughCount}
+							</p>
+							<Text ellipsize>
+								<strong>Total Templates:</strong>{' '}
+								{game.templateCount}
+							</Text>
+						</div>
+						<hr />
+						<div className={classes.cardSummaryTextContainer}>
+							<p>
+								<strong>Game Summary:</strong> {game.summary}
+							</p>
+							<div className={classes.mobileOnly}>
+								<Button
+									text={saving ? "Creating Guide" : "Create Guide"}
+									type="submit"
+									large
+									disabled={saving}
+									className={classes.button}
+									onClick={() => createTemplateHandler()}
+								/>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
-		</Card>
+		</Card >
 	);
 };
 

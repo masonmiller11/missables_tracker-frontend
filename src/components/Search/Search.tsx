@@ -98,8 +98,8 @@ const Search: React.FC<{ searchTerm: string | null }> = ({ searchTerm: searchTer
 	);
 
 	return (
-		<React.Fragment>
-			<div className={classes.searchContainer}>
+		<div className={classes.searchContainer}>
+			<div className={classes.searchOptions}>
 				<h1>Search Results</h1>
 				<SearchOptions
 					showButton={!!(games || error)}
@@ -133,7 +133,7 @@ const Search: React.FC<{ searchTerm: string | null }> = ({ searchTerm: searchTer
 				</div>
 			</div>
 
-		</React.Fragment>
+		</div>
 	);
 };
 

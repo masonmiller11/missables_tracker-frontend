@@ -10,6 +10,7 @@ import TemplateStepComponent from './TemplateStep/TemplateStepComponent';
 import EditButton from '../../Button/EditButton/EditButton';
 import AddNewButton from '../../Button/AddNewButton/AddNewButton';
 import DeleteButton from '../../Button/DeleteButton/DeleteButton';
+import MobileDeleteButton from '../../Button/MobileDeleteButton/MobileDeleteButton';
 import SavingMessage from '../../Message/SavingMessage';
 import Defaults from '../../../api/DefaultValues';
 import useEditing from '../../../hooks/useEditing';
@@ -98,8 +99,9 @@ const TemplateSectionComponent: React.FC<{
 
 	const addNewStepHandler = () => {
 
-		//change the the defaultNewStep's position to one more than the last step in the array
-		defaultNewStep.position  = parseInt(templateSection.steps[templateSection.steps.length -1].position.toString())+1;
+		//change the the defaultNewStep's position to one more than the last step in the array.
+		//If steps.length is 0, then position should be 1.
+		defaultNewStep.position = templateSection.steps.length > 0 ? parseInt(templateSection.steps[templateSection.steps.length - 1].position.toString()) + 1 : 1;
 
 		const applyNewTemplateStep = (responseData: CreateResponseData) => {
 			let newStepsArray = templateSection.steps;
@@ -122,10 +124,11 @@ const TemplateSectionComponent: React.FC<{
 
 	return (
 		<Card className={classes.sectionCard} interactive={true}>
-			<div style={{width:'100%'}}>
+			<div style={{ width: '100%' }}>
 				<div className={classes.sectionCardTitleAndButtonContainer}>
 					<div className={classes.positionAndNameContainer}>
-						<h2 className={classes.sectionCardTitle}>Part #</h2>
+						<div className={classes.sectionPositionContainer}>
+						<h2>Part #</h2>
 						<div className={classes.position}>
 							<h2>
 								<EditableText
@@ -137,9 +140,11 @@ const TemplateSectionComponent: React.FC<{
 									disabled={editing ? false : true}
 									value={templateSection.position.toString()}
 									maxLength={2}
+									multiline={true}
 									onConfirm={() => saveSectionHandler()}
 								/>
 							</h2>
+						</div>
 						</div>
 
 						<h2>
@@ -152,21 +157,27 @@ const TemplateSectionComponent: React.FC<{
 								}}
 								disabled={!editing}
 								value={templateSection.name}
+								multiline={true}
 								onConfirm={() => saveSectionHandler()}
 							/>
 						</h2>
 					</div>
 					<div className={classes.deleteAndEditButton}>
 						{showEditOption && editing && (
-							<DeleteButton
-								onDelete={deleteSectionHandler}
-							/>
+							<React.Fragment>
+								<DeleteButton
+									onDelete={deleteSectionHandler}
+								/>
+								<MobileDeleteButton onDelete={deleteSectionHandler} />
+							</React.Fragment>
 						)}
 						{showEditOption && !saving && (
+							<div className={classes.editButton}>
 							<EditButton
 								isEditing={editing}
 								onClick={editingStateHandler}
 							/>
+							</div>
 						)}
 					</div>
 				</div>

@@ -93,9 +93,12 @@ const SectionComponent: React.FC<{
 
 	const addNewStepHandler = () => {
 
-		//change the the defaultNewStep's position to one more than the last step in the array
-		defaultNewStep.position = parseInt(section.steps[section.steps.length - 1].position.toString()) +1;
-		
+		//change the the defaultNewStep's position to one more than the last step in the array.
+		//If steps.length is 0, then position should be 1.
+		defaultNewStep.position = section.steps.length > 0 ?
+			parseInt(section.steps[section.steps.length - 1].position.toString()) + 1
+			: 1;
+
 		const applyNewTemplateStep = (responseData: CreateResponseData) => {
 			let newStepsArray = section.steps;
 			newStepsArray.push({ ...defaultNewStep, id: responseData.id });
@@ -120,21 +123,23 @@ const SectionComponent: React.FC<{
 			<div style={{ width: '100%' }}>
 				<div className={classes.titleAndButtonContainer}>
 					<div className={classes.positionAndNameContainer}>
-						<h2>Part #</h2>
-						<div className={classes.position}>
-							<h2>
-								<EditableText
-									onChange={(newValueString) => {
-										changeSectionPositionHandler(
-											newValueString
-										);
-									}}
-									disabled={editing ? false : true}
-									value={section.position.toString()}
-									maxLength={2}
-									onConfirm={() => saveSectionHandler()}
-								/>
-							</h2>
+						<div className={classes.sectionPositionContainer}>
+							<h2>Part #</h2>
+							<div className={classes.position}>
+								<h2>
+									<EditableText
+										onChange={(newValueString) => {
+											changeSectionPositionHandler(
+												newValueString
+											);
+										}}
+										disabled={editing ? false : true}
+										value={section.position.toString()}
+										maxLength={2}
+										onConfirm={() => saveSectionHandler()}
+									/>
+								</h2>
+							</div>
 						</div>
 
 						<h2>
@@ -147,6 +152,7 @@ const SectionComponent: React.FC<{
 								}}
 								disabled={!editing}
 								value={section.name}
+								multiline
 								onConfirm={() => saveSectionHandler()}
 							/>
 						</h2>

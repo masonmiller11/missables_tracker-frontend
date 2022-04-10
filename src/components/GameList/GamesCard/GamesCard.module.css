@@ -1,6 +1,6 @@
 .gamesCard {
     margin: .5em;
-    width: 32%;
+    max-width: 27em;
 	display: flex;
 	min-width: 18vw;
 	max-height: 182px;
@@ -16,4 +16,16 @@
     justify-content: space-between;
     align-items: flex-end;
     width: 65%;
+}
+
+@media (max-width: 480px) {
+    .gamesCard {
+		width: 100%;
+	}
+	.gamesCard > img {
+		max-width: 130px;
+	}
+	.gamesCardTextContainer {
+		align-items: flex-start;
+	}
 }

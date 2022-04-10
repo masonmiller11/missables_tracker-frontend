@@ -55,7 +55,7 @@ export class TemplateModel {
 		return response;
 	}
 
-	public static async read(
+	public static async get(
 		id: string,
 		source: CancelTokenSource
 	) {

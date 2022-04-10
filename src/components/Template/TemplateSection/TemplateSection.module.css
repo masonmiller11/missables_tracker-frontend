@@ -25,3 +25,33 @@
 .deleteAndEditButton {
 	display: flex;
 }
+
+.sectionPositionContainer{
+	display: flex;
+}
+
+@media (max-width: 480px) {
+	.deleteAndEditButton {
+		align-self: end;
+	}
+	.deleteAndEditButton > .deleteButtonContainer {
+		display: none;
+	}
+	.sectionPositionContainer > h2, .position > h2{
+		margin: 0em!important;
+		height: 25px;
+	}
+	.position {
+		max-width: 5em;
+	}
+	.sectionCardTitleAndButtonContainer {
+		flex-direction: column-reverse;
+	}
+	.positionAndNameContainer{
+		flex-direction: column;
+		align-self: start;
+	}
+	.editButton {
+		padding-left: 1em;
+	}
+}

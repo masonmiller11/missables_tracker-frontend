@@ -18,3 +18,17 @@
 .addNewSectionButton {
 	margin-right: 62em;
 }
+
+@media (max-width: 480px) {
+	.playthroughContainer {
+		padding-top: 2em;
+	}
+	.sectionsContainer {
+		width: 90%;
+	}
+	.addNewSectionButton {
+		align-self: center;
+		width: 80%;
+		margin: 0;
+	}
+}

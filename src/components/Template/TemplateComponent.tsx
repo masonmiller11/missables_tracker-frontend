@@ -31,7 +31,7 @@ const TemplateComponent: React.FC<{ templateId: string; editingAllowed: boolean 
 
 		let source = axios.CancelToken.source();
 
-		apiReadRequest<Template | undefined>(TemplateModel.read(templateIdProp, source), setTemplate);
+		apiReadRequest<Template>(TemplateModel.get(templateIdProp, source), setTemplate);
 
 		return function () {
 			source.cancel('cancelling in cleanup');
@@ -71,8 +71,9 @@ const TemplateComponent: React.FC<{ templateId: string; editingAllowed: boolean 
 	const addNewSectionHandler = () => {
 		if (template) {
 
-			//change the the defaultNewSection's position to one more than the last step in the array
-			defaultNewSection.position  = parseInt(template.sections[template.sections.length - 1].position.toString()) +1;
+			//Change the the defaultNewSection's position to one more than the last step in the array.
+			//If sections.length is 0, then position is 1. 
+			defaultNewSection.position  = template.sections.length > 0 ? parseInt(template.sections[template.sections.length - 1].position.toString()) +1 : 1;
 
 			const applyNewTemplateSectionId = (responseData: CreateResponseData) => {
 

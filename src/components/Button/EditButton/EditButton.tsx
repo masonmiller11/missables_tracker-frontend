@@ -20,7 +20,7 @@ const EditButton: React.FC<{ isEditing: boolean, onClick: (() => void) }> = ({
 		// intent={Intent.WARNING}
 		className={classes.button}
 		onClick={onClick}
-		text="Edit"
+		// text="Edit"
 	/>
 
 };

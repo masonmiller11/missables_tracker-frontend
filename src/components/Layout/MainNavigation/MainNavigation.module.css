@@ -1,0 +1,23 @@
+.mobileNavMenu {
+	display: none;
+}
+
+@media (max-width: 1024px) {
+	.desktopOnly {
+	  display: none;
+	}
+	.mobileNavMenu {
+		display: initial;
+		padding-right: 1em;
+	}
+}
+
+@media (max-width: 480px) {
+	.hideOnMobile {
+	  display: none;
+	}
+	.mobileNavMenu {
+		padding-right: 0em;
+	}
+
+}

@@ -7,6 +7,7 @@ import { Template } from '../../../api/models/Template/Template';
 import LikeModel, { Like, LikeSubmission } from '../../../api/models/Like/Like';
 import TemplateListOptions from '../../../interfaces/TemplateListOptions.interface';
 import DeleteButton from '../../Button/DeleteButton/DeleteButton';
+import MobileDeleteButtom from '../../Button/MobileDeleteButton/MobileDeleteButton';
 import LikeTemplate from './LikeTemplate/FavoriteTemplate';
 import AuthContext from '../../../store/auth-context';
 import useApi from '../../../hooks/useApi';
@@ -81,6 +82,13 @@ const TemplateCard: React.FC<{ likes: Like[], template: Template, templateCardOp
 		<Card className={classes.templateCard}
 			elevation={Elevation.ONE}
 			interactive={true}
+			style={ showFavoriteStar ? {} : {
+				backgroundColor: '#333333',
+				backgroundImage: 'linear-gradient(rgba(0,0,0,0.99), rgba(0,0,0,0.7)), url("'+ template.game.cover + '")',
+				backgroundRepeat: 'no-repeat',
+				backgroundSize: 'cover',
+				backgroundPosition: 'center'
+			} }
 		>
 				{showFavoriteStar &&
 					<FavoriteStar />
@@ -95,6 +103,7 @@ const TemplateCard: React.FC<{ likes: Like[], template: Template, templateCardOp
 								<a onClick={() => history.push(templateGuideUrl + template.id)}>{template.title}</a>
 							</h2>
 							<DeleteButton onDelete={deleteTemplateHandler} />
+							<MobileDeleteButtom onDelete={deleteTemplateHandler}/>
 						</div>
 						:
 						<h2>

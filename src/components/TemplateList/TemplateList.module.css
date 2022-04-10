@@ -2,3 +2,9 @@
     width: 75%;
     max-width: 1000px;
 }
+
+@media (max-width: 480px) {
+	.templateListContainer {
+		width: 90%;
+	}
+}

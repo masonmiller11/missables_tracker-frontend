@@ -118,7 +118,6 @@ const TemplateSummary: React.FC<{
 		<Card
 			className={classes.templateSummaryCard}
 			elevation={Elevation.ONE}
-			interactive={true}
 			key={template.id}
 		>
 			<div className={classes.cardContentContainer}>
@@ -127,7 +126,7 @@ const TemplateSummary: React.FC<{
 
 					<div className={classes.cardButtonContainer}>
 						<Button
-							text={creatingNewPlaythrough ? "Starting Playthrough" : "Start Playthrough"}
+							text={creatingNewPlaythrough ? "Starting Playthrough" : "Begin Playthrough"}
 							type="submit"
 							onClick={() => createPlaythroughHandler()}
 							large
@@ -138,7 +137,7 @@ const TemplateSummary: React.FC<{
 							onClick={!!like ? () => deleteLikeHandler() : () => createLikeHandler()}
 							large
 							icon="star"
-							text={!!like ? "Added To Favorites" : "Add To Favorites"}
+							text={!!like ? "Favorited" : "Add To Favorites"}
 							intent={!!like ? Intent.WARNING : Intent.NONE}
 							className={classes.button}
 						/>
@@ -157,14 +156,18 @@ const TemplateSummary: React.FC<{
 								disabled={!editing}
 								value={template.title}
 								maxLength={45}
+								multiline={true}
+								intent={editing ? Intent.PRIMARY : Intent.NONE}
 								onConfirm={() => onTemplateConfirm()}
 							/>
 						</h2>
 						{showEditOption && (
-							<EditButton
+							<div className={classes.templateSummaryButton}>
+								<EditButton
 								isEditing={editing}
 								onClick={editingStateHandler}
 							/>
+							</div>
 						)}
 					</div>
 

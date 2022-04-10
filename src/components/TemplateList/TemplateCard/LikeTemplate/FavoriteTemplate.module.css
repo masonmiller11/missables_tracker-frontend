@@ -1,5 +1,10 @@
-
 .likeTemplateContainer  {
     display: flex;
     width: 10%;
+}
+
+@media (max-width: 480px) {
+	.likeTemplateContainer {
+		margin-right: 3em;
+	}
 }

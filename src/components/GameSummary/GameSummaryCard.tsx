@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Button, Card, Elevation, Intent } from '@blueprintjs/core';
+import { Button, Card, Elevation, Intent, Text } from '@blueprintjs/core';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
@@ -56,10 +56,11 @@ const GameSummaryCard: React.FC<{ game: Game; }> = ({ game }) => {
 			interactive={true}
 			key={game.id}
 		>
-			<div style={{
+			<div className={classes.backgroundImage} style={{
 				backgroundColor: '#333333',
-				backgroundImage: 'linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.99)), url("https://gamingbolt.com/wp-content/gallery/dark-souls-pc-wallpapers-in-hd/dark_souls_wallpaper.jpg")',
+				backgroundImage: 'linear-gradient(rgba(0,0,0,0.99), rgba(0,0,0,0.5)), url("'+ game.cover + '")',
 				backgroundRepeat: 'no-repeat',
+				backgroundSize: 'cover',
 			}}>
 				<div className={classes.cardContentContainer}>
 					<div className={classes.nameAndImageContainer}>
@@ -84,10 +85,10 @@ const GameSummaryCard: React.FC<{ game: Game; }> = ({ game }) => {
 								<strong>Total Playthroughs:</strong>{' '}
 								{game.playthroughCount}
 							</p>
-							<p>
+							<Text ellipsize>
 								<strong>Total Templates:</strong>{' '}
 								{game.templateCount}
-							</p>
+							</Text>
 						</div>
 						<hr />
 						<div className={classes.cardSummaryTextContainer}>

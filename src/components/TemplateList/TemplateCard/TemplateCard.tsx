@@ -7,6 +7,7 @@ import { Template } from '../../../api/models/Template/Template';
 import LikeModel, { Like, LikeSubmission } from '../../../api/models/Like/Like';
 import TemplateListOptions from '../../../interfaces/TemplateListOptions.interface';
 import DeleteButton from '../../Button/DeleteButton/DeleteButton';
+import MobileDeleteButtom from '../../Button/MobileDeleteButton/MobileDeleteButton';
 import LikeTemplate from './LikeTemplate/FavoriteTemplate';
 import AuthContext from '../../../store/auth-context';
 import useApi from '../../../hooks/useApi';
@@ -95,6 +96,7 @@ const TemplateCard: React.FC<{ likes: Like[], template: Template, templateCardOp
 								<a onClick={() => history.push(templateGuideUrl + template.id)}>{template.title}</a>
 							</h2>
 							<DeleteButton onDelete={deleteTemplateHandler} />
+							<MobileDeleteButtom onDelete={deleteTemplateHandler}/>
 						</div>
 						:
 						<h2>

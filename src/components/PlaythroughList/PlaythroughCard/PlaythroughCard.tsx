@@ -5,6 +5,7 @@ import { Playthrough } from '../../../api/models/Playthrough/Playthrough';
 import PlaythroughListOptions from '../../../interfaces/PlaythroughListOptions.interface';
 import DeleteButton from '../../Button/DeleteButton/DeleteButton';
 import classes from './PlaythroughCard.module.css';
+import MobileDeleteButton from '../../Button/MobileDeleteButton/MobileDeleteButton';
 
 const PlaythroughCard: React.FC<{ playthrough: Playthrough, playthroughCardOptions: PlaythroughListOptions }> = ({ playthrough, playthroughCardOptions }) => {
 
@@ -27,6 +28,7 @@ const PlaythroughCard: React.FC<{ playthrough: Playthrough, playthroughCardOptio
 
 				<div className={classes.buttonsContainer}>
 					<DeleteButton onDelete={() => onDelete(playthrough)} />
+					<MobileDeleteButton onDelete={() => onDelete(playthrough)}/>
 					<Button
 						className={classes.button}
 						icon={collapsed ? "arrow-down" : "arrow-up"}

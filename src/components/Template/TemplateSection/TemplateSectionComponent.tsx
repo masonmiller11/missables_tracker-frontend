@@ -10,6 +10,7 @@ import TemplateStepComponent from './TemplateStep/TemplateStepComponent';
 import EditButton from '../../Button/EditButton/EditButton';
 import AddNewButton from '../../Button/AddNewButton/AddNewButton';
 import DeleteButton from '../../Button/DeleteButton/DeleteButton';
+import MobileDeleteButton from '../../Button/MobileDeleteButton/MobileDeleteButton';
 import SavingMessage from '../../Message/SavingMessage';
 import Defaults from '../../../api/DefaultValues';
 import useEditing from '../../../hooks/useEditing';
@@ -161,6 +162,7 @@ const TemplateSectionComponent: React.FC<{
 							<DeleteButton
 								onDelete={deleteSectionHandler}
 							/>
+								<MobileDeleteButton onDelete={deleteSectionHandler} />
 						)}
 						{showEditOption && !saving && (
 							<EditButton

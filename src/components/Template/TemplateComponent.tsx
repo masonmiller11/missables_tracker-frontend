@@ -113,7 +113,7 @@ const TemplateComponent: React.FC<{ templateId: string; editingAllowed: boolean 
 
 	const updateTemplateHandler = () => {
 		let source = axios.CancelToken.source();
-		apiUpdateRequest<Template>(template!, source, TemplateModel.update);
+		apiUpdateRequest<Template>(template!, source, TemplateModel.patch);
 	};
 
 	if (template) {

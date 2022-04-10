@@ -64,7 +64,7 @@ export class TemplateModel {
 		return response;
 	}
 
-	public static async update(
+	public static async patch(
 		template: Template,
 		source: CancelTokenSource
 	) {
@@ -79,7 +79,7 @@ export class TemplateModel {
 		return response;
 	}
 
-	public static async create(
+	public static async post(
 		newTemplate: TemplateSubmission,
 		source: CancelTokenSource
 	) {

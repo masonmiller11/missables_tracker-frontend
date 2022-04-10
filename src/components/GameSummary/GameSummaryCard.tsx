@@ -41,7 +41,7 @@ const GameSummaryCard: React.FC<{ game: Game; }> = ({ game }) => {
 			apiCreateRequest<TemplateSubmission>(
 				newTemplate,
 				source,
-				TemplateModel.create,
+				TemplateModel.post,
 				redirectToNewTemplate
 			)
 		} else {
